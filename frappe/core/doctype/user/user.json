@@ -22,8 +22,32 @@
   "send_welcome_email",
   "unsubscribed",
   "user_image",
-  "sb1",
+  "user_type",
   "role_profile_name",
+  "module_profile",
+  "pos_setting_section",
+  "allow_login_to_pos",
+  "pos_password",
+  "pos_synchronize_token",
+  "allow_start_cashier_shift",
+  "allow_close_cashier_shift",
+  "allow_open_cashdrawer",
+  "allow_switch_pos_profile",
+  "column_break_24",
+  "allow_change_item_price",
+  "allow_change_price_list_rate",
+  "allow_change_unit",
+  "allow_delete_bill",
+  "allow_delete_order_item",
+  "allow_item_discount",
+  "column_break_31",
+  "allow_reset_receipt_number_in_all_station",
+  "allow_reset_receipt_number_in_current_station",
+  "allow_sale_discount",
+  "allow_sale_return_transaction",
+  "allow_view_close_receipt",
+  "allow_view_shift_report",
+  "sb1",
   "roles_html",
   "roles",
   "short_bio",
@@ -62,24 +86,22 @@
   "allowed_in_mentions",
   "user_emails",
   "sb_allow_modules",
-  "module_profile",
   "modules_html",
   "block_modules",
   "home_settings",
   "sb2",
   "defaults",
   "sb3",
+  "last_login",
   "simultaneous_sessions",
   "restrict_ip",
   "last_ip",
   "column_break1",
   "login_after",
-  "user_type",
   "last_active",
   "section_break_63",
   "login_before",
   "bypass_restrict_ip_check_if_2fa_enabled",
-  "last_login",
   "last_known_versions",
   "third_party_authentication",
   "social_logins",
@@ -126,6 +148,7 @@
   {
    "fieldname": "middle_name",
    "fieldtype": "Data",
+   "hidden": 1,
    "label": "Middle Name (Optional)",
    "oldfieldname": "middle_name",
    "oldfieldtype": "Data"
@@ -134,6 +157,7 @@
    "bold": 1,
    "fieldname": "last_name",
    "fieldtype": "Data",
+   "hidden": 1,
    "label": "Last Name",
    "oldfieldname": "last_name",
    "oldfieldtype": "Data"
@@ -180,12 +204,14 @@
   {
    "fieldname": "language",
    "fieldtype": "Link",
+   "hidden": 1,
    "label": "Language",
    "options": "Language"
   },
   {
    "fieldname": "time_zone",
    "fieldtype": "Select",
+   "hidden": 1,
    "label": "Time Zone"
   },
   {
@@ -201,6 +227,7 @@
    "depends_on": "eval:in_list(['System User', 'Website User'], doc.user_type) && doc.enabled == 1",
    "fieldname": "sb1",
    "fieldtype": "Section Break",
+   "hidden": 1,
    "label": "Roles",
    "permlevel": 1,
    "read_only": 1
@@ -215,6 +242,7 @@
   {
    "fieldname": "roles_html",
    "fieldtype": "HTML",
+   "hidden": 1,
    "label": "Roles HTML",
    "read_only": 1
   },
@@ -343,6 +371,7 @@
    "collapsible": 1,
    "fieldname": "document_follow_notifications_section",
    "fieldtype": "Section Break",
+   "hidden": 1,
    "label": "Document Follow"
   },
   {
@@ -364,6 +393,7 @@
    "depends_on": "enabled",
    "fieldname": "email_settings",
    "fieldtype": "Section Break",
+   "hidden": 1,
    "label": "Email"
   },
   {
@@ -402,6 +432,7 @@
    "depends_on": "eval:in_list(['System User'], doc.user_type)",
    "fieldname": "sb_allow_modules",
    "fieldtype": "Section Break",
+   "hidden": 1,
    "label": "Allow Modules",
    "permlevel": 1
   },
@@ -448,9 +479,9 @@
   },
   {
    "collapsible": 1,
-   "depends_on": "enabled",
    "fieldname": "sb3",
    "fieldtype": "Section Break",
+   "hidden": 1,
    "label": "Security Settings",
    "oldfieldtype": "Section Break",
    "read_only": 1
@@ -479,6 +510,7 @@
    "description": "Allow user to login only after this hour (0-24)",
    "fieldname": "login_after",
    "fieldtype": "Int",
+   "hidden": 1,
    "label": "Login After",
    "permlevel": 1
   },
@@ -486,6 +518,7 @@
    "description": "Allow user to login only before this hour (0-24)",
    "fieldname": "login_before",
    "fieldtype": "Int",
+   "hidden": 1,
    "label": "Login Before",
    "permlevel": 1
   },
@@ -493,6 +526,7 @@
    "description": "Restrict user from this IP address only. Multiple IP addresses can be added by separating with commas. Also accepts partial IP addresses like (111.111.111)",
    "fieldname": "restrict_ip",
    "fieldtype": "Data",
+   "hidden": 1,
    "label": "Restrict IP",
    "permlevel": 1
   },
@@ -502,11 +536,13 @@
    "description": "If enabled,  user can login from any IP Address using Two Factor Auth, this can also be set for all users in System Settings",
    "fieldname": "bypass_restrict_ip_check_if_2fa_enabled",
    "fieldtype": "Check",
+   "hidden": 1,
    "label": "Bypass Restricted IP Address Check If Two Factor Auth Enabled"
   },
   {
    "fieldname": "column_break1",
    "fieldtype": "Column Break",
+   "hidden": 1,
    "oldfieldtype": "Column Break",
    "print_width": "50%",
    "width": "50%"
@@ -532,6 +568,7 @@
   {
    "fieldname": "last_active",
    "fieldtype": "Datetime",
+   "hidden": 1,
    "label": "Last Active",
    "no_copy": 1,
    "read_only": 1
@@ -549,6 +586,7 @@
    "depends_on": "enabled",
    "fieldname": "third_party_authentication",
    "fieldtype": "Section Break",
+   "hidden": 1,
    "label": "Third Party Authentication",
    "permlevel": 1
   },
@@ -600,7 +638,8 @@
   },
   {
    "fieldname": "section_break_63",
-   "fieldtype": "Column Break"
+   "fieldtype": "Column Break",
+   "hidden": 1
   },
   {
    "fieldname": "desk_theme",
@@ -615,13 +654,13 @@
    "options": "Module Profile"
   },
   {
-    "description": "Stores the datetime when the last reset password key was generated.",
-    "fieldname": "last_reset_password_key_generated_on",
-    "fieldtype": "Datetime",
-    "hidden": 1,
-    "label": "Last Reset Password Key Generated On",
-    "read_only": 1
-   },
+   "description": "Stores the datetime when the last reset password key was generated.",
+   "fieldname": "last_reset_password_key_generated_on",
+   "fieldtype": "Datetime",
+   "hidden": 1,
+   "label": "Last Reset Password Key Generated On",
+   "read_only": 1
+  },
   {
    "fieldname": "column_break_75",
    "fieldtype": "Column Break"
@@ -648,18 +687,143 @@
    "label": "Auto follow documents that you Like"
   },
   {
-    "default": "0",
-    "depends_on": "eval:(doc.document_follow_notify== 1)",
-    "fieldname": "follow_shared_documents",
-    "fieldtype": "Check",
-    "label": "Auto follow documents that are shared with you"
-   },
+   "default": "0",
+   "depends_on": "eval:(doc.document_follow_notify== 1)",
+   "fieldname": "follow_shared_documents",
+   "fieldtype": "Check",
+   "label": "Auto follow documents that are shared with you"
+  },
   {
    "default": "0",
    "depends_on": "eval:(doc.document_follow_notify== 1)",
    "fieldname": "follow_assigned_documents",
    "fieldtype": "Check",
    "label": "Auto follow documents that are assigned to you"
+  },
+  {
+   "fieldname": "pos_setting_section",
+   "fieldtype": "Section Break",
+   "label": "POS Setting"
+  },
+  {
+   "default": "0",
+   "fieldname": "allow_login_to_pos",
+   "fieldtype": "Check",
+   "label": "Allow login to POS"
+  },
+  {
+   "fieldname": "pos_password",
+   "fieldtype": "Data",
+   "label": "POS Password"
+  },
+  {
+   "fieldname": "pos_synchronize_token",
+   "fieldtype": "Data",
+   "label": "POS Synchronize Token"
+  },
+  {
+   "default": "1",
+   "fieldname": "allow_start_cashier_shift",
+   "fieldtype": "Check",
+   "label": "Allow start cashier shift"
+  },
+  {
+   "default": "1",
+   "fieldname": "allow_close_cashier_shift",
+   "fieldtype": "Check",
+   "label": "Allow close cashier shift"
+  },
+  {
+   "default": "1",
+   "fieldname": "allow_open_cashdrawer",
+   "fieldtype": "Check",
+   "label": "Allow open cashdrawer"
+  },
+  {
+   "default": "1",
+   "fieldname": "allow_switch_pos_profile",
+   "fieldtype": "Check",
+   "label": "Allow Switch POS Profile"
+  },
+  {
+   "fieldname": "column_break_24",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "1",
+   "fieldname": "allow_change_item_price",
+   "fieldtype": "Check",
+   "label": "Allow change item price"
+  },
+  {
+   "default": "1",
+   "fieldname": "allow_change_price_list_rate",
+   "fieldtype": "Check",
+   "label": "Allow Change Price List Rate"
+  },
+  {
+   "default": "1",
+   "fieldname": "allow_change_unit",
+   "fieldtype": "Check",
+   "label": "Allow Change Unit"
+  },
+  {
+   "default": "0",
+   "fieldname": "allow_delete_bill",
+   "fieldtype": "Check",
+   "label": "Allow delete bill"
+  },
+  {
+   "default": "1",
+   "fieldname": "allow_delete_order_item",
+   "fieldtype": "Check",
+   "label": "Allow delete order item"
+  },
+  {
+   "default": "1",
+   "fieldname": "allow_item_discount",
+   "fieldtype": "Check",
+   "label": "Allow item discount"
+  },
+  {
+   "default": "1",
+   "fieldname": "allow_reset_receipt_number_in_all_station",
+   "fieldtype": "Check",
+   "label": "Allow reset receipt number in all station"
+  },
+  {
+   "default": "1",
+   "fieldname": "allow_reset_receipt_number_in_current_station",
+   "fieldtype": "Check",
+   "label": "Allow reset receipt number in current station"
+  },
+  {
+   "default": "1",
+   "fieldname": "allow_sale_discount",
+   "fieldtype": "Check",
+   "label": "Allow sale discount"
+  },
+  {
+   "default": "1",
+   "fieldname": "allow_sale_return_transaction",
+   "fieldtype": "Check",
+   "label": "Allow sale return transaction"
+  },
+  {
+   "default": "1",
+   "fieldname": "allow_view_close_receipt",
+   "fieldtype": "Check",
+   "label": "Allow view close receipt"
+  },
+  {
+   "default": "1",
+   "fieldname": "allow_view_shift_report",
+   "fieldtype": "Check",
+   "label": "Allow view shift report"
+  },
+  {
+   "fieldname": "column_break_31",
+   "fieldtype": "Column Break"
   }
  ],
  "icon": "fa fa-user",
@@ -722,7 +886,7 @@
    "link_fieldname": "user"
   }
  ],
- "modified": "2022-05-25 01:00:51.345319",
+ "modified": "2022-07-23 15:58:28.554492",
  "modified_by": "Administrator",
  "module": "Core",
  "name": "User",
