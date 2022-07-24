@@ -22,7 +22,19 @@ class Comment(Document):
 	def after_insert(self):
 		self.notify_mentions()
 		self.notify_change("add")
+		
+		#check doc that allow to sync
+		notify_docs = ["Item","Item Group","Item Price","Customer","Customer Group" ,"User","POS Profile","Company","System Settings","Currency Exchange","Warehouse" ,"Membership Type"]
+		content = self.content
 
+		if self.reference_doctype in notify_docs and content:
+		 
+			if "renamed from <strong>" in content:
+				content = content.replace("renamed from <strong>","").replace("<strong>","").replace("</strong>","").split(" to ")
+				if len(content)==2:
+					frappe.custom.doctype.data_for_sync.data_for_sync.notify_sync_job(self.reference_doctype,content[0],"on_trash")
+					frappe.custom.doctype.data_for_sync.data_for_sync.notify_sync_job(self.reference_doctype,content[1],"on_update")
+		
 	def validate(self):
 		if not self.comment_email:
 			self.comment_email = frappe.session.user
