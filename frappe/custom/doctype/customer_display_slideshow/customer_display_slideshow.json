@@ -1,0 +1,47 @@
+{
+ "actions": [],
+ "autoname": "hash",
+ "creation": "2022-07-25 09:45:27.958485",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "image",
+  "description",
+  "image_url"
+ ],
+ "fields": [
+  {
+   "fieldname": "image",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Image",
+   "options": "Image Galleries"
+  },
+  {
+   "fetch_from": "image.description",
+   "fieldname": "description",
+   "fieldtype": "Data",
+   "label": "Description"
+  },
+  {
+   "fetch_from": "image.image",
+   "fieldname": "image_url",
+   "fieldtype": "Data",
+   "label": "Image Url"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2022-07-25 09:46:20.762050",
+ "modified_by": "Administrator",
+ "module": "Custom",
+ "name": "Customer Display Slideshow",
+ "naming_rule": "Random",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

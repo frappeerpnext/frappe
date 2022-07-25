@@ -7,6 +7,7 @@
  "field_order": [
   "localization",
   "app_name",
+  "system_logo",
   "country",
   "language",
   "column_break_3",
@@ -17,6 +18,14 @@
   "date_format",
   "time_format",
   "number_format",
+  "pos_date_format",
+  "pos_datetime_format",
+  "pos_number_format",
+  "pos_currency_format",
+  "pos_currency_symbol",
+  "pos_second_currency_name",
+  "pos_second_currency_format",
+  "pos_second_currency_symbol",
   "column_break_7",
   "float_precision",
   "currency_precision",
@@ -450,7 +459,6 @@
    "description": "The application name will be used in the Login page.",
    "fieldname": "app_name",
    "fieldtype": "Data",
-   "hidden": 1,
    "label": "Application Name"
   },
   {
@@ -525,12 +533,58 @@
    "fieldname": "email_retry_limit",
    "fieldtype": "Int",
    "label": "Email Retry Limit"
+  },
+  {
+   "fieldname": "system_logo",
+   "fieldtype": "Attach Image",
+   "label": "System Logo"
+  },
+  {
+   "fieldname": "pos_date_format",
+   "fieldtype": "Data",
+   "label": "POS Date Format"
+  },
+  {
+   "fieldname": "pos_datetime_format",
+   "fieldtype": "Data",
+   "label": "POS Datetime Format"
+  },
+  {
+   "fieldname": "pos_number_format",
+   "fieldtype": "Data",
+   "label": "POS Number Format"
+  },
+  {
+   "fieldname": "pos_currency_symbol",
+   "fieldtype": "Data",
+   "label": "POS Currency Symbol"
+  },
+  {
+   "fieldname": "pos_second_currency_name",
+   "fieldtype": "Data",
+   "label": "POS Second Currency Name"
+  },
+  {
+   "fieldname": "pos_second_currency_format",
+   "fieldtype": "Data",
+   "label": "POS Second Currency Format"
+  },
+  {
+   "fieldname": "pos_second_currency_symbol",
+   "fieldtype": "Data",
+   "label": "POS Second Currency Symbol"
+  },
+  {
+   "fieldname": "pos_currency_format",
+   "fieldtype": "Data",
+   "label": "POS Currency Format"
   }
  ],
  "icon": "fa fa-cog",
+ "image_field": "system_logo",
  "issingle": 1,
  "links": [],
- "modified": "2022-06-21 13:55:04.796152",
+ "modified": "2022-07-25 09:27:30.001819",
  "modified_by": "Administrator",
  "module": "Core",
  "name": "System Settings",
