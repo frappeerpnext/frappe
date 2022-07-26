@@ -16,29 +16,46 @@ def notify_sync(doc, event):
 
 
 @frappe.whitelist()
-
 def notify_sync_job(doctype,name, event):
 	branches = frappe.db.get_list('Branch', pluck='name')
 	if event in ["on_change","on_update","after_insert"]:
 		event = "on_update"
 
 	for b in branches:
-		if not frappe.db.exists("Data for Sync", [
-			{"branch": b},
-			{"is_sync":0},
-			{"doc_type":doctype},
-			{"doc_name":name},
-			{"transaction_type": event}
-		]):
-			obj = frappe.get_doc({
-				"doctype":"Data for Sync",
-				"branch" : b,
-				'doc_type': doctype,
-				'doc_name': name,
-				"transaction_type":event,
-				"is_sync":0
-			})
-			obj.insert()
+		frappe.db.sql(
+			"""
+			DELETE FROM `tabData for Sync`
+			WHERE 
+				branch=%s and 
+				doc_type = %s and 
+				doc_name = %s and 
+				transaction_type =%s and 
+				is_sync=0
+			""",
+			(b,doctype,name,event)
+		)
+
+		obj = frappe.get_doc({
+			"doctype":"Data for Sync",
+			"branch" : b,
+			'doc_type': doctype,
+			'doc_name': name,
+			"transaction_type":event,
+			"is_sync":0
+		})
+		obj.insert()
 		
+
+@frappe.whitelist()
+def delete_synced_record(name):
+	frappe.delete_doc('Data for Sync', name)
+	frappe.db.commit()
+
+@frappe.whitelist()
+def get_synced_record(name):
+	frappe.delete_doc('Data for Sync', name)
+	frappe.db.commit()
+
+
 
  
