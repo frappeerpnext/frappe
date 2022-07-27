@@ -141,7 +141,7 @@ doc_events = {
 	"*": {
 		"after_insert": [
 			"frappe.event_streaming.doctype.event_update_log.event_update_log.notify_consumers",
-			"frappe.custom.doctype.data_for_sync.data_for_sync.notify_sync"
+			#"frappe.custom.doctype.data_for_sync.data_for_sync.notify_sync"
 		],
 		"on_update": [
 			"frappe.desk.notifications.clear_doctype_notifications",
@@ -152,7 +152,7 @@ doc_events = {
 			"frappe.event_streaming.doctype.event_update_log.event_update_log.notify_consumers",
 			"frappe.automation.doctype.assignment_rule.assignment_rule.update_due_date",
 			"frappe.core.doctype.user_type.user_type.apply_permissions_for_non_standard_user_type",
-			"frappe.custom.doctype.data_for_sync.data_for_sync.notify_sync"
+			#"frappe.custom.doctype.data_for_sync.data_for_sync.notify_sync"
 		],
 		"after_rename": "frappe.desk.notifications.clear_doctype_notifications",
 		"on_cancel": [
@@ -164,7 +164,7 @@ doc_events = {
 			"frappe.desk.notifications.clear_doctype_notifications",
 			"frappe.workflow.doctype.workflow_action.workflow_action.process_workflow_actions",
 			"frappe.event_streaming.doctype.event_update_log.event_update_log.notify_consumers",
-			"frappe.custom.doctype.data_for_sync.data_for_sync.notify_sync"
+			#"frappe.custom.doctype.data_for_sync.data_for_sync.notify_sync"
 		],
 		"on_update_after_submit": [
 			"frappe.workflow.doctype.workflow_action.workflow_action.process_workflow_actions"
@@ -172,7 +172,7 @@ doc_events = {
 		"on_change": [
 			"frappe.social.doctype.energy_point_rule.energy_point_rule.process_energy_points",
 			"frappe.automation.doctype.milestone_tracker.milestone_tracker.evaluate_milestone",
-			"frappe.custom.doctype.data_for_sync.data_for_sync.notify_sync"
+			#"frappe.custom.doctype.data_for_sync.data_for_sync.notify_sync"
 		],
 	},
 	"Event": {
