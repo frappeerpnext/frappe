@@ -43,11 +43,14 @@ def update_item_availability(self):
 	doc = frappe.get_doc(self.parent_doctype,self.doc_name)
 	doc.branches =[]
 	for b in self.branches.split(","):
-		code =   frappe.db.get_value('Branch', b, 'branch_code')
+		code =  frappe.db.get_value('Branch', b, 'branch_code')
+ 
 		doc.append("branches", {
 					"branch":b,
 					"branch_code":code
 				})
+
+	
 				
 	doc.save(
 		ignore_permissions=True, # ignore write permissions during insert
