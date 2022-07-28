@@ -13,7 +13,8 @@
   "doc_name",
   "barcode",
   "uom",
-  "conversion_factor"
+  "conversion_factor",
+  "branches"
  ],
  "fields": [
   {
@@ -45,11 +46,16 @@
    "fieldname": "conversion_factor",
    "fieldtype": "Float",
    "label": "conversion_factor"
+  },
+  {
+   "fieldname": "branches",
+   "fieldtype": "Text",
+   "label": "branches"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-07-27 17:29:50.655523",
+ "modified": "2022-07-28 19:16:52.618585",
  "modified_by": "Administrator",
  "module": "Custom",
  "name": "Temp Child Table Data Import",

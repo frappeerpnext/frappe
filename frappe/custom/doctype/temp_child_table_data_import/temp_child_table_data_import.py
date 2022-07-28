@@ -11,7 +11,8 @@ class TempChildTableDataImport(Document):
 			add_barcode_to_item(self)
 		elif self.parent_doctype=="Item" and self.doctype_name=="UOM Conversion Detail":
 			add_unit_to_item(self)
-
+		elif self.parent_doctype=="Item" and self.doctype_name=="Branch Items":
+			update_item_availability(self)
 
 def add_barcode_to_item(self):
 	doc = frappe.get_doc(self.parent_doctype,self.doc_name)
@@ -19,7 +20,10 @@ def add_barcode_to_item(self):
                 "barcode":self.barcode,
                 "uom":self.uom,
             })
-	doc.save()
+	doc.save(
+		ignore_permissions=True, # ignore write permissions during insert
+    	ignore_version=True 
+	)
 	frappe.db.commit()
 
 
@@ -29,7 +33,24 @@ def add_unit_to_item(self):
                 "conversion_factor":self.conversion_factor,
                 "uom":self.uom,
             })
-	doc.save()
+	doc.save(
+		ignore_permissions=True, # ignore write permissions during insert
+    	ignore_version=True 
+	)
+	frappe.db.commit()
+
+def update_item_availability(self):
+	doc = frappe.get_doc(self.parent_doctype,self.doc_name)
+	doc.branches =[]
+	for b in self.branches.split(","):
+		doc.append("branches", {
+					"branch":b
+				})
+				
+	doc.save(
+		ignore_permissions=True, # ignore write permissions during insert
+    	ignore_version=True 
+	)
 	frappe.db.commit()
 
 
