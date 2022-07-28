@@ -12,7 +12,8 @@
   "doctype_name",
   "doc_name",
   "barcode",
-  "uom"
+  "uom",
+  "conversion_factor"
  ],
  "fields": [
   {
@@ -39,11 +40,16 @@
    "fieldname": "uom",
    "fieldtype": "Data",
    "label": "uom"
+  },
+  {
+   "fieldname": "conversion_factor",
+   "fieldtype": "Float",
+   "label": "conversion_factor"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-07-27 11:50:15.489646",
+ "modified": "2022-07-27 17:29:50.655523",
  "modified_by": "Administrator",
  "module": "Custom",
  "name": "Temp Child Table Data Import",
