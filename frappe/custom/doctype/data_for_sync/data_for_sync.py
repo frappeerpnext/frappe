@@ -12,7 +12,7 @@ def notify_sync(doc, event):
 	notify_docs = ["Item","Item Group","Item Price","Customer","Customer Group" ,"User","POS Profile","Company","System Settings","Currency Exchange","Warehouse" ,"Membership Type"]
 	"""called via hooks"""
 	if doc.doctype in notify_docs:
-		notify_sync_job(doc.doctype,doc.name,event)
+	 	 notify_sync_job(doc.doctype,doc.name,event)
 
 
 @frappe.whitelist()
