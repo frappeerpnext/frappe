@@ -14,7 +14,8 @@
   "barcode",
   "uom",
   "conversion_factor",
-  "branches"
+  "branches",
+  "discount"
  ],
  "fields": [
   {
@@ -51,11 +52,16 @@
    "fieldname": "branches",
    "fieldtype": "Text",
    "label": "branches"
+  },
+  {
+   "fieldname": "discount",
+   "fieldtype": "Float",
+   "label": "discount"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-07-28 19:16:52.618585",
+ "modified": "2022-08-03 16:43:40.519448",
  "modified_by": "Administrator",
  "module": "Custom",
  "name": "Temp Child Table Data Import",

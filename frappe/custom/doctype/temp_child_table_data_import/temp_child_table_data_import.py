@@ -13,6 +13,8 @@ class TempChildTableDataImport(Document):
 			add_unit_to_item(self)
 		elif self.parent_doctype=="Item" and self.doctype_name=="Branch Items":
 			update_item_availability(self)
+		elif self.parent_doctype=="Item Group" and self.doctype_name=="Item Group Birthday Discount":
+			update_item_group_discount(self)
 
 def add_barcode_to_item(self):
 	doc = frappe.get_doc(self.parent_doctype,self.doc_name)
@@ -39,6 +41,7 @@ def add_unit_to_item(self):
 	)
 	frappe.db.commit()
 
+
 def update_item_availability(self):
 	doc = frappe.get_doc(self.parent_doctype,self.doc_name)
 	doc.branches =[]
@@ -52,6 +55,21 @@ def update_item_availability(self):
 
 	
 				
+	doc.save(
+		ignore_permissions=True, # ignore write permissions during insert
+    	ignore_version=True 
+	)
+	frappe.db.commit()
+
+
+def update_item_group_discount(self):
+	doc = frappe.get_doc(self.parent_doctype,self.doc_name)
+
+	doc.append("max_birthday_discount_by_branch", {
+					"branch":self.branches,
+					"discount":self.discount
+				})
+						
 	doc.save(
 		ignore_permissions=True, # ignore write permissions during insert
     	ignore_version=True 
