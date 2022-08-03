@@ -1,0 +1,154 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "hash",
+ "creation": "2022-08-03 09:27:53.292738",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "id",
+  "company",
+  "pos_profile",
+  "posting_date",
+  "pos_user",
+  "pos_opening_entry_id",
+  "pos_opening_entry_number",
+  "pos_invoice_id",
+  "pos_invoice_number",
+  "audit_trail_type",
+  "note",
+  "item_code",
+  "item_name",
+  "is_sync",
+  "can_sync",
+  "station_name"
+ ],
+ "fields": [
+  {
+   "fieldname": "id",
+   "fieldtype": "Data",
+   "label": "ID"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Company"
+  },
+  {
+   "fieldname": "pos_profile",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "POS Profile"
+  },
+  {
+   "fieldname": "posting_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Date"
+  },
+  {
+   "fieldname": "pos_user",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "User"
+  },
+  {
+   "fieldname": "pos_opening_entry_id",
+   "fieldtype": "Data",
+   "label": "pos_opening_entry_id"
+  },
+  {
+   "fieldname": "pos_opening_entry_number",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Shift #"
+  },
+  {
+   "fieldname": "pos_invoice_id",
+   "fieldtype": "Data",
+   "label": "pos_invoice_id"
+  },
+  {
+   "fieldname": "pos_invoice_number",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "POS Inv. #"
+  },
+  {
+   "fieldname": "audit_trail_type",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Audit Trail Type"
+  },
+  {
+   "fieldname": "note",
+   "fieldtype": "Text",
+   "label": "Note"
+  },
+  {
+   "fieldname": "item_code",
+   "fieldtype": "Data",
+   "label": "Item Code"
+  },
+  {
+   "fieldname": "item_name",
+   "fieldtype": "Data",
+   "label": "Item Name"
+  },
+  {
+   "fieldname": "is_sync",
+   "fieldtype": "Int",
+   "label": "is_sync"
+  },
+  {
+   "fieldname": "can_sync",
+   "fieldtype": "Int",
+   "label": "can_sync"
+  },
+  {
+   "fieldname": "station_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "station_name"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2022-08-03 09:43:54.234848",
+ "modified_by": "Administrator",
+ "module": "Custom",
+ "name": "POS Audit Trail",
+ "naming_rule": "Random",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "All",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
