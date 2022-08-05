@@ -1,3 +1,5 @@
+.field {color: #000 !important;}
+.print-format-section .field .field-controls div span {color: #000 !important;}
 .widget.quick-list-widget-box .widget-body .quick-list-item div.title { 
     color: #333333!important;
 
@@ -12,9 +14,7 @@
     background: #9f9f9f;
 }
 
-html, body{
-    color: #fff!important;
-}
+
 .navbar-nav .dropdown-help{
     display: none!important;
 }
