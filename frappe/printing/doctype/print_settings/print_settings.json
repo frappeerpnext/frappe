@@ -14,6 +14,7 @@
   "pdf_page_width",
   "view_link_in_email",
   "with_letterhead",
+  "0",
   "allow_print_for_draft",
   "add_draft_heading",
   "column_break_10",
@@ -170,13 +171,19 @@
    "fieldname": "pdf_page_width",
    "fieldtype": "Float",
    "label": "PDF Page Width (in mm)"
+  },
+  {
+   "default": "0",
+   "fieldname": "0",
+   "fieldtype": "Check",
+   "label": "Show Product Price"
   }
  ],
  "icon": "fa fa-cog",
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2021-09-17 12:59:14.783694",
+ "modified": "2022-08-08 15:36:00.545832",
  "modified_by": "Administrator",
  "module": "Printing",
  "name": "Print Settings",
@@ -193,5 +200,6 @@
  "quick_entry": 1,
  "sort_field": "modified",
  "sort_order": "DESC",
+ "states": [],
  "track_changes": 1
 }
