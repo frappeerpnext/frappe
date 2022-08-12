@@ -2,8 +2,13 @@
 .print-format-section .field .field-controls div span {color: #000 !important;}
 .widget.quick-list-widget-box .widget-body .quick-list-item div.title { 
     color: #333333!important;
-
 }
+
+
+body.full-width .container{
+    width: 98% !important;
+}
+
 .modal-content{min-width: 700px!important;}
 
  

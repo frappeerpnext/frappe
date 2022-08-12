@@ -211,7 +211,6 @@
   {
    "fieldname": "time_zone",
    "fieldtype": "Select",
-   "hidden": 1,
    "label": "Time Zone"
   },
   {
@@ -886,7 +885,7 @@
    "link_fieldname": "user"
   }
  ],
- "modified": "2022-07-23 15:58:28.554492",
+ "modified": "2022-08-11 16:37:07.152356",
  "modified_by": "Administrator",
  "module": "Core",
  "name": "User",
