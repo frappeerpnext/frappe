@@ -50,7 +50,7 @@ def notify_sync_job(doctype,name, event):
 
 @frappe.whitelist()
 def delete_synced_record(name):
-	frappe.db.sql("""DELETE FROM `tabData for Sync` WHERE branch = 'Store - LA'""")
+	frappe.db.sql("""DELETE FROM `tabData for Sync` WHERE branch = 'Stores - LA'""")
 	frappe.delete_doc('Data for Sync', name)
 	frappe.db.commit()
 
