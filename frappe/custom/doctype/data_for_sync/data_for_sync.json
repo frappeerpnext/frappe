@@ -39,15 +39,16 @@
    "label": "branch"
   },
   {
+   "default": "0",
    "fieldname": "is_sync",
-   "fieldtype": "Data",
+   "fieldtype": "Check",
    "in_list_view": 1,
    "label": "is_sync"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-07-24 13:17:06.361001",
+ "modified": "2022-08-14 14:44:57.943286",
  "modified_by": "Administrator",
  "module": "Custom",
  "name": "Data for Sync",
@@ -81,6 +82,5 @@
  ],
  "sort_field": "modified",
  "sort_order": "DESC",
- "states": [],
- "track_changes": 1
+ "states": []
 }
