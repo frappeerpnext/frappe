@@ -38,8 +38,7 @@ def notify_sync_job(doctype,name, event):
 				branch=%s and 
 				doc_type = %s and 
 				doc_name = %s and 
-				transaction_type =%s and 
-				is_sync=0
+				transaction_type =%s
 			""",
 			(b,doctype,name,event)
 		)
@@ -49,8 +48,7 @@ def notify_sync_job(doctype,name, event):
 			"branch" : b,
 			'doc_type': doctype,
 			'doc_name': name,
-			"transaction_type":event,
-			"is_sync":0
+			"transaction_type":event
 		})
 		obj.insert()
 		

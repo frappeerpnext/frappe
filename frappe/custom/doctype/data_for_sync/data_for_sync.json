@@ -10,8 +10,7 @@
   "doc_type",
   "doc_name",
   "transaction_type",
-  "branch",
-  "is_sync"
+  "branch"
  ],
  "fields": [
   {
@@ -37,18 +36,11 @@
    "fieldtype": "Data",
    "in_list_view": 1,
    "label": "branch"
-  },
-  {
-   "default": "0",
-   "fieldname": "is_sync",
-   "fieldtype": "Check",
-   "in_list_view": 1,
-   "label": "is_sync"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-08-14 15:03:36.676564",
+ "modified": "2022-08-14 15:08:01.887954",
  "modified_by": "Administrator",
  "module": "Custom",
  "name": "Data for Sync",
