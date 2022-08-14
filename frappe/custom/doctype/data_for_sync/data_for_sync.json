@@ -48,7 +48,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-08-14 14:44:57.943286",
+ "modified": "2022-08-14 15:03:36.676564",
  "modified_by": "Administrator",
  "module": "Custom",
  "name": "Data for Sync",
@@ -82,5 +82,6 @@
  ],
  "sort_field": "modified",
  "sort_order": "DESC",
- "states": []
+ "states": [],
+ "track_changes": 1
 }
