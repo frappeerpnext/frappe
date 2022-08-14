@@ -108,6 +108,16 @@ body.full-width .container{
     background-color: #e24c4c;
 }
 
+
+.form-in-grid .form-section .section-head{
+    padding: 10px!important;
+}
+
+.grid-row-open .section-body{
+    padding: 10px!important;
+}
+
+
 /* 
 +===== <> =====+
      Start Login

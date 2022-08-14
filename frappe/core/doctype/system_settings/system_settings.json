@@ -13,6 +13,7 @@
   "column_break_3",
   "time_zone",
   "enable_onboarding",
+  "disable_data_for_sync_notify",
   "setup_complete",
   "date_and_number_format",
   "date_format",
@@ -578,13 +579,19 @@
    "fieldname": "pos_currency_format",
    "fieldtype": "Data",
    "label": "POS Currency Format"
+  },
+  {
+   "default": "0",
+   "fieldname": "disable_data_for_sync_notify",
+   "fieldtype": "Check",
+   "label": "Disable Data For Sync Notify"
   }
  ],
  "icon": "fa fa-cog",
  "image_field": "system_logo",
  "issingle": 1,
  "links": [],
- "modified": "2022-07-25 09:27:30.001819",
+ "modified": "2022-08-13 11:14:11.676284",
  "modified_by": "Administrator",
  "module": "Core",
  "name": "System Settings",
