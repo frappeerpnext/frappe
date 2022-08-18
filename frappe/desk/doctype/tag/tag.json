@@ -1,4 +1,5 @@
 {
+ "actions": [],
  "allow_rename": 1,
  "autoname": "Prompt",
  "creation": "2016-05-25 09:43:44.767581",
@@ -15,10 +16,12 @@
    "label": "Description"
   }
  ],
- "modified": "2019-09-25 17:47:41.712237",
+ "links": [],
+ "modified": "2022-08-16 17:14:31.291704",
  "modified_by": "Administrator",
  "module": "Desk",
  "name": "Tag",
+ "naming_rule": "Set by user",
  "owner": "Administrator",
  "permissions": [
   {
@@ -46,5 +49,7 @@
   }
  ],
  "sort_field": "modified",
- "sort_order": "DESC"
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
 }

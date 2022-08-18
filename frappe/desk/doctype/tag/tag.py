@@ -85,10 +85,19 @@ class DocTags:
 				frappe.get_doc({"doctype": "Tag", "name": tag}).insert(ignore_permissions=True)
 			self.update(dn, tl)
 
+		#===check if doctype is item or item group then add record to data for sync api 
+		if self.dt in ["Item","Item Group"]:
+			frappe.custom.doctype.data_for_sync.data_for_sync.notify_sync_job(self.dt, dn,"on_update")
+
+
 	def remove(self, dn, tag):
 		"""remove a user tag"""
 		tl = self.get_tags(dn).split(",")
 		self.update(dn, filter(lambda x: x.lower() != tag.lower(), tl))
+
+		#===check if doctype is item or item group then add record to data for sync api 
+		if self.dt in ["Item","Item Group"]:
+			frappe.custom.doctype.data_for_sync.data_for_sync.notify_sync_job(self.dt, dn,"on_update")
 
 	def remove_all(self, dn):
 		"""remove all user tags (call before delete)"""
