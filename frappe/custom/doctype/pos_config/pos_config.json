@@ -1,0 +1,118 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:company_name",
+ "creation": "2022-08-19 14:42:30.138814",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "pos_setting_section",
+  "company_name",
+  "company_name_kh",
+  "company_logo",
+  "phone_no",
+  "address",
+  "column_break_5",
+  "pos_background_image",
+  "pos_customer_display_thank_you_background",
+  "limit_days_view_report",
+  "customer_display_slideshow_section",
+  "customer_display_slideshow"
+ ],
+ "fields": [
+  {
+   "fieldname": "company_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Company Name",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "company_logo",
+   "fieldtype": "Attach Image",
+   "label": "Logo"
+  },
+  {
+   "fieldname": "phone_no",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Phone No"
+  },
+  {
+   "fieldname": "address",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Address"
+  },
+  {
+   "fieldname": "column_break_5",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "pos_background_image",
+   "fieldtype": "Attach Image",
+   "label": "POS Background Image"
+  },
+  {
+   "fieldname": "pos_customer_display_thank_you_background",
+   "fieldtype": "Attach Image",
+   "label": "POS customer display thank you background"
+  },
+  {
+   "fieldname": "limit_days_view_report",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Limit days view report"
+  },
+  {
+   "fieldname": "customer_display_slideshow_section",
+   "fieldtype": "Section Break",
+   "label": "Customer Display Slideshow"
+  },
+  {
+   "fieldname": "customer_display_slideshow",
+   "fieldtype": "Table",
+   "label": "Customer Display Slideshow",
+   "options": "Customer Display Slideshow"
+  },
+  {
+   "fieldname": "pos_setting_section",
+   "fieldtype": "Section Break",
+   "label": "POS Setting"
+  },
+  {
+   "fieldname": "company_name_kh",
+   "fieldtype": "Data",
+   "label": "Company Name Kh"
+  }
+ ],
+ "image_field": "company_logo",
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2022-08-19 14:53:07.748175",
+ "modified_by": "Administrator",
+ "module": "Custom",
+ "name": "POS Config",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}
