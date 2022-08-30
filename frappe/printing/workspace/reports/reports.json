@@ -77,24 +77,6 @@
   },
   {
    "hidden": 0,
-   "is_query_report": 0,
-   "label": "Purchases Report",
-   "link_count": 1,
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 1,
-   "label": "Purchase Order Analysis",
-   "link_count": 0,
-   "link_to": "Purchase Order Analysis",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
    "is_query_report": 1,
    "label": "Purchase Analytics",
    "link_count": 0,
@@ -209,94 +191,6 @@
    "label": "Item Shortage Report",
    "link_count": 0,
    "link_to": "Item Shortage Report",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Sales Report",
-   "link_count": 8,
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 1,
-   "label": "Sales Analysis",
-   "link_count": 0,
-   "link_to": "Sales Analytics",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 1,
-   "label": "Sale by Products",
-   "link_count": 0,
-   "link_to": "Item-wise Sales Register",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 1,
-   "label": "Sales Transaction",
-   "link_count": 0,
-   "link_to": "Sales Register",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 1,
-   "label": "POS Payment Type Breakdown",
-   "link_count": 0,
-   "link_to": "POS Invoice Payment Type Breakdown",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 1,
-   "label": "Sales Invoice Trends",
-   "link_count": 0,
-   "link_to": "Sales Invoice Trends",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 1,
-   "label": "Inactive Sale Items",
-   "link_count": 0,
-   "link_to": "Inactive Sales Items",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 1,
-   "label": "Territory-wise Sales",
-   "link_count": 0,
-   "link_to": "Territory-wise Sales",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 1,
-   "label": "Customer Acquisition and Loyalty",
-   "link_count": 0,
-   "link_to": "Customer Acquisition and Loyalty",
    "link_type": "Report",
    "onboard": 0,
    "type": "Link"
@@ -554,9 +448,135 @@
    "link_type": "Report",
    "onboard": 0,
    "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Sales Report",
+   "link_count": 4,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Sales Transaction",
+   "link_count": 0,
+   "link_to": "Sales Register",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "POS Payment Type Breakdown",
+   "link_count": 0,
+   "link_to": "POS Invoice Payment Type Breakdown",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Inactive Sale Items",
+   "link_count": 0,
+   "link_to": "Inactive Sales Items",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Sales Summary Report",
+   "link_count": 0,
+   "link_to": "Sales Summary Report",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Purchases Report",
+   "link_count": 7,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Purchase Order Analysis",
+   "link_count": 0,
+   "link_to": "Purchase Order Analysis",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Purchase Analytics",
+   "link_count": 0,
+   "link_to": "Purchase Analytics",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Purchase Order Trends",
+   "link_count": 0,
+   "link_to": "Purchase Order Trends",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Purchase Receipt Trends",
+   "link_count": 0,
+   "link_to": "Purchase Receipt Trends",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Purchase Transaction",
+   "link_count": 0,
+   "link_to": "Purchase Register",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Item Purchase Register",
+   "link_count": 0,
+   "link_to": "Item-wise Purchase Register",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Item Purchase History",
+   "link_count": 0,
+   "link_to": "Item-wise Purchase History",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
   }
  ],
- "modified": "2022-08-12 16:49:34.577233",
+ "modified": "2022-08-30 12:51:59.046119",
  "modified_by": "Administrator",
  "module": "Printing",
  "name": "Reports",
