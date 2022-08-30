@@ -265,11 +265,11 @@ def get_report_data(filters):
 
 			# profit columns
 			if not hide_columns or  "Profit" not in hide_columns:
-				sql = sql +	"SUM(if(b.posting_date between '{}' AND '{}',a.amount - (a.qty*a.incoming_rate),0)) as {}_profit,".format(f["start_date"],f["end_date"],f["fieldname"])
+				sql = sql +	"SUM(if(b.posting_date between '{}' AND '{}',a.net_amount - (a.qty*a.incoming_rate),0)) as {}_profit,".format(f["start_date"],f["end_date"],f["fieldname"])
 			
 			
 
-			sql = sql +	"SUM(if(b.posting_date between '{}' AND '{}',a.amount,0)) as {}_amt".format(f["start_date"],f["end_date"],f["fieldname"])
+			sql = sql +	"SUM(if(b.posting_date between '{}' AND '{}',a.net_amount,0)) as {}_amt".format(f["start_date"],f["end_date"],f["fieldname"])
 
 			#end for
  
@@ -279,11 +279,11 @@ def get_report_data(filters):
 	if not hide_columns or  "Cost" not in hide_columns:
 		sql = sql + ",SUM(a.qty*a.incoming_rate) AS total_cost "
 
-	sql = sql + ",SUM(a.amount) AS total_amount "
+	sql = sql + ",SUM(a.net_amount) AS total_amount "
 
 	#chekc if column total profit not hide
 	if not hide_columns or  "Profit" not in hide_columns:
-		sql = sql + ",SUM(a.amount - (  a.qty*a.incoming_rate)) AS total_profit "
+		sql = sql + ",SUM(a.net_amount - (  a.qty*a.incoming_rate)) AS total_profit "
 
 	
 	sql = sql + """
