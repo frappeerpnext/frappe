@@ -18,7 +18,7 @@ def execute(filters=None):
 	report_data = get_report_data(filters)
 
 	report_chart = None
-	if filters.chart_type !="None":
+	if filters.chart_type !="None" and len(report_data)<=100:
 		report_chart = get_report_chart(filters,report_data)
 
  
