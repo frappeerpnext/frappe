@@ -43,11 +43,10 @@ def validate(filters):
 def update_parent_item_group():
 	frappe.db.sql(
 		"""
-		UPDATE `tabSales Invoice Item` a, `tabItem Group` b
-		SET a.parent_item_group =if(ifnull(b.parent_item_group,'')='','Not Set', ifnull(b.parent_item_group,''))
-		WHERE 
-			a.item_group = b.name AND 
-			IFNULL(a.parent_item_group,'') ='';
+			UPDATE `tabSales Invoice Item` a 
+			SET parent_item_group = (
+					SELECT parent_item_group FROM `tabItem Group` WHERE NAME=a.item_group) 
+			WHERE parent_item_group = ''
 		"""
 	)
 
