@@ -59,6 +59,7 @@ frappe.query_reports["Sales Summary Report"] = {
 			"fieldtype": "MultiSelectList",
 			get_data: function(txt) {
 				return [
+					{"value":"Transaction","description":"Transaction"},
 					{"value":"Quantity","description":"Quantity"},
 					{"value":"Sub Total","description":"Sub Total"},
 					{"value":"Cost","description":"Cost"},

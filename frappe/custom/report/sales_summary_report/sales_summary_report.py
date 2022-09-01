@@ -14,6 +14,7 @@ def execute(filters=None):
 	validate(filters)
 	#run this to update parent_item_group in table sales invoice item
 	update_parent_item_group()
+	update_sale()
 	report_data = get_report_data(filters)
 
 	report_chart = None
@@ -49,7 +50,39 @@ def update_parent_item_group():
 		"""
 	)
 
+def update_sale():
+	frappe.db.sql(
+		"""
+			UPDATE `tabSales Invoice Item` a 
+			SET parent_item_group = (
+					SELECT parent_item_group FROM `tabItem Group` WHERE NAME=a.item_group) 
+			WHERE ifnull(parent_item_group,'') = ''
+		"""
+	)
 
+	#update transaction to tbl sale invoice item
+	sale_invoices = frappe.db.sql("select distinct parent from `tabSales Invoice Item` where total_transaction=0", as_dict=1)
+	
+	if sale_invoices:
+		for s in sale_invoices:
+			 
+			item_count = frappe.db.sql("select count(name) as total from `tabSales Invoice Item` where parent='{}'".format(s["parent"]), as_dict=1)
+			
+			if item_count:
+				total_item = item_count[0]["total"]
+				#get total transaction from pos invoice
+				pos_invoice_count = frappe.db.sql("select count(name) as total from `tabPOS Invoice` where consolidated_invoice='{}'".format(s["parent"]), as_dict=1)
+				total_pos_invoice = 1
+				if pos_invoice_count and pos_invoice_count[0]["total"]>1:
+						total_pos_invoice = pos_invoice_count[0]["total"]
+
+				sql = "update `tabSales Invoice Item` set total_transaction = {} where parent='{}'".format(total_pos_invoice/total_item, s["parent"])
+				 
+				frappe.db.sql(sql)
+	
+	frappe.db.commit()
+	#end update total transaction to sale invoice item
+	# 				
 
 def get_columns(filters):
 	
@@ -62,10 +95,17 @@ def get_columns(filters):
 	if filters.column_group !="None" and filters.row_group not in ["Date","Month","Year"]:
 		 
 		for c in get_dynamic_columns(filters):
-			 
 			columns.append(c)
 
 	#add total to last column
+	if not hide_columns or  "Transaction" not in hide_columns:
+		columns.append({
+				'fieldname':'total_transaction',
+				'label':"Total Tran.",
+				'fieldtype':'Float',
+				'precision': 2,
+				'align':'center'}
+			)
 	if not hide_columns or  "Quantity" not in hide_columns:
 		columns.append({
 				'fieldname':'total_qty',
@@ -73,6 +113,15 @@ def get_columns(filters):
 				'fieldtype':'Float',
 				'precision': 2,
 				'align':'center'}
+			)
+
+	if not hide_columns or  "Sub Total" not in hide_columns:
+		columns.append({
+				'fieldname':'sub_total',
+				'label':"Sub Total",
+				'fieldtype':'Currency',
+				'align':'right'
+				}
 			)
 
 	if not hide_columns or  "Cost" not in hide_columns:
@@ -109,6 +158,15 @@ def get_dynamic_columns(filters):
 
 	columns=[]
 	for f in fields:
+		if not hide_columns or  "Transaction" not in hide_columns:
+			columns.append({
+				'fieldname':f["fieldname"] +"_transaction",
+				'label': f["label"] + " Tran.",
+				'fieldtype':'Float',
+				'precision': 2,
+				'align':'center'}
+			)
+
 		if not hide_columns or  "Quantity" not in hide_columns:
 			columns.append({
 				'fieldname':f["fieldname"] +"_qty",
@@ -116,6 +174,14 @@ def get_dynamic_columns(filters):
 				'fieldtype':'Float',
 				'precision': 2,
 				'align':'center'}
+			)
+
+		if not hide_columns or  "Sub Total" not in hide_columns:
+			columns.append({
+				'fieldname':f["fieldname"] +"_sub_total",
+				'label': f["label"] + " Sub Total",
+				'fieldtype':'Currency',
+				'align':'right'}
 			)
 
 		if not hide_columns or  "Cost" not in hide_columns:
@@ -243,7 +309,7 @@ def get_conditions(filters):
 	if filters.get("price_list"):
 		conditions += " AND b.selling_price_list in %(price_list)s"
 	
-	frappe.msgprint("<pre>{}</pre>".format(conditions))
+ 
 	return conditions
 
 def get_report_data(filters):
@@ -258,8 +324,15 @@ def get_report_data(filters):
 		fields = get_fields(filters)
 		for f in fields:
 			sql = sql + ','
+			if not hide_columns or  "Transaction" not in hide_columns:
+				sql = sql +	"SUM(if(b.posting_date between '{}' AND '{}',a.total_transaction,0)) as {}_transaction,".format(f["start_date"],f["end_date"],f["fieldname"])
+			
 			if not hide_columns or  "Quantity" not in hide_columns:
 				sql = sql +	"SUM(if(b.posting_date between '{}' AND '{}',a.qty,0)) as {}_qty,".format(f["start_date"],f["end_date"],f["fieldname"])
+			
+			#sub total column dynamic
+			if not hide_columns or  "Sub Total" not in hide_columns:
+				sql = sql +	"SUM(if(b.posting_date between '{}' AND '{}',a.amount,0)) as {}_sub_total,".format(f["start_date"],f["end_date"],f["fieldname"])
 			
 			# cost columns
 			if not hide_columns or  "Cost" not in hide_columns:
@@ -275,8 +348,15 @@ def get_report_data(filters):
 
 			#end for
  
+	if not hide_columns or  "Transaction" not in hide_columns:
+		sql = sql + ",SUM(a.total_transaction) AS total_transaction "
+
 	if not hide_columns or  "Quantity" not in hide_columns:
 		sql = sql + ",SUM(qty) AS total_qty "
+
+	#total sub total
+	if not hide_columns or  "Sub Total" not in hide_columns:
+		sql = sql + ",SUM(a.amount) AS sub_total "
 	
 	if not hide_columns or  "Cost" not in hide_columns:
 		sql = sql + ",SUM(a.qty*a.incoming_rate) AS total_cost "
@@ -297,8 +377,7 @@ def get_report_data(filters):
 		GROUP BY 
 		{1}
 	""".format(get_conditions(filters), row_group)
-	
-	 
+ 
 	data = frappe.db.sql(sql,filters, as_dict=1)
 	return data
  
@@ -309,9 +388,17 @@ def get_report_summary(data,filters):
 	 
 	report_summary =[{"label":"Total " + filters.row_group ,"value":len(data),'indicator':'Red'}]
 
+	if not hide_columns or  "Transaction" not in hide_columns:
+		report_summary.append({"label":"Total Transaction","value":"{:.2f}".format(sum(d["total_transaction"] for d in data))})	
+		
 	if not hide_columns or  "Quantity" not in hide_columns:
 		report_summary.append({"label":"Total Quantity","value":sum(d["total_qty"] for d in data),'indicator':'Green'})	
-		
+	
+	#sub total
+	if not hide_columns or  "Sub Total" not in hide_columns:
+		report_summary.append({"label":"Sub Total","value":sum(d["sub_total"] for d in data),'indicator':'blue'})	
+	
+
 	if not hide_columns or  "Cost" not in hide_columns:
 		report_summary.append({"label":"Total Cost","value":frappe.utils.fmt_money(sum(d["total_cost"] for d in data)),'indicator':'Blue'})
 
@@ -330,6 +417,8 @@ def get_report_chart(filters,data):
 	costs = []
 	profits = []
 	quantities = []
+	transactions = []
+	sub_totals = []
 	hide_columns = filters.get("hide_columns")
 	dataset = []
 	colors = []
@@ -339,10 +428,17 @@ def get_report_chart(filters,data):
 			columns.append(f["label"])
 			
 			amounts.append(sum(d["{}_amt".format(f["fieldname"])] for d in data))
-			
+			#check hide column quantity
+			if not hide_columns or  "Transaction" not in hide_columns:
+				quantities.append(sum(d["{}_transaction".format(f["fieldname"])] for d in data))
+
 			#check hide column quantity
 			if not hide_columns or  "Quantity" not in hide_columns:
 				quantities.append(sum(d["{}_qty".format(f["fieldname"])] for d in data))
+
+			#check hide column sub total
+			if not hide_columns or  "Sub Total" not in hide_columns:
+				sub_totals.append(sum(d["{}_sub_total".format(f["fieldname"])] for d in data))
 
 			#check hide column cost
 			if not hide_columns or  "Cost" not in hide_columns:
@@ -353,10 +449,17 @@ def get_report_chart(filters,data):
 				profits.append(sum(d["{}_profit".format(f["fieldname"])] for d in data ))
 			
 			
-		
+		if not hide_columns or  "Transaction" not in hide_columns:
+			dataset.append({'name':'Transaction','values':transactions})
+			colors.append("#f030fd")
+
 		if not hide_columns or  "Quantity" not in hide_columns:
 			dataset.append({'name':'Quantity','values':quantities})
 			colors.append("#FF8A65")
+
+		if not hide_columns or  "Sub Total" not in hide_columns:
+			dataset.append({'name':'Sub Total','values':sub_totals})
+			colors.append("#dd5574")
 
 		if not hide_columns or  "Cost" not in hide_columns:
 			dataset.append({'name':'Cost','values':costs})
@@ -373,9 +476,17 @@ def get_report_chart(filters,data):
 		for d in data:
 			columns.append(d["row_group"])
 
+		if not hide_columns or  "Transaction" not in hide_columns:
+			dataset.append({'name':'Transaction','values':(d["total_transaction"] for d in data)})
+			colors.append("#f030fd")
+
 		if not hide_columns or  "Quantity" not in hide_columns:
 			dataset.append({'name':"Quantity","values": (d["total_qty"] for d in data)})
 			colors.append("#FF8A65")
+		#sub total 
+		if not hide_columns or  "Sub Total" not in hide_columns:
+			dataset.append({'name':"Sub Total","values": (d["sub_total"] for d in data)})
+			colors.append("#dd5574")
 
 		if not hide_columns or  "Cost" not in hide_columns:
 			dataset.append({'name':"Cost","values": (d["total_cost"] for d in data)})

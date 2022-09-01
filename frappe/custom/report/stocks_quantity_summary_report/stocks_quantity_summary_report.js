@@ -57,8 +57,12 @@ frappe.query_reports["Stocks Quantity Summary Report"] = {
 		},
 	],
 	onload: function(report) {
-		document.body.classList.add('grid-column-br');
+		setTimeout(() => {
+			x = document.getElementsByClassName("page-content")[0];
+			x.classList.add('grid-column-br');
+		}, 5000);
+		
 	}
-
+	
 };
 

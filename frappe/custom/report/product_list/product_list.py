@@ -17,16 +17,17 @@ def get_columns(filters):
 	return columns
 def get_report_data(filters):
 	sql = """
-		SELECT 
-			a.item_group,
-			a.item_code,
-			a.item_name,
-			a.stock_uom,
-			b.actual_qty,
-			a.allow_discount
-		FROM `tabItem` a
-		INNER JOIN `tabBin` b ON b.item_code = a.item_code AND b.stock_uom = a.stock_uom
-		WHERE b.warehouse = '{0}' AND a.item_group = '{1}' AND a.allow_discount = '{2}'
+	SELECT 
+		a.item_group,
+		a.item_code,
+		a.item_name,
+		a.stock_uom,
+		(SELECT actual_qty FROM `tabBin` f WHERE f.item_code = a.item_code AND f.stock_uom = a.stock_uom AND warehouse = '{0}') price,
+		(SELECT price_list_rate FROM `tabItem Price` c WHERE item_code = a.item_code AND c.uom = a.stock_uom AND price_list = 'Standard Selling') price,
+		(SELECT price_list_rate FROM `tabItem Price` d WHERE item_code = a.item_code AND d.uom = a.stock_uom AND price_list = 'Wholesale Price') whole_sale,
+		(SELECT price_list_rate FROM `tabItem Price` e WHERE item_code = a.item_code AND e.uom = a.stock_uom AND price_list = 'Standard Buying'),
+		a.allow_discount
+	FROM `tabItem` a WHERE a.item_group = '{1}' AND a.allow_discount = '{2}'
 	""".format(filters.warehouse, filters.item_group,filters.allow_discount)
 
 	data = frappe.db.sql(sql,as_dict=1)
