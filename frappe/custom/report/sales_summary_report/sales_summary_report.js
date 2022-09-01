@@ -24,6 +24,14 @@ frappe.query_reports["Sales Summary Report"] = {
 			default:frappe.datetime.month_end()
 		},
 		{
+			"fieldname": "price_list",
+			"label": __("Sale Type"),
+			"fieldtype": "MultiSelectList",
+			get_data: function(txt) {
+				return frappe.db.get_link_options('Price List', txt,{"selling":1});
+			}
+		},
+		{
 			"fieldname": "item_group",
 			"label": __("Item Group"),
 			"fieldtype": "MultiSelectList",
@@ -35,7 +43,7 @@ frappe.query_reports["Sales Summary Report"] = {
 			"fieldname": "row_group",
 			"label": __("Row Group By"),
 			"fieldtype": "Select",
-			"options": "Product\nCategory\nProduct Group\nBrand\nCompany\nBranch\nPOS Profile\nCustomer\nCustomer Group\nMembership\nTerritory\nSupplier\nSupplier Group\nWarehouse\nDate\n\Month\nYear",
+			"options": "Product\nCategory\nProduct Group\nBrand\nCompany\nBranch\nSale Type\nPOS Profile\nCustomer\nCustomer Group\nMembership\nTerritory\nSupplier\nSupplier Group\nWarehouse\nDate\n\Month\nYear",
 			"default":"Category"
 		},
 		{
@@ -52,10 +60,12 @@ frappe.query_reports["Sales Summary Report"] = {
 			get_data: function(txt) {
 				return [
 					{"value":"Quantity","description":"Quantity"},
+					{"value":"Sub Total","description":"Sub Total"},
 					{"value":"Cost","description":"Cost"},
-					{"value":"Profit","description":"Profit"}
+					{"value":"Profit","description":"Profit"},
 				]
-			}
+			},
+			"default":"All"
 		},
 		{
 			"fieldname": "chart_type",

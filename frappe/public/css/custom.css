@@ -120,6 +120,13 @@ body.full-width .container{
     flex:none!important;
 }
 
+.grid-column-br .datatable .dt-row{
+    height: 50px!important;
+}
+.grid-column-br    .dt-cell{
+    height: 50px!important;
+}
+
 
 /* 
 +===== <> =====+

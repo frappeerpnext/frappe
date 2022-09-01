@@ -9,7 +9,6 @@ import frappe
 from frappe.utils import date_diff
 import json
 
-
 def execute(filters=None):
  
 	validate(filters)
@@ -46,7 +45,7 @@ def update_parent_item_group():
 			UPDATE `tabSales Invoice Item` a 
 			SET parent_item_group = (
 					SELECT parent_item_group FROM `tabItem Group` WHERE NAME=a.item_group) 
-			WHERE parent_item_group = ''
+			WHERE ifnull(parent_item_group,'') = ''
 		"""
 	)
 
@@ -240,8 +239,11 @@ def get_conditions(filters):
 	 
 	if filters.get("item_group"):
 		conditions += " AND a.parent_item_group in %(item_group)s"
+
+	if filters.get("price_list"):
+		conditions += " AND b.selling_price_list in %(price_list)s"
 	
-	
+	frappe.msgprint("<pre>{}</pre>".format(conditions))
 	return conditions
 
 def get_report_data(filters):
@@ -473,5 +475,9 @@ def get_row_groups():
 		{
 			"fieldname":"ifnull(a.supplier_group,'Not Set')",
 			"label":"Supplier Group"
+		},
+		{
+			"fieldname":"b.selling_price_list",
+			"label":"Sale Type"
 		},
 	]

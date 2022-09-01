@@ -1,0 +1,91 @@
+{
+ "actions": [],
+ "autoname": "hash",
+ "creation": "2022-09-01 10:29:44.495636",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "pos_profile",
+  "date",
+  "counter",
+  "document_number_series",
+  "amended_from",
+  "company"
+ ],
+ "fields": [
+  {
+   "fieldname": "pos_profile",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "POS Profile",
+   "options": "POS Profile",
+   "reqd": 1
+  },
+  {
+   "fieldname": "date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Date",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "pos_profile.pos_document_number",
+   "fieldname": "document_number_series",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Document Number Series"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "POS Document Number",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "fetch_from": "pos_profile.company",
+   "fieldname": "company",
+   "fieldtype": "Data",
+   "label": "Company",
+   "read_only": 1
+  },
+  {
+   "fieldname": "counter",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Counter",
+   "reqd": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2022-09-01 11:07:15.246042",
+ "modified_by": "Administrator",
+ "module": "Custom",
+ "name": "POS Document Number",
+ "naming_rule": "Random",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}
