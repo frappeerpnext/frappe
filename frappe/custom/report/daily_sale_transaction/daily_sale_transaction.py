@@ -18,11 +18,11 @@ def get_columns(filters):
 	columns.append({'fieldname':'grand_total','label':"Amount",'fieldtype':'Currency','align':'left','width':100})
 	columns.append({'fieldname':'profit','label':"Profit",'fieldtype':'Currency','align':'left','width':100})
 	return columns
+
 def get_report_data(filters):
 	con = "b.posting_date BETWEEN '{0}' AND '{1}' AND b.company = '{2}' and a.docstatus=1 and b.docstatus=1".format(filters.start_date,filters.end_date,filters.company)
-	if filters.get("price_list"): con = con +	"and b.selling_price_List in ({})".format(filters.price_list)
-	if filters.get("customer"):con = con +	"and b.customer in %(customer)s"
-	
+	if filters.get("price_list"): con = con + " and b.selling_price_List in (" + get_list(filters,"price_list") + ")"
+	if filters.get("customer"):con = con +	" and b.customer in (" + get_list(filters,"customer") + ")"
 	sql = """
 		SELECT
 			a.parent,
@@ -39,6 +39,9 @@ def get_report_data(filters):
 		WHERE {0}
 		GROUP BY a.parent,b.posting_date,b.customer
 	""".format(con)
-	frappe.msgprint("<pre>{}</pre>".format(sql))
 	data = frappe.db.sql(sql,as_dict=1)
+	return data
+
+def get_list(filters,name):
+	data = ','.join("'{0}'".format(x) for x in filters.get(name))
 	return data

@@ -137,9 +137,46 @@ def get_conditions(filters):
 
 
 def get_report_summary(filters):
-  
-	report_summary =[{"label":"Total Qty " ,"value":50,'indicator':'grey'}]
+	show_columns = filters.get("show_columns")
+	sql ="""
+		SELECT 
+			SUM(actual_qty) as actual_qty
+		"""
+	if show_columns and "Reserved Quantity"  in show_columns:
+		sql = sql + ",sum(a.reserved_qty) as total_reserved_qty"
+	if show_columns and "Ordered Quantity"  in show_columns:
+		sql = sql + ",sum(a.ordered_qty) as total_ordered_qty"
+	if show_columns and "Requested Quantity"  in show_columns:
+		sql = sql + ",sum(a.indented_qty) as total_requested_qty"
+	if show_columns and "Total Cost"  in show_columns:
+		sql = sql + ",sum(a.stock_value) as total_cost"
+		
 
+	
+	sql = sql + """
+		from 
+		`tabBin` a
+		where 
+			1 = 1  
+			{0}
+	""".format(get_conditions(filters))
+
+
+
+	data = frappe.db.sql(sql,filters,as_dict=1)
+	if data:
+		report_summary =[{"label":"Total Qty " ,"value":data[0]["actual_qty"],'indicator':'grey'}]
+		if show_columns and "Reserved Quantity"  in show_columns:
+			report_summary.append({"label":"Reserved Quantity" ,"value":data[0]["total_reserved_qty"],'indicator':'grey'})
+		if show_columns and "Ordered Quantity"  in show_columns:
+			report_summary.append({"label":"Ordered Quantity" ,"value":data[0]["total_ordered_qty"],'indicator':'grey'})
+		if show_columns and "Requested Quantity"  in show_columns:
+			report_summary.append({"label":"Total Ordered Quantity" ,"value":data[0]["total_requested_qty"],'indicator':'grey'})
+		if show_columns and "Total Cost"  in show_columns:
+			report_summary.append({"label":"Total Stock Value" ,"value":frappe.utils.fmt_money(data[0]["total_cost"]),'indicator':'green'})
+
+		return report_summary
+	return None
 	 
 
 	#if not hide_columns or  "Profit" not in hide_columns:
@@ -160,7 +197,7 @@ def get_warehouses(filters):
 	sql = """
 		select 
 			distinct 
-			replace(warehouse,' - ','') as warehouse,
+			replace(replace(warehouse,' - ',''),' ','') as warehouse,
 			warehouse as warehouse_name
 		from 
 		`tabBin` a
