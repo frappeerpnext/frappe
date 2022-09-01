@@ -396,7 +396,7 @@ def get_report_summary(data,filters):
 	
 	#sub total
 	if not hide_columns or  "Sub Total" not in hide_columns:
-		report_summary.append({"label":"Sub Total","value":sum(d["sub_total"] for d in data),'indicator':'blue'})	
+		report_summary.append({"label":"Sub Total","value":frappe.utils.fmt_money(sum(d["sub_total"] for d in data)),'indicator':'blue'})	
 	
 
 	if not hide_columns or  "Cost" not in hide_columns:
