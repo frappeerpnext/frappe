@@ -5,16 +5,20 @@
 frappe.query_reports["Product List"] = {
 	"filters": [
 		{
-			fieldname: "warehouse",
+			fieldname: "name",
 			label: "Warehouse",
-			fieldtype: "Link",
-			options:"Warehouse"
+			fieldtype: "MultiSelectList",
+			get_data: function(txt) {
+				return frappe.db.get_link_options('Warehouse', txt,{"is_group":0});
+			}
 		},
 		{
 			fieldname: "item_group",
 			label: "Item Group",
-			fieldtype: "Link",
-			options:"Item Group",
+			fieldtype: "MultiSelectList",
+			get_data: function(txt) {
+				return frappe.db.get_link_options('Item Group', txt,{"is_group":0});
+			}
 		},
 		{
 			fieldname: "allow_discount",
@@ -22,9 +26,9 @@ frappe.query_reports["Product List"] = {
 			fieldtype: "Select",
 			default:"All",
 			options: [
-				   	{"value":"All","description":"All"},
-					{"value":"1","description":"Yes"},
-					{"value":"0","description":"No"}
+				   	{"value":"All"},
+					{"value":"Yes"},
+					{"value":"No"}
 				]
 		},
 	]

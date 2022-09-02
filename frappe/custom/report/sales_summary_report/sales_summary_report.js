@@ -36,8 +36,35 @@ frappe.query_reports["Sales Summary Report"] = {
 			"label": __("Item Group"),
 			"fieldtype": "MultiSelectList",
 			get_data: function(txt) {
+				
 				return frappe.db.get_link_options('Item Group', txt,{"is_group":1});
 			}
+		},
+		{
+			"fieldname": "item_category",
+			"label": __("Item Category"),
+			"fieldtype": "MultiSelectList",
+			get_data: function(txt) {
+				group = frappe.query_report.get_filter_value("item_group");
+				if(group==""){
+					return frappe.db.get_link_options('Item Group', txt,filters={
+						is_group:0
+					});
+				}
+				else {
+					return frappe.db.get_link_options('Item Group', txt,filters={
+						is_group:0,
+						"parent_item_group":["in",group]
+					});
+				}
+			}
+		},
+		{
+			"fieldname": "parent_row_group",
+			"label": __("Parent Group By"),
+			"fieldtype": "Select",
+			"options": "\nCategory\nProduct Group\nBrand\nCompany\nBranch\nSale Type\nPOS Profile\nCustomer\nCustomer Group\nMembership\nTerritory\nSupplier\nSupplier Group\nWarehouse\nDate\n\Month\nYear",
+			
 		},
 		{
 			"fieldname": "row_group",
@@ -75,7 +102,22 @@ frappe.query_reports["Sales Summary Report"] = {
 			"options": "None\nbar\nline",
 			"d,efault":"bar"
 		}
-	]
+	],
+	"formatter": function(value, row, column, data, default_formatter) {
+	
+		value = default_formatter(value, row, column, data);
+
+		if (data && data.is_group==1) {
+			value = $(`<span>${value}</span>`);
+
+			var $value = $(value).css("font-weight", "bold");
+			
+
+			value = $value.wrap("<p></p>").parent().html();
+		}
+
+		return value;
+	},
 };
 
  
