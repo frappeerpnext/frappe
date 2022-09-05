@@ -263,8 +263,6 @@ def get_conditions(filters,group_filter=None):
 	return conditions
 
 def get_report_data(filters,parent_row_group=None,indent=0,group_filter=None):
-
-	
 	hide_columns = filters.get("hide_columns")
 	row_group = [d["fieldname"] for d in get_row_groups() if d["label"]==filters.row_group][0]
 	if(parent_row_group!=None):
@@ -272,8 +270,6 @@ def get_report_data(filters,parent_row_group=None,indent=0,group_filter=None):
 
 	report_fields = get_report_field()
 	
-	
-
 	sql = "select {} as row_group, {} as indent ".format(row_group, indent)
 	if filters.column_group != "None":
 		fields = get_fields(filters)
@@ -414,7 +410,7 @@ def get_report_field():
 		{"label":"Sub Total", "short_label":"Sub To.", "fieldname":"sub_total","fieldtype":"Currency","indicator":"Grey","precision":None, "align":"right","chart_color":"#dd5574","sql_expression":"a.base_rate*a.qty"},
 		{"label":"Cost","short_label":"Cost", "fieldname":"cost","fieldtype":"Currency","indicator":"Blue","precision":None, "align":"right","chart_color":"#1976D2","sql_expression":"a.qty*a.incoming_rate"},
 		{"label":"Amount", "short_label":"Amt", "fieldname":"amount","fieldtype":"Currency","indicator":"Red","precision":None, "align":"right","chart_color":"#2E7D32","sql_expression":"a.net_amount"},
-		{"label":"Profit", "short_label":"Prof.", "fieldname":"profit","fieldtype":"Currency","indicator":"Green","precision":None, "align":"right","chart_color":"#FF3D00","sql_expression":"a.net_amount - (a.qty*a.incoming_rate)"}
+		{"label":"Profit", "short_label":"Prof.", "fieldname":"profit","fieldtype":"Currency","indicator":"Green","precision":None, "align":"right","chart_color":"#FF3D00","sql_expression":"a.net_amount - (a.qty*a.incoming_rate*a.conversion_factor)"}
 	]
 	
 
