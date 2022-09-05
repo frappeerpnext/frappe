@@ -5,7 +5,7 @@
 frappe.query_reports["Product List"] = {
 	"filters": [
 		{
-			fieldname: "name",
+			fieldname: "warehouse",
 			label: "Warehouse",
 			fieldtype: "MultiSelectList",
 			get_data: function(txt) {

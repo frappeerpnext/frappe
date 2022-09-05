@@ -39,5 +39,30 @@ frappe.query_reports["Daily Sale Transaction"] = {
 				return frappe.db.get_link_options('Price List', txt,{"selling":1});
 			}
 		},
-	]
+		{
+			fieldname: "group_by",
+			label: "Group By",
+			fieldtype: "Select",
+			default:"All",
+			options: [
+				   	{"value":"Customer"},
+					{"value":"Document #"}
+				]
+		},
+	],
+	"formatter": function(value, row, column, data, default_formatter) {
+	
+		value = default_formatter(value, row, column, data);
+
+		if (data && data.is_group==1) {
+			value = $(`<span>${value}</span>`);
+
+			var $value = $(value).css("font-weight", "bold");
+			
+
+			value = $value.wrap("<p></p>").parent().html();
+		}
+
+		return value;
+	},
 };
