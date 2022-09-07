@@ -35,16 +35,19 @@ def get_summary(filters):
 	""".format(get_filters(filters))
 	data=[]
 	sq = frappe.db.sql(sql,as_dict=1)
-	data.append({"label":"Customer","value":"{:,.0f}".format(sq[0]["customer"])})
-	data.append({"label":"Invoice","value":"{:,.0f}".format(sq[0]["parent"])})
-	data.append({"label":"Total QTY","value":"{:,.0f}".format(sq[0]["qty"])})
-	data.append({"label":"Total Cost","value":"$ {:,.4f}".format(sq[0]["cost"])})
-	data.append({"label":"Sub Total","value":"$ {:,.4f}".format(sq[0]["sub_total"])})
-	data.append({"label":"Total Disc.","value":"$ {:,.4f}".format(sq[0]["discount"])})
-	data.append({"label":"Grand Total","value":"$ {:,.4f}".format(sq[0]["grand_total"])})
-	data.append({"label":"Total Profit","value":"$ {:,.4f}".format(sq[0]["profit"])})
-	data.append({"label":"Total Payment","value":"$ {:,.4f}".format(sq[0]["paid_amount"])})
-	data.append({"label":"Total Balance","value":"$ {:,.4f}".format(sq[0]["balance"])})
+	if sq[0]["customer"] != 0:
+		data.append({"label":"Customer","value":"{:,.0f}".format(sq[0]["customer"])})
+		data.append({"label":"Invoice","value":"{:,.0f}".format(sq[0]["parent"])})
+		data.append({"label":"Total QTY","value":"{:,.0f}".format(sq[0]["qty"])})
+		data.append({"label":"Total Cost","value":"$ {:,.4f}".format(sq[0]["cost"])})
+		data.append({"label":"Sub Total","value":"$ {:,.4f}".format(sq[0]["sub_total"])})
+		data.append({"label":"Total Disc.","value":"$ {:,.4f}".format(sq[0]["discount"])})
+		data.append({"label":"Grand Total","value":"$ {:,.4f}".format(sq[0]["grand_total"])})
+		data.append({"label":"Total Profit","value":"$ {:,.4f}".format(sq[0]["profit"])})
+		data.append({"label":"Total Payment","value":"$ {:,.4f}".format(sq[0]["paid_amount"])})
+		data.append({"label":"Total Balance","value":"$ {:,.4f}".format(sq[0]["balance"])})
+	else:
+		data = None
 	return data
 
 def get_columns(filters):

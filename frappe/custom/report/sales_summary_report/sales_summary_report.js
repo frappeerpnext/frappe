@@ -60,6 +60,15 @@ frappe.query_reports["Sales Summary Report"] = {
 			}
 		},
 		{
+			"fieldname": "customer_group",
+			"label": __("Customer Group"),
+			"fieldtype": "MultiSelectList",
+			get_data: function(txt) {
+				
+				return frappe.db.get_link_options('Customer Group', txt,{"is_group":0});
+			}
+		},
+		{
 			"fieldname": "parent_row_group",
 			"label": __("Parent Group By"),
 			"fieldtype": "Select",
