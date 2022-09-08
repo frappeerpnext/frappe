@@ -43,7 +43,7 @@ frappe.query_reports["Daily Sale Transaction"] = {
 			fieldname: "group_by",
 			label: "Group By",
 			fieldtype: "Select",
-			default:"All",
+			default:"Document #",
 			options: [
 				   	{"value":"Customer"},
 					{"value":"Document #"}
