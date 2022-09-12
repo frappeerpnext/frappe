@@ -12,6 +12,12 @@ frappe.query_reports["POS Invoice Payment Type Breakdown"] = {
 			default:frappe.defaults.get_user_default("Company"),
 		},
 		{
+			fieldname: "branch",
+			label: "Branch",
+			fieldtype: "Link",
+			options:"Branch",
+		},
+		{
 			fieldname: "start_date",
 			label: "Start Date",
 			fieldtype: "Date",
