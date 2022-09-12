@@ -261,6 +261,8 @@ def get_conditions(filters,group_filter=None):
 
 	if filters.get("price_list"):
 		conditions += " AND b.selling_price_list in %(price_list)s"
+	if filters.get("supplier"):
+		conditions += " AND a.supplier in %(supplier)s"
 	
  
 	return conditions

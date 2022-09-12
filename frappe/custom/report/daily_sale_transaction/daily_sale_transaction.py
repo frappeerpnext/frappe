@@ -57,7 +57,6 @@ def get_summary(filters):
 	data=[]
 	sq = frappe.db.sql(sql,as_dict=1)
 	if sq[0]["customer"] != 0:
-		data.append({"label":"Total QTY","value":"{:,.0f}".format(sq[0]["qty"])})
 		data.append({"label":"Total Cost","value":"$ {:,.4f}".format(sq[0]["cost"])})
 		data.append({"label":"Grand Total","value":"$ {:,.4f}".format(sq[0]["grand_total"])})
 		data.append({"label":"Total Profit","value":"$ {:,.4f}".format(sq[0]["profit"])})

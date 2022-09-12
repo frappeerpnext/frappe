@@ -69,6 +69,15 @@ frappe.query_reports["Sales Summary Report"] = {
 			}
 		},
 		{
+			"fieldname": "supplier",
+			"label": __("Supllier"),
+			"fieldtype": "MultiSelectList",
+			get_data: function(txt) {
+				
+				return frappe.db.get_link_options('Supplier', txt);
+			}
+		},
+		{
 			"fieldname": "parent_row_group",
 			"label": __("Parent Group By"),
 			"fieldtype": "Select",

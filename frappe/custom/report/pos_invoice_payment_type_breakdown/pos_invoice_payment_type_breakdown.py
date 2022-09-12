@@ -22,7 +22,7 @@ def get_report_data(filters):
 							inner join `tabSales Invoice` b on b.name = a.parent 
 						WHERE
 							b.posting_date between '{0}' and '{1}' and 
-							b.company = '{2}' and b.docstatus = 1 and b.branch = '{3}'
+							b.company = '{2}' and b.docstatus = 1 and b.branch = case when '{3}' = 'None' then b.branch else '{3}' end
 						GROUP BY a.parent""".format(filters.start_date,filters.end_date,filters.company,filters.branch)
 	ch_data = frappe.db.sql(check_amount,as_dict=1)
 	union=""
@@ -37,7 +37,7 @@ def get_report_data(filters):
 				where
 				docstatus = 1 AND 
 				posting_date between '{0}' and '{1}' and 
-				company = '{2}' and branch = '{4}'
+				company = '{2}' and branch = case when '{4}' = 'None' then branch else '{4}' end
 				),paid_amount AS (
 					SELECT 
 						a.mode_of_payment, 
@@ -48,7 +48,7 @@ def get_report_data(filters):
 					WHERE
 						b.posting_date between '{0}' and '{1}' and 
 						b.company = '{2}' and 
-						b.docstatus = 1 and b.branch = '{4}'
+						b.docstatus = 1 and b.branch = case when '{4}' = 'None' then b.branch else '{4}' end
 					GROUP BY mode_of_payment
 				)
 				SELECT 
