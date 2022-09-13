@@ -34,10 +34,9 @@ def execute(filters=None):
 		report_data = get_report_data(filters)
 
 	report_chart = None
-	if filters.chart_type !="None" and len(report_data)<=100:
-		report_chart = get_report_chart(filters,report_data)
 
-	return get_columns(filters), report_data, message, report_chart, get_report_summary(report_data,filters),skip_total_row
+
+	return get_columns(filters), report_data, message, report_chart, None,skip_total_row
 
 
 
@@ -265,11 +264,11 @@ def get_conditions(filters,group_filter=None):
 
 	if filters.get("supplier"):
 		conditions += " AND a.supplier in %(supplier)s"
-		
+
 	if filters.get("branch"):
 		conditions += " AND b.branch in %(branch)s"
 		
-
+		
 	return conditions
 
 def get_report_data(filters,parent_row_group=None,indent=0,group_filter=None):
@@ -412,16 +411,9 @@ def get_report_chart(filters,data):
 
 def get_report_field():
 	return [
-		{"label":"Transaction","short_label":"Tran.", "fieldname":"transaction","fieldtype":"Float", "indicator":"Grey","precision":2, "align":"center","chart_color":"#f030fd","sql_expression":"a.total_transaction"},
-		{"label":"Quantity","short_label":"Qty", "fieldname":"qty","fieldtype":"Float","indicator":"Grey","precision":2, "align":"center","chart_color":"#FF8A65","sql_expression":"a.qty"},
-		{"label":"Sub Total", "short_label":"Sub To.", "fieldname":"sub_total","fieldtype":"Currency","indicator":"Grey","precision":None, "align":"right","chart_color":"#dd5574","sql_expression":"a.base_rate*a.qty"},
-		{"label":"Cost","short_label":"Cost", "fieldname":"cost","fieldtype":"Currency","indicator":"Blue","precision":None, "align":"right","chart_color":"#1976D2","sql_expression":"a.qty*a.incoming_rate*a.conversion_factor"},
-		{"label":"Amount", "short_label":"Amt", "fieldname":"amount","fieldtype":"Currency","indicator":"Red","precision":None, "align":"right","chart_color":"#2E7D32","sql_expression":"a.net_amount"},
-		{"label":"Profit", "short_label":"Prof.", "fieldname":"profit","fieldtype":"Currency","indicator":"Green","precision":None, "align":"right","chart_color":"#FF3D00","sql_expression":"a.net_amount - (a.qty*a.incoming_rate*a.conversion_factor)"}
-	]
+		{"label":"Quantity","short_label":"Qty", "fieldname":"qty","fieldtype":"Float","indicator":"Grey","precision":2, "align":"center","chart_color":"#FF8A65","sql_expression":"a.qty"}]
 	
 
-	 
  
 
 def get_row_groups():

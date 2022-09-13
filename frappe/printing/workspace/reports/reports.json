@@ -5,7 +5,7 @@
    "label": "Daily POS Invoice Summary"
   }
  ],
- "content": "[{\"type\":\"chart\",\"data\":{\"chart_name\":\"Daily POS Invoice Summary\",\"col\":12}},{\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Transaction Reports</b></span>\",\"col\":12}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Product List\",\"col\":3}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Daily POS Transaction\",\"col\":3}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Sales Invoice\",\"col\":3}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Customer\",\"col\":3}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Suppliers\",\"col\":3}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Purchase Order\",\"col\":3}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Purchase Receipt\",\"col\":3}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Stock Entry\",\"col\":3}},{\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Summary Reports</b></span>\",\"col\":12}},{\"type\":\"card\",\"data\":{\"card_name\":\"Sales Report\",\"col\":4}},{\"type\":\"card\",\"data\":{\"card_name\":\"Purchases Report\",\"col\":4}},{\"type\":\"card\",\"data\":{\"card_name\":\"Stock &amp; Inventory Report\",\"col\":4}},{\"type\":\"card\",\"data\":{\"card_name\":\"Accounting\",\"col\":4}},{\"type\":\"card\",\"data\":{\"card_name\":\"Other Report\",\"col\":4}}]",
+ "content": "[{\"type\":\"chart\",\"data\":{\"chart_name\":\"Daily POS Invoice Summary\",\"col\":12}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Product List\",\"col\":3}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Daily POS Transaction\",\"col\":3}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Sales Invoice\",\"col\":3}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Customer\",\"col\":3}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Suppliers\",\"col\":3}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Purchase Order\",\"col\":3}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Purchase Receipt\",\"col\":3}},{\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Stock Entry\",\"col\":3}},{\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Summary Reports</b></span>\",\"col\":12}},{\"type\":\"card\",\"data\":{\"card_name\":\"Sales Report\",\"col\":4}},{\"type\":\"card\",\"data\":{\"card_name\":\"Purchases Report\",\"col\":4}},{\"type\":\"card\",\"data\":{\"card_name\":\"Stock &amp; Inventory Report\",\"col\":4}},{\"type\":\"card\",\"data\":{\"card_name\":\"Accounting\",\"col\":4}},{\"type\":\"card\",\"data\":{\"card_name\":\"Other Report\",\"col\":4}}]",
  "creation": "2022-08-11 11:32:41.607999",
  "docstatus": 0,
  "doctype": "Workspace",
@@ -521,7 +521,7 @@
    "hidden": 0,
    "is_query_report": 0,
    "label": "Sales Report",
-   "link_count": 4,
+   "link_count": 5,
    "onboard": 0,
    "type": "Card Break"
   },
@@ -564,9 +564,19 @@
    "link_type": "Report",
    "onboard": 0,
    "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Sales Product Qty Summary",
+   "link_count": 0,
+   "link_to": "Sales Product Quantity Summary Report",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
   }
  ],
- "modified": "2022-09-07 15:42:49.208522",
+ "modified": "2022-09-13 08:47:47.935222",
  "modified_by": "Administrator",
  "module": "Printing",
  "name": "Reports",

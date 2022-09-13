@@ -260,7 +260,7 @@
    "type": "Link"
   }
  ],
- "modified": "2022-08-11 11:39:53.368632",
+ "modified": "2022-09-12 17:33:30.149729",
  "modified_by": "Administrator",
  "module": "Integrations",
  "name": "Integrations",
@@ -270,7 +270,7 @@
  "quick_lists": [],
  "restrict_to_domain": "",
  "roles": [],
- "sequence_id": 22.0,
+ "sequence_id": 23.0,
  "shortcuts": [],
  "title": "Integrations"
 }

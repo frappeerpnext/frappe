@@ -123,7 +123,7 @@
    "type": "Link"
   }
  ],
- "modified": "2022-08-11 11:39:53.255504",
+ "modified": "2022-09-12 17:33:30.020674",
  "modified_by": "Administrator",
  "module": "Custom",
  "name": "Customization",
@@ -133,7 +133,7 @@
  "quick_lists": [],
  "restrict_to_domain": "",
  "roles": [],
- "sequence_id": 20.0,
+ "sequence_id": 21.0,
  "shortcuts": [
   {
    "label": "Customize Form",
