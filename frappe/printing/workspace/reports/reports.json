@@ -442,8 +442,66 @@
   {
    "hidden": 0,
    "is_query_report": 0,
+   "label": "Sales Report",
+   "link_count": 5,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Sales Transaction",
+   "link_count": 0,
+   "link_to": "Sales Register",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Inactive Sale Items",
+   "link_count": 0,
+   "link_to": "Inactive Sales Items",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Sales Summary Report",
+   "link_count": 0,
+   "link_to": "Sales Summary Report",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Sale By Payment Type",
+   "link_count": 0,
+   "link_to": "POS Invoice Payment Type Breakdown",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Sales Product Qty Summary",
+   "link_count": 0,
+   "link_to": "Sales Product Quantity Summary Report",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
    "label": "Stock &amp; Inventory Report",
-   "link_count": 7,
+   "link_count": 8,
    "onboard": 0,
    "type": "Card Break"
   },
@@ -519,64 +577,16 @@
   },
   {
    "hidden": 0,
-   "is_query_report": 0,
-   "label": "Sales Report",
-   "link_count": 5,
-   "onboard": 0,
-   "type": "Card Break"
-  },
-  {
-   "hidden": 0,
    "is_query_report": 1,
-   "label": "Sales Transaction",
+   "label": "Product  Quantity Report",
    "link_count": 0,
-   "link_to": "Sales Register",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 1,
-   "label": "Inactive Sale Items",
-   "link_count": 0,
-   "link_to": "Inactive Sales Items",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 1,
-   "label": "Sales Summary Report",
-   "link_count": 0,
-   "link_to": "Sales Summary Report",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 1,
-   "label": "Sale By Payment Type",
-   "link_count": 0,
-   "link_to": "POS Invoice Payment Type Breakdown",
-   "link_type": "Report",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 1,
-   "label": "Sales Product Qty Summary",
-   "link_count": 0,
-   "link_to": "Sales Product Quantity Summary Report",
+   "link_to": "Product Qty Report",
    "link_type": "Report",
    "onboard": 0,
    "type": "Link"
   }
  ],
- "modified": "2022-09-13 08:47:47.935222",
+ "modified": "2022-09-13 11:10:12.244621",
  "modified_by": "Administrator",
  "module": "Printing",
  "name": "Reports",
