@@ -21,6 +21,14 @@ frappe.query_reports["Product List"] = {
 			}
 		},
 		{
+			fieldname: "supplier",
+			label: "Supplier",
+			fieldtype: "MultiSelectList",
+			get_data: function(txt) {
+				return frappe.db.get_link_options('Supplier', txt);
+			}
+		},
+		{
 			fieldname: "allow_discount",
 			label: "Allow Discount",
 			fieldtype: "Select",
