@@ -12,13 +12,13 @@ frappe.query_reports["Sales Summary Report"] = {
 			fieldname: "start_date",
 			label: "Start Date",
 			fieldtype: "Date",
-			default:frappe.datetime.month_start()
+			default:frappe.datetime.get_today()
 		},
 		{
 			fieldname: "end_date",
 			label: "End Date",
 			fieldtype: "Date",
-			default:frappe.datetime.month_end()
+			default:frappe.datetime.get_today()
 		},
 		{
 			fieldname: "branch",

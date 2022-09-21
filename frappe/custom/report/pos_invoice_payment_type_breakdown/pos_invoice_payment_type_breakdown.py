@@ -88,7 +88,7 @@ def get_report_data(filters):
 				a.mode_of_payment, 
 				a.payment_amount - IFNULL(b.change_amount,0) AS 'payment_amount',
 				(if(a.mode_of_payment = 'Cash KHR',(select closing_amount FROM closing_amount WHERE mode_of_payment = 'Cash'),c.closing_amount) * d.percent) closing_amount,
-				a.payment_amount - IFNULL(b.change_amount,0) - (if(a.mode_of_payment = 'Cash KHR',(select closing_amount FROM closing_amount WHERE mode_of_payment = 'Cash'),c.closing_amount) * d.percent) different_amount
+				(if(a.mode_of_payment = 'Cash KHR',(select coalesce(closing_amount,0) FROM closing_amount WHERE mode_of_payment = 'Cash'),coalesce(c.closing_amount,0)) * coalesce(d.percent,0)) + coalesce(b.change_amount,0) - coalesce(a.payment_amount,0) different_amount
 				FROM( select
 				a.mode_of_payment, 
 				a.payment_amount 
@@ -99,6 +99,5 @@ def get_report_data(filters):
 				left join closing_amount c on c.mode_of_payment = a.mode_of_payment
 				LEFT JOIN cash_percent d ON d.mode_of_payment = a.mode_of_payment
 				""".format(filters.start_date,filters.end_date,filters.company,union,filters.branch)
-	frappe.msgprint(sql)
 	data = frappe.db.sql(sql,as_dict=1)
 	return data

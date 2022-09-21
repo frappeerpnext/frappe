@@ -29,107 +29,95 @@ def get_columns(filters):
 def get_data(filters):
 	data=[]
 	parent = """
-				WITH BOH AS(
-					SELECT 
-						item_code,
-						stock_uom,
-						qty_after_transaction,
-						posting_date,
-						warehouse
-						FROM  `tabStock Ledger Entry` a
-						WHERE  concat(posting_date,' ',time_format(creation,'%H:%i:%s.%f')) =
-						( SELECT  max(concat(posting_date,' ',time_format(creation,'%H:%i:%s.%f')))
-								FROM  `tabStock Ledger Entry` b
-								WHERE posting_date BETWEEN '{1}' AND '{2}' and b.item_code = a.item_code AND b.warehouse = if('{3}'='None',b.warehouse,'{3}')
-						)
-					and posting_date BETWEEN '{1}' AND '{2}' AND warehouse = if('{3}'='None',warehouse,'{3}')
-					GROUP BY 
-						item_code,
-							stock_uom,
-							qty_after_transaction,
-							posting_date
-					),sale AS(SELECT
-						c.item_group, 
-						coalesce(c.supplier_name,'Not Set') supplier_name,
-						a.item_code,
-						a.item_name,
-						a.stock_uom,
-						coalesce(SUM(a.qty * a.conversion_factor),0) sale_qty
-					FROM `tabSales Invoice Item` a
-						INNER JOIN `tabSales Invoice` b ON b.name = a.parent
-						INNER JOIN `tabItem` c ON c.item_code = a.item_code										
-					WHERE {0}
-					GROUP BY
-						c.item_group, 
-						c.supplier_name,
-						a.item_code,
-						a.item_name,
-						a.stock_uom)
-				select
-					a.item_group item_code, 
-					count(a.item_name) item_name,
-					sum(a.sale_qty) sale_qty, 
-					coalesce(sum(qty_after_transaction),0) boh,
-					COALESCE(sum(qty_after_transaction),0) - coalesce(sum(a.sale_qty),0) total_qty
-				FROM sale a
-				inner JOIN BOH d ON d.item_code = a.item_code and d.stock_uom = a.stock_uom
-				GROUP by
-						a.item_group
+				with sale as(SELECT
+									c.item_group, 
+									coalesce(c.supplier_name,'Not Set') supplier_name,
+									a.item_code,
+									a.item_name,
+									a.stock_uom,
+									coalesce(SUM(a.qty * a.conversion_factor),0) sale_qty
+								FROM `tabSales Invoice Item` a
+									INNER JOIN `tabSales Invoice` b ON b.name = a.parent
+									INNER JOIN `tabItem` c ON c.item_code = a.item_code										
+								WHERE {0}
+								GROUP BY
+									c.item_group, 
+									c.supplier_name,
+									a.item_code,
+									a.item_name,
+									a.stock_uom)
+								SELECT
+								c.item_group item_code,
+								COUNT(DISTINCT(c.item_code)) item_name,
+								sum(c.sale_qty) sale_qty,
+								SUM((SELECT 
+										qty_after_transaction
+										FROM  `tabStock Ledger Entry` a
+										WHERE  concat(posting_date,' ',time_format(creation,'%H:%i:%s.%f')) =
+										( SELECT  max(concat(posting_date,' ',time_format(creation,'%H:%i:%s.%f')))
+												FROM  `tabStock Ledger Entry` b
+												WHERE posting_date BETWEEN '{1}' AND '{2}' and b.item_code = a.item_code AND b.warehouse = if('{3}'='None',b.warehouse,'{3}')
+										)
+									and posting_date BETWEEN '{1}' AND '{2}' AND warehouse = if('{3}'='None',warehouse,'{3}') AND a.item_code = c.item_code)) boh,
+								SUM((SELECT 
+										qty_after_transaction
+										FROM  `tabStock Ledger Entry` a
+										WHERE  concat(posting_date,' ',time_format(creation,'%H:%i:%s.%f')) =
+										( SELECT  max(concat(posting_date,' ',time_format(creation,'%H:%i:%s.%f')))
+												FROM  `tabStock Ledger Entry` b
+												WHERE posting_date BETWEEN '{1}' AND '{2}' and b.item_code = a.item_code AND b.warehouse = if('{3}'='None',b.warehouse,'{3}')
+										)
+									and posting_date BETWEEN '{1}' AND '{2}' AND warehouse = if('{3}'='None',warehouse,'{3}') AND a.item_code = c.item_code) - c.sale_qty) total_qty
+								FROM sale c
+								GROUP BY item_group
 			""".format(get_filters(filters),filters.start_date,filters.end_date,filters.warehouse)
+	frappe.msgprint(parent)
 	parent_data = frappe.db.sql(parent,as_dict=1)
 	for dic_p in parent_data:
 		dic_p["indent"] = 0
 		dic_p["is_group"] = 1
 		data.append(dic_p)
-		child = frappe.db.sql("""
-								WITH BOH AS(
-									SELECT 
-										item_code,
-										stock_uom,
-										qty_after_transaction,
-										posting_date,
-										warehouse
+		child_data = ("""
+								with sale as(SELECT
+									c.item_group, 
+									coalesce(c.supplier_name,'Not Set') supplier_name,
+									a.item_code,
+									a.item_name,
+									a.stock_uom,
+									coalesce(SUM(a.qty * a.conversion_factor),0) sale_qty
+								FROM `tabSales Invoice Item` a
+									INNER JOIN `tabSales Invoice` b ON b.name = a.parent
+									INNER JOIN `tabItem` c ON c.item_code = a.item_code										
+								WHERE {0} and c.item_group = '{3}'
+								GROUP BY
+									c.item_group, 
+									c.supplier_name,
+									a.item_code,
+									a.item_name,
+									a.stock_uom)
+								SELECT
+								c.*,
+								(SELECT 
+										qty_after_transaction
 										FROM  `tabStock Ledger Entry` a
 										WHERE  concat(posting_date,' ',time_format(creation,'%H:%i:%s.%f')) =
 										( SELECT  max(concat(posting_date,' ',time_format(creation,'%H:%i:%s.%f')))
 												FROM  `tabStock Ledger Entry` b
 												WHERE posting_date BETWEEN '{1}' AND '{2}' and b.item_code = a.item_code AND b.warehouse = if('{4}'='None',b.warehouse,'{4}')
 										)
-									and posting_date BETWEEN '{1}' AND '{2}' AND warehouse = if('{4}'='None',warehouse,'{4}')
-									GROUP BY 
-										item_code,
-											stock_uom,
-											qty_after_transaction,
-											posting_date
-									),sale AS(SELECT
-										c.item_group, 
-										coalesce(c.supplier_name,'Not Set') supplier_name,
-										a.item_code,
-										a.item_name,
-										a.stock_uom,
-										coalesce(SUM(a.qty * a.conversion_factor),0) sale_qty
-									FROM `tabSales Invoice Item` a
-										INNER JOIN `tabSales Invoice` b ON b.name = a.parent
-										INNER JOIN `tabItem` c ON c.item_code = a.item_code										
-									WHERE {0} and c.item_group = '{3}'
-									GROUP BY
-										c.item_group, 
-										c.supplier_name,
-										a.item_code,
-										a.item_name,
-										a.stock_uom)
-								select
-									a.item_group, 
-									a.supplier_name,
-									a.item_code,
-									a.item_name,
-									a.stock_uom,
-									a.sale_qty,
-									coalesce(qty_after_transaction,0) boh,
-									COALESCE(qty_after_transaction,0) - coalesce(a.sale_qty,0) total_qty
-								FROM sale a
-								inner JOIN BOH d ON d.item_code = a.item_code and d.stock_uom = a.stock_uom
-							""".format(get_filters(filters),filters.start_date,filters.end_date,dic_p["item_code"],filters.warehouse),as_dict=1)
+									and posting_date BETWEEN '{1}' AND '{2}' AND warehouse = if('{4}'='None',warehouse,'{4}') AND a.item_code = c.item_code) boh,
+								(SELECT 
+										qty_after_transaction
+										FROM  `tabStock Ledger Entry` a
+										WHERE  concat(posting_date,' ',time_format(creation,'%H:%i:%s.%f')) =
+										( SELECT  max(concat(posting_date,' ',time_format(creation,'%H:%i:%s.%f')))
+												FROM  `tabStock Ledger Entry` b
+												WHERE posting_date BETWEEN '{1}' AND '{2}' and b.item_code = a.item_code AND b.warehouse = if('{4}'='None',b.warehouse,'{4}')
+										)
+									and posting_date BETWEEN '{1}' AND '{2}' AND warehouse = if('{4}'='None',warehouse,'{4}') AND a.item_code = c.item_code) - c.sale_qty total_qty
+								FROM sale c
+							""".format(get_filters(filters),filters.start_date,filters.end_date,dic_p["item_code"],filters.warehouse))
+		child = frappe.db.sql(child_data,as_dict=1)
 		for dic_c in child:
 			dic_c["indent"] = 1
 			dic_c["is_group"] = 0
