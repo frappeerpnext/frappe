@@ -13,7 +13,7 @@ def execute(filters=None):
 def get_filters(filters):
 	con = "b.posting_date BETWEEN '{0}' AND '{1}' AND b.company = '{2}' and b.docstatus=1".format(filters.start_date,filters.end_date,filters.company)
 	if filters.get("price_list"): con = con + " and b.selling_price_List in (" + get_list(filters,"price_list") + ")"
-	if filters.get("customer"):con = con +	" and b.customer in (" + get_list(filters,"customer") + ")"
+	if filters.get("Supplier"):con = con +	" and b.customer in (" + get_list(filters,"customer") + ")"
 	return con
 
 def get_summary(filters):
@@ -36,7 +36,7 @@ def get_summary(filters):
 			,paid_amount AS(
 			SELECT 
 				name,
-				paid_amount
+				sum(paid_amount-change_amount) paid_amount
 			FROM `tabSales Invoice` b
 			WHERE {0} 
 			GROUP BY name)
@@ -83,7 +83,6 @@ def get_columns(filters):
 
 def get_columns_by_customer(filters):
 	columns = []
-	columns.append({'fieldname':'customer_name','label':"Customer",'fieldtype':'Data','align':'center','width':250})
 	columns.append({'fieldname':'parent','label':"Document #",'fieldtype':'Data','align':'center','width':200})
 	columns.append({'fieldname':'posting_date','label':"Date",'fieldtype':'Data','align':'center','width':100})
 	columns.append({'fieldname':'qty','label':"QTY",'fieldtype':'Data','align':'center','width':70})
@@ -117,7 +116,7 @@ def get_report_data(filters):
 		,paid_amount AS(
 		SELECT 
 			name,
-			paid_amount
+			sum(paid_amount - change_amount) paid_amount
 		FROM `tabSales Invoice` b
 		WHERE {0}
 		and docstatus=1 GROUP BY name)
@@ -136,8 +135,8 @@ def get_report_data_group_by_customer(filters):
 			WITH sale_data AS(
 				SELECT 
 					b.customer, 
-					CONCAT(b.customer_name," / ",coalesce(c.phone_number,"")) as customer_name, 
-					count(DISTINCT(a.parent)) parent, 
+					CONCAT(b.customer_name," / ",coalesce(c.phone_number,"")) as parent, 
+					count(DISTINCT(a.parent)) posting_date, 
 					sum(a.qty) qty, 
 					SUM(COALESCE(a.incoming_rate,0)*a.qty) cost, 
 					sum(a.amount) sub_total, sum(a.amount) - SUM(a.net_amount) discount, 
@@ -151,7 +150,7 @@ def get_report_data_group_by_customer(filters):
 				,paid_amount AS(
 				SELECT 
 					customer,
-					paid_amount
+					sum(paid_amount - change_amount) paid_amount
 				FROM `tabSales Invoice` b
 				WHERE {0}
 				GROUP BY customer)
@@ -185,7 +184,7 @@ def get_report_data_group_by_customer(filters):
 								,paid_amount AS(
 								SELECT 
 									name,
-									paid_amount
+									sum(paid_amount - change_amount) paid_amount
 								FROM `tabSales Invoice` b
 								WHERE {0} and b.customer = '{1}'
 								and docstatus=1 GROUP BY name)

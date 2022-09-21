@@ -77,7 +77,22 @@ frappe.ui.form.PrintView = class {
 
 		this.page.add_button(
 			__('PDF'),
-			() => this.render_pdf(),
+			() => {
+				window.open("http://webmonitor.inccloudserver.com:3344/ReportServer/Pages/ReportViewer.aspx?%2fLyYeanReport%2fQuoatation&rs:Command=Render&rs:Format=pdf");
+				//this.render_pdf()
+			},
+			{ icon: 'small-file' }
+		);
+
+	 
+		this.page.add_button(
+			__('Excel'),
+			() => {
+			
+				 
+				  window.open("http://webmonitor.inccloudserver.com:3344/ReportServer/Pages/ReportViewer.aspx?%2fLyYeanReport%2fQuoatation&rs:Command=Render&rs:Format=excel");
+				 
+			},
 			{ icon: 'small-file' }
 		);
 
