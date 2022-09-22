@@ -19,9 +19,10 @@ def notify_sync(doc, event):
 	notify_docs = ["Item","Item Group","Item Price","Customer","Customer Group" ,"User","POS Profile","Company","System Settings","Currency Exchange","Warehouse" ,"Membership Type","Tag","POS Config","POS Prices Rule",'Price List',"Comment"]
 	"""called via hooks"""
 	if doc.doctype =="Comment" :
-		if "renamed from" in doc.content:
-			notify_sync_job(doc.reference_doctype,strip_html(doc.content.replace("renamed from","")),"on_renamed")
-			 
+		if doc.content:
+			if "renamed from" in doc.content:
+				notify_sync_job(doc.reference_doctype,strip_html(doc.content.replace("renamed from","")),"on_renamed")
+				
 	else:
 		if doc.doctype in notify_docs:
 			if doc.doctype=='Item Price':

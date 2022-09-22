@@ -27,7 +27,8 @@ frappe.query_reports["Sale Product By Vendor"] = {
 			fieldname: "warehouse",
 			label: "Warehouse",
 			fieldtype: "Link",
-			options:"Warehouse"
+			options:"Warehouse",
+			filters:{"is_group":0}
 		},
 		{
 			fieldname: "supplier",
