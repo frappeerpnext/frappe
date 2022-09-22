@@ -10,7 +10,7 @@ def execute(filters=None):
 def get_filters(filters):
 	data= "b.posting_date between '{}' AND '{}'".format(filters.start_date,filters.end_date)
 	if filters.get("company"): data = data + " and b.company = '{}'".format(filters.company)
-	if filters.get("supplier"):data = data +	" and a.supplier_name in (" + get_list(filters,"supplier") + ")"
+	if filters.get("supplier"):data = data +	" and a.supplier in (" + get_list(filters,"supplier") + ")"
 	if filters.get("warehouse"): data = data + " and a.warehouse = '{}'".format(filters.warehouse)
 	if filters.get("not_set_supplier"): data = data + " and a.supplier_name is null"
 	return data
