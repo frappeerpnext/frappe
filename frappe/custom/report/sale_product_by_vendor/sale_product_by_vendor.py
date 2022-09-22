@@ -10,9 +10,9 @@ def execute(filters=None):
 def get_filters(filters):
 	data= "b.posting_date between '{}' AND '{}'".format(filters.start_date,filters.end_date)
 	if filters.get("company"): data = data + " and b.company = '{}'".format(filters.company)
-	if filters.get("supplier"):data = data +	" and c.supplier_name in (" + get_list(filters,"supplier") + ")"
+	if filters.get("supplier"):data = data +	" and a.supplier_name in (" + get_list(filters,"supplier") + ")"
 	if filters.get("warehouse"): data = data + " and a.warehouse = '{}'".format(filters.warehouse)
-	if filters.get("not_set_supplier"): data = data + " and c.supplier_name is null"
+	if filters.get("not_set_supplier"): data = data + " and a.supplier_name is null"
 	return data
 
 def get_columns(filters):
@@ -30,19 +30,18 @@ def get_data(filters):
 	data=[]
 	parent = """
 				with sale as(SELECT
-									c.item_group, 
-									coalesce(c.supplier_name,'Not Set') supplier_name,
+									a.item_group, 
+									coalesce(a.supplier_name,'Not Set') supplier_name,
 									a.item_code,
 									a.item_name,
 									a.stock_uom,
 									coalesce(SUM(a.qty * a.conversion_factor),0) sale_qty
 								FROM `tabSales Invoice Item` a
-									INNER JOIN `tabSales Invoice` b ON b.name = a.parent
-									INNER JOIN `tabItem` c ON c.item_code = a.item_code										
+									INNER JOIN `tabSales Invoice` b ON b.name = a.parent								
 								WHERE {0}
 								GROUP BY
-									c.item_group, 
-									c.supplier_name,
+									a.item_group, 
+									a.supplier_name,
 									a.item_code,
 									a.item_name,
 									a.stock_uom)
@@ -78,19 +77,18 @@ def get_data(filters):
 		data.append(dic_p)
 		child_data = ("""
 						with sale as(SELECT
-							c.item_group, 
-							coalesce(c.supplier_name,'Not Set') supplier_name,
+							a.item_group, 
+							coalesce(a.supplier_name,'Not Set') supplier_name,
 							a.item_code,
 							a.item_name,
 							a.stock_uom,
 							coalesce(SUM(a.qty * a.conversion_factor),0) sale_qty
 						FROM `tabSales Invoice Item` a
-							INNER JOIN `tabSales Invoice` b ON b.name = a.parent
-							INNER JOIN `tabItem` c ON c.item_code = a.item_code										
-						WHERE {0} and c.item_group = '{3}'
+							INNER JOIN `tabSales Invoice` b ON b.name = a.parent									
+						WHERE {0} and a.item_group = '{3}'
 						GROUP BY
-							c.item_group, 
-							c.supplier_name,
+							a.item_group, 
+							a.supplier_name,
 							a.item_code,
 							a.item_name,
 							a.stock_uom)
