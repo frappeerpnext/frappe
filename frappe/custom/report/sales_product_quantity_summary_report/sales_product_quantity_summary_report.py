@@ -120,6 +120,8 @@ def get_columns(filters):
 	fields = get_report_field()
 	for f in fields:
 		if not hide_columns or  f["label"] not in hide_columns:
+			if filters.row_group == "Product":
+				columns.append({"label":"Item Code","short_label":"Item Code", "fieldname":"item_code","fieldtype":"Data","indicator":"Grey","precision":"", "align":"left","sql_expression":"a.item_code"})
 			columns.append({
 					'fieldname':"total_" +  f['fieldname'],
 					'label':"Total " + f["label"],
@@ -143,6 +145,8 @@ def get_dynamic_columns(filters):
 	for f in fields:
 		for rf in report_fields:
 			if not hide_columns or  rf["label"] not in hide_columns:
+				if filters.row_group == "Product":
+					columns.append({"label":"Item Code","short_label":"Item Code", "fieldname":"item_code","fieldtype":"Data","indicator":"Grey","precision":"", "align":"left","sql_expression":"a.item_code"})
 				columns.append({
 					'fieldname':f["fieldname"] + "_" + rf["fieldname"],
 					'label': f["label"] + " "  + rf["short_label"],
@@ -292,7 +296,8 @@ def get_report_data(filters,parent_row_group=None,indent=0,group_filter=None):
 					sql = sql +	"SUM(if(b.posting_date between '{}' AND '{}',{},0)) as {}_{},".format(f["start_date"],f["end_date"],rf["sql_expression"],f["fieldname"],rf["fieldname"])
 			#end for
 	# total last column
- 
+	is_group = indent
+	if filters.parent_row_group == None and filters.row_group == "Product" : is_group=1
 	for rf in report_fields:
 		#check sql variable if last character is , then remove it
 		sql = strip(sql)
@@ -303,15 +308,15 @@ def get_report_data(filters,parent_row_group=None,indent=0,group_filter=None):
 			sql = sql + " ,SUM({}) AS total_{} ".format(rf["sql_expression"],rf["fieldname"])
 
 	
-	sql = sql + """
+	sql = sql + """ ,(case when {2}=0 then "" else a.item_code end) item_code
 		FROM `tabSales Invoice Item` AS a
 			INNER JOIN `tabSales Invoice` b on b.name = a.parent
 		WHERE
 			b.docstatus in (1) AND
 			{0}
 		GROUP BY 
-		{1}
-	""".format(get_conditions(filters,group_filter), row_group)
+		{1} ,(case when {2}=0 then "" else a.item_code end)
+	""".format(get_conditions(filters,group_filter), row_group,is_group)
 	data = frappe.db.sql(sql,filters, as_dict=1)
 	return data
  
@@ -410,8 +415,7 @@ def get_report_chart(filters,data):
  
 
 def get_report_field():
-	return [
-		{"label":"Quantity","short_label":"Qty", "fieldname":"qty","fieldtype":"Float","indicator":"Grey","precision":2, "align":"center","chart_color":"#FF8A65","sql_expression":"a.qty"}]
+	return [{"label":"Quantity","short_label":"Qty", "fieldname":"qty","fieldtype":"Float","indicator":"Grey","precision":2, "align":"center","chart_color":"#FF8A65","sql_expression":"a.qty"}]
 	
 
  
@@ -490,7 +494,7 @@ def get_row_groups():
 			"parent_row_group_filter_field":"row_group"
 		},
 		{
-			"fieldname":"concat(a.item_code,'-',a.item_name)",
+			"fieldname":"a.item_name",
 			"label":"Product"
 		},
 		{
