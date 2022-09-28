@@ -13,6 +13,8 @@ def get_filters(filters):
 	if filters.get("supplier"):data = data +	" and a.supplier in (" + get_list(filters,"supplier") + ")"
 	if filters.get("warehouse"): data = data + " and a.warehouse = '{}'".format(filters.warehouse)
 	if filters.get("not_set_supplier"): data = data + " and a.supplier_name is null"
+	if filters.get("item_group"):data = data +	" and (coalesce(a.parent_item_group,(SELECT parent_item_group FROM `tabItem Group` WHERE NAME = a.item_group)) in (" + get_list(filters,"item_group") + ")" + " or a.item_group in (" + get_list(filters,"item_group") + "))"
+	if filters.get("item_category"):data = data +	" and a.item_group in (" + get_list(filters,"item_category") + ")"
 	return data
 
 def get_columns(filters):
@@ -70,6 +72,7 @@ def get_data(filters):
 								FROM sale c
 								GROUP BY item_group
 			""".format(get_filters(filters),filters.start_date,filters.end_date,filters.warehouse)
+	
 	parent_data = frappe.db.sql(parent,as_dict=1)
 	for dic_p in parent_data:
 		dic_p["indent"] = 0
@@ -94,7 +97,7 @@ def get_data(filters):
 							a.stock_uom)
 						SELECT
 						c.*,
-						(SELECT 
+						coalesce((SELECT 
 								qty_after_transaction
 								FROM  `tabStock Ledger Entry` a
 								WHERE  concat(posting_date,' ',time_format(creation,'%H:%i:%s.%f')) =
@@ -102,8 +105,8 @@ def get_data(filters):
 										FROM  `tabStock Ledger Entry` b
 										WHERE posting_date BETWEEN '{1}' AND '{2}' and b.item_code = a.item_code AND b.warehouse = if('{4}'='None',b.warehouse,'{4}')
 								)
-							and posting_date BETWEEN '{1}' AND '{2}' AND warehouse = if('{4}'='None',warehouse,'{4}') AND a.item_code = c.item_code) boh,
-						(SELECT 
+							and posting_date BETWEEN '{1}' AND '{2}' AND warehouse = if('{4}'='None',warehouse,'{4}') AND a.item_code = c.item_code),0) boh,
+						coalesce((SELECT 
 								qty_after_transaction
 								FROM  `tabStock Ledger Entry` a
 								WHERE  concat(posting_date,' ',time_format(creation,'%H:%i:%s.%f')) =
@@ -111,7 +114,7 @@ def get_data(filters):
 										FROM  `tabStock Ledger Entry` b
 										WHERE posting_date BETWEEN '{1}' AND '{2}' and b.item_code = a.item_code AND b.warehouse = if('{4}'='None',b.warehouse,'{4}')
 								)
-							and posting_date BETWEEN '{1}' AND '{2}' AND warehouse = if('{4}'='None',warehouse,'{4}') AND a.item_code = c.item_code) - c.sale_qty total_qty
+							and posting_date BETWEEN '{1}' AND '{2}' AND warehouse = if('{4}'='None',warehouse,'{4}') AND a.item_code = c.item_code),0) - c.sale_qty total_qty
 						FROM sale c
 					""".format(get_filters(filters),filters.start_date,filters.end_date,dic_p["item_code"],filters.warehouse))
 		child = frappe.db.sql(child_data,as_dict=1)

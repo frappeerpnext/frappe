@@ -108,7 +108,8 @@ def get_columns(filters):
 	
 	columns = []
 	columns.append({'fieldname':'row_group','label':filters.row_group,'fieldtype':'Data','align':'left','width':250})
-
+	if filters.row_group == "Product":
+			columns.append({"label":"Item Code","fieldname":"item_code","fieldtype":"Data","align":"left",'width':130})
 	hide_columns = filters.get("hide_columns")
 	 
 	if filters.column_group !="None" and filters.row_group not in ["Date","Month","Year"]:
@@ -293,7 +294,8 @@ def get_report_data(filters,parent_row_group=None,indent=0,group_filter=None):
 					sql = sql +	"SUM(if(b.posting_date between '{}' AND '{}',{},0)) as {}_{},".format(f["start_date"],f["end_date"],rf["sql_expression"],f["fieldname"],rf["fieldname"])
 			#end for
 	# total last column
- 
+	is_group = indent
+	if filters.parent_row_group == None and filters.row_group == "Product" : is_group=1
 	for rf in report_fields:
 		#check sql variable if last character is , then remove it
 		sql = strip(sql)
@@ -304,15 +306,15 @@ def get_report_data(filters,parent_row_group=None,indent=0,group_filter=None):
 			sql = sql + " ,SUM({}) AS total_{} ".format(rf["sql_expression"],rf["fieldname"])
 
 	
-	sql = sql + """
+	sql = sql + """ ,(case when {2}=0 then "" else a.item_code end) item_code
 		FROM `tabSales Invoice Item` AS a
 			INNER JOIN `tabSales Invoice` b on b.name = a.parent
 		WHERE
 			b.docstatus in (1) AND
 			{0}
 		GROUP BY 
-		{1}
-	""".format(get_conditions(filters,group_filter), row_group)
+		{1},(case when {2}=0 then "" else a.item_code end)
+	""".format(get_conditions(filters,group_filter), row_group,is_group)
 
 
 

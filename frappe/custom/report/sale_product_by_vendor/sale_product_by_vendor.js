@@ -24,6 +24,34 @@ frappe.query_reports["Sale Product By Vendor"] = {
 			default:frappe.datetime.nowdate()
 		},
 		{
+			"fieldname": "item_group",
+			"label": __("Item Group"),
+			"fieldtype": "MultiSelectList",
+			get_data: function(txt) {
+				
+				return frappe.db.get_link_options('Item Group', txt,{"is_group":1});
+			}
+		},
+		{
+			"fieldname": "item_category",
+			"label": __("Item Category"),
+			"fieldtype": "MultiSelectList",
+			get_data: function(txt) {
+				group = frappe.query_report.get_filter_value("item_group");
+				if(group==""){
+					return frappe.db.get_link_options('Item Group', txt,filters={
+						is_group:0
+					});
+				}
+				else {
+					return frappe.db.get_link_options('Item Group', txt,filters={
+						is_group:0,
+						"parent_item_group":["in",group]
+					});
+				}
+			}
+		},
+		{
 			fieldname: "warehouse",
 			label: "Warehouse",
 			fieldtype: "Link",

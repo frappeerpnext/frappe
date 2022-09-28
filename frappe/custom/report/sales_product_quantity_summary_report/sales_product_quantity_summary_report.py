@@ -107,7 +107,8 @@ def get_columns(filters):
 	
 	columns = []
 	columns.append({'fieldname':'row_group','label':filters.row_group,'fieldtype':'Data','align':'left','width':250})
-
+	if filters.row_group == "Product":
+		columns.append({"label":"Item Code","fieldname":"item_code","fieldtype":"Data","align":"left",'width':130})
 	hide_columns = filters.get("hide_columns")
 	 
 	if filters.column_group !="None" and filters.row_group not in ["Date","Month","Year"]:
@@ -119,9 +120,7 @@ def get_columns(filters):
 
 	fields = get_report_field()
 	for f in fields:
-		if not hide_columns or  f["label"] not in hide_columns:
-			if filters.row_group == "Product":
-				columns.append({"label":"Item Code","short_label":"Item Code", "fieldname":"item_code","fieldtype":"Data","indicator":"Grey","precision":"", "align":"left","sql_expression":"a.item_code"})
+		if not hide_columns or  f["label"] not in hide_columns:				
 			columns.append({
 					'fieldname':"total_" +  f['fieldname'],
 					'label':"Total " + f["label"],
@@ -145,8 +144,6 @@ def get_dynamic_columns(filters):
 	for f in fields:
 		for rf in report_fields:
 			if not hide_columns or  rf["label"] not in hide_columns:
-				if filters.row_group == "Product":
-					columns.append({"label":"Item Code","short_label":"Item Code", "fieldname":"item_code","fieldtype":"Data","indicator":"Grey","precision":"", "align":"left","sql_expression":"a.item_code"})
 				columns.append({
 					'fieldname':f["fieldname"] + "_" + rf["fieldname"],
 					'label': f["label"] + " "  + rf["short_label"],
