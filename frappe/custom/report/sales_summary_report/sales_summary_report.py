@@ -505,7 +505,7 @@ def get_row_groups():
 			"label":"Product"
 		},
 		{
-			"fieldname":"ifnull(concat(a.supplier,'-',a.supplier_name),'Not Set')",
+			"fieldname":"ifnull(a.supplier_name,'Not Set')",
 			"label":"Supplier",
 			"parent_row_group_filter_field":"row_group"
 		},
