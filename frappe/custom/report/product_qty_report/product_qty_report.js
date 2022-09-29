@@ -52,20 +52,23 @@ frappe.query_reports["Product Qty Report"] = {
 					{"value":"Reserved Quantity","description":"Reserved Quantity"},
 					{"value":"Ordered Quantity","description":"Ordered Quantity"},
 					{"value":"Requested Quantity","description":"Requested Quantity"},
-					{"value":"Quantity Sold Yesterday","description":"Quantity Sold Yesterday"},
-					{"value":"Quantity Sold Last 7 Days","description":"Quantity Sold Last 7 Days"},
-					{"value":"Quantity Sold Last 14 Days","description":"Quantity Sold Last 14 Days"},
-					{"value":"Quantity Sold Last 30 Days","description":"Quantity Sold Last 30 Days"},
-					{"value":"Quantity Purchase Yesterday","description":"Quantity Purchase Yesterday"},
-					{"value":"Quantity Purchase Last 7 Days","description":"Quantity Purchase Last 7 Days"},
-					{"value":"Quantity Purchase Last 14 Days","description":"Quantity Purchase Last 14 Days"},
-					{"value":"Quantity Purchase Last 30 Days","description":"Quantity Purchase Last 30 Days"},
-					{"value":"Quantity Receive Yesterday","description":"Quantity Receive Yesterday"},
-					{"value":"Quantity Receive Last 7 Days","description":"Quantity Receive Last 7 Days"},
-					{"value":"Quantity Receive Last 14 Days","description":"Quantity Receive Last 14 Days"},
-					{"value":"Quantity Receive Last 30 Days","description":"Quantity Receive Last 30 Days"},
+					{"value":"Quantity Sold","description":"Quantity Sold Yesterday"},
+					{"value":"Quantity Purchase","description":"Quantity Purchase Yesterday"},
+					{"value":"Quantity Receive","description":"Quantity Receive Yesterday"},
 				]
 			},
+		},
+		{
+			fieldname: "start_date",
+			label: "Start Date",
+			fieldtype: "Date",
+			default:frappe.datetime.get_today()
+		},
+		{
+			fieldname: "end_date",
+			label: "End Date",
+			fieldtype: "Date",
+			default:frappe.datetime.get_today()
 		},
 		{
 			fieldname: "top",

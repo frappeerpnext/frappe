@@ -501,7 +501,7 @@
    "hidden": 0,
    "is_query_report": 0,
    "label": "Stock &amp; Inventory Report",
-   "link_count": 9,
+   "link_count": 10,
    "onboard": 0,
    "type": "Card Break"
   },
@@ -594,9 +594,19 @@
    "link_type": "Report",
    "onboard": 0,
    "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Purchase Receipt Report",
+   "link_count": 0,
+   "link_to": "Purchase Receipt Report",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
   }
  ],
- "modified": "2022-09-23 14:29:23.409358",
+ "modified": "2022-09-29 14:35:42.698524",
  "modified_by": "Administrator",
  "module": "Printing",
  "name": "Reports",

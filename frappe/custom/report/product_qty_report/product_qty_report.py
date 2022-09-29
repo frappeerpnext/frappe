@@ -133,7 +133,6 @@ def get_report_fields(filters):
 	str_warehouses   = ','.join("'{0}'".format(x["name"]) for x in warehouses)
 	#get total column
 	if len(warehouses)>1:
-		
 		#total qty column 
 		sql_expression="(SELECT coalesce(sum(actual_qty),0) FROM `tabBin` f WHERE f.item_code = a.item_code AND f.stock_uom = a.stock_uom and warehouse in ({}))".format(str_warehouses)
 		fields.append({"sql_expression":sql_expression,"fieldname":"total_qty","label":"Total Qty","fieldtype":"Data","align":"center","width":120})
@@ -152,91 +151,22 @@ def get_report_fields(filters):
 		if "Requested Quantity" in filters.show_columns:
 			sql_expression="(SELECT coalesce(sum(indented_qty),0) FROM `tabBin` f WHERE f.item_code = a.item_code AND f.stock_uom = a.stock_uom and warehouse in ({}))".format(str_warehouses)
 			fields.append({"sql_expression":sql_expression,"fieldname":"total_request_quantity","label":"Total Req. Qty","fieldtype":"Data","align":"center","width":120})
-	
-	#addition column for sale and orther transaction
- 
 
-	start_date = add_to_date(datetime.now(),days=-1).strftime('%Y-%m-%d')
-	if "Quantity Sold Yesterday" in filters.show_columns:
-		sql_expression = "(select sum(x.qty*x.conversion_factor) from `tabSales Invoice Item` x inner join `tabSales Invoice` y on y.name = x.parent where a.name = x.item_code and  y.docstatus in (1) and y.set_warehouse in ({}) and y.posting_date between '{}' and '{}')".format(str_warehouses,start_date,start_date)
-		fields.append({"sql_expression":sql_expression,"fieldname":"sold_qty_yesterday","label":"Sold Yest.","fieldtype":"Data","align":"center","width":120})
-
-	if "Quantity Sold Last 7 Days" in filters.show_columns:
-		start_date = add_to_date(datetime.now(),days=-8).strftime('%Y-%m-%d')
-		end_date = add_to_date(datetime.now(),days=-1).strftime('%Y-%m-%d')
-		sql_expression = "(select sum(x.qty*x.conversion_factor) from `tabSales Invoice Item` x inner join `tabSales Invoice` y on y.name = x.parent where a.name = x.item_code and  y.docstatus in (1) and y.set_warehouse in ({}) and y.posting_date between '{}' and '{}')".format(str_warehouses,start_date,end_date)
-		fields.append({"sql_expression":sql_expression,"fieldname":"sold_qty_last_7_day","label":"Sold Last 7d","fieldtype":"Data","align":"center","width":120})
-
-	if "Quantity Sold Last 14 Days" in filters.show_columns:
-		start_date = add_to_date(datetime.now(),days=-15).strftime('%Y-%m-%d')
-		end_date = add_to_date(datetime.now(),days=-1).strftime('%Y-%m-%d')
-		sql_expression = "(select sum(x.qty*x.conversion_factor) from `tabSales Invoice Item` x inner join `tabSales Invoice` y on y.name = x.parent where a.name = x.item_code and  y.docstatus in (1) and y.set_warehouse in ({}) and y.posting_date between '{}' and '{}')".format(str_warehouses,start_date,end_date)
-		fields.append({"sql_expression":sql_expression,"fieldname":"sold_qty_last_14_day","label":"Sold Last 14d","fieldtype":"Data","align":"center","width":135})
-	
-	if "Quantity Sold Last 30 Days" in filters.show_columns:
-		start_date = add_to_date(datetime.now(),days=-31).strftime('%Y-%m-%d')
-		end_date = add_to_date(datetime.now(),days=-1).strftime('%Y-%m-%d')
-		sql_expression = "(select sum(x.qty*x.conversion_factor) from `tabSales Invoice Item` x inner join `tabSales Invoice` y on y.name = x.parent where a.name = x.item_code and  y.docstatus in (1) and y.set_warehouse in ({}) and y.posting_date between '{}' and '{}')".format(str_warehouses,start_date,end_date)
-		fields.append({"sql_expression":sql_expression,"fieldname":"sold_qty_last_30_day","label":"Sold Last 30d","fieldtype":"Data","align":"center","width":150})
-
-	#purhcase transaction
-
-	start_date = add_to_date(datetime.now(),days=-1).strftime('%Y-%m-%d')
+	#requested quajtity
+	if "Requested Quantity" in filters.show_columns:
+		sql_expression="(SELECT coalesce(sum(indented_qty),0) FROM `tabBin` f WHERE f.item_code = a.item_code AND f.stock_uom = a.stock_uom and warehouse in ({}))".format(str_warehouses)
+		fields.append({"sql_expression":sql_expression,"fieldname":"total_request_quantity","label":"Total Req. Qty","fieldtype":"Data","align":"center","width":120})
+	if "Quantity Sold" in filters.show_columns:
+		sql_expression = "(select sum(x.qty*x.conversion_factor) from `tabSales Invoice Item` x inner join `tabSales Invoice` y on y.name = x.parent where a.name = x.item_code and  y.docstatus in (1) and y.set_warehouse in ({}) and y.posting_date between '{}' and '{}')".format(str_warehouses,filters.start_date,filters.end_date)
+		fields.append({"sql_expression":sql_expression,"fieldname":"sold_qty","label":"Sold","fieldtype":"Data","align":"center","width":120})
 	#Qty Purchase Yesterday
-	if "Quantity Purchase Yesterday" in filters.show_columns:
-		sql_expression = "(select sum(x.qty*x.conversion_factor) from `tabPurchase Order Item` x inner join `tabPurchase Order` y on y.name = x.parent where a.name = x.item_code and  y.docstatus in (1) and y.set_warehouse in ({}) and y.transaction_date between '{}' and '{}')".format(str_warehouses,start_date,start_date)
-		fields.append({"sql_expression":sql_expression,"fieldname":"purchase_qty_yesterday","label":"PO Yest.","fieldtype":"Data","align":"center","width":120})
-	#Qty Purchase Last 7 days
-	start_date = add_to_date(datetime.now(),days=-8).strftime('%Y-%m-%d')
-	end_date = add_to_date(datetime.now(),days=-1).strftime('%Y-%m-%d')
-	if "Quantity Purchase Last 7 Days" in filters.show_columns:
-		sql_expression = "(select sum(x.qty*x.conversion_factor) from `tabPurchase Order Item` x inner join `tabPurchase Order` y on y.name = x.parent where a.name = x.item_code and  y.docstatus in (1) and y.set_warehouse in ({}) and y.transaction_date between '{}' and '{}')".format(str_warehouses,start_date,end_date)
-		fields.append({"sql_expression":sql_expression,"fieldname":"purchase_qty_last_7_day","label":"PO Last 7d","fieldtype":"Data","align":"center","width":120})
-	#Qty Purchase Last 14 days
-	start_date = add_to_date(datetime.now(),days=-15).strftime('%Y-%m-%d')
-	end_date = add_to_date(datetime.now(),days=-1).strftime('%Y-%m-%d')
-	if "Quantity Purchase Last 7 Days" in filters.show_columns:
-		sql_expression = "(select sum(x.qty*x.conversion_factor) from `tabPurchase Order Item` x inner join `tabPurchase Order` y on y.name = x.parent where a.name = x.item_code and  y.docstatus in (1) and y.set_warehouse in ({}) and y.transaction_date between '{}' and '{}')".format(str_warehouses,start_date,end_date)
-		fields.append({"sql_expression":sql_expression,"fieldname":"purchase_qty_last_14_day","label":"PO Last 14d","fieldtype":"Data","align":"center","width":120})
-	
-	#Qty Purchase Last 30 days
-	start_date = add_to_date(datetime.now(),days=-31).strftime('%Y-%m-%d')
-	end_date = add_to_date(datetime.now(),days=-1).strftime('%Y-%m-%d')
-	if "Quantity Purchase Last 30 Days" in filters.show_columns:
-		sql_expression = "(select sum(x.qty*x.conversion_factor) from `tabPurchase Order Item` x inner join `tabPurchase Order` y on y.name = x.parent where a.name = x.item_code and  y.docstatus in (1) and y.set_warehouse in ({}) and y.transaction_date between '{}' and '{}')".format(str_warehouses,start_date,end_date)
-		fields.append({"sql_expression":sql_expression,"fieldname":"purchase_qty_last_30_day","label":"PO Last 30d","fieldtype":"Data","align":"center","width":120})
-
-	#Receive Transaction
-	start_date = add_to_date(datetime.now(),days=-1).strftime('%Y-%m-%d')
+	if "Quantity Purchase" in filters.show_columns:
+		sql_expression = "(select sum(x.qty*x.conversion_factor) from `tabPurchase Order Item` x inner join `tabPurchase Order` y on y.name = x.parent where a.name = x.item_code and  y.docstatus in (1) and y.set_warehouse in ({}) and y.transaction_date between '{}' and '{}')".format(str_warehouses,filters.start_date,filters.end_date)
+		fields.append({"sql_expression":sql_expression,"fieldname":"purchase_qty","label":"Purchase","fieldtype":"Data","align":"center","width":120})
 	#Qty receive Yesterday
-	if "Quantity Receive Yesterday" in filters.show_columns:
-		sql_expression = "(select sum(x.actual_qty) from `tabStock Ledger Entry` x  where a.name = x.item_code and  x.voucher_type in ('Purchase Receipt','Stock Entry') and x.warehouse in ({}) and x.posting_date between '{}' and '{}')".format(str_warehouses,start_date,start_date)
-		fields.append({"sql_expression":sql_expression,"fieldname":"receive_qty_yesterday","label":"Rec. Yest.","fieldtype":"Data","align":"center","width":120})
-	
-	#Qty Receive Last 7 days
-	start_date = add_to_date(datetime.now(),days=-8).strftime('%Y-%m-%d')
-	end_date = add_to_date(datetime.now(),days=-1).strftime('%Y-%m-%d')
-	if "Quantity Receive Last 7 Days" in filters.show_columns:
-		sql_expression = "(select sum(x.actual_qty) from `tabStock Ledger Entry` x  where a.name = x.item_code and  x.voucher_type in ('Purchase Receipt','Stock Entry') and x.warehouse in ({}) and x.posting_date between '{}' and '{}')".format(str_warehouses,start_date,end_date)
-		fields.append({"sql_expression":sql_expression,"fieldname":"receive_qty_last_7_days","label":"Rec. Last 7d","fieldtype":"Data","align":"center","width":120})
-	
-
-	#Qty Receive Last 14 days
-	start_date = add_to_date(datetime.now(),days=-15).strftime('%Y-%m-%d')
-	end_date = add_to_date(datetime.now(),days=-1).strftime('%Y-%m-%d')
-	if "Quantity Receive Last 14 Days" in filters.show_columns:
-		sql_expression = "(select sum(x.actual_qty) from `tabStock Ledger Entry` x  where a.name = x.item_code and  x.voucher_type in ('Purchase Receipt','Stock Entry') and x.warehouse in ({}) and x.posting_date between '{}' and '{}')".format(str_warehouses,start_date,end_date)
-		fields.append({"sql_expression":sql_expression,"fieldname":"receive_qty_last_14_days","label":"Rec. Last 14d","fieldtype":"Data","align":"center","width":120})
-	
-	#Qty receive Last 30 days
-	start_date = add_to_date(datetime.now(),days=-31).strftime('%Y-%m-%d')
-	end_date = add_to_date(datetime.now(),days=-1).strftime('%Y-%m-%d')
-	if "Quantity Receive Last 30 Days" in filters.show_columns:
-		sql_expression = "(select sum(x.actual_qty) from `tabStock Ledger Entry` x  where a.name = x.item_code and  x.voucher_type in ('Purchase Receipt','Stock Entry') and x.warehouse in ({}) and x.posting_date between '{}' and '{}')".format(str_warehouses,start_date,end_date)
-		fields.append({"sql_expression":sql_expression,"fieldname":"receive_qty_last_30_days","label":"Rec. Last 30d","fieldtype":"Data","align":"center","width":120})
-	
-	
-
+	if "Quantity Receive" in filters.show_columns:
+		sql_expression = "(select sum(x.actual_qty) from `tabStock Ledger Entry` x  where a.name = x.item_code and  x.voucher_type in ('Purchase Receipt','Stock Entry') and x.warehouse in ({}) and x.posting_date between '{}' and '{}')".format(str_warehouses,filters.start_date,filters.end_date)
+		fields.append({"sql_expression":sql_expression,"fieldname":"receive_qty","label":"Received","fieldtype":"Data","align":"center","width":120})
 	return fields
 
 def get_warehouses(filters):
