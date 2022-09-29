@@ -315,12 +315,7 @@ def get_report_data(filters,parent_row_group=None,indent=0,group_filter=None):
 		GROUP BY 
 		{1},(case when {2}=0 then "" else a.item_code end)
 	""".format(get_conditions(filters,group_filter), row_group,is_group)
-
-
-
 	data = frappe.db.sql(sql,filters, as_dict=1)
-
-	
 	return data
  
 def get_report_group_data(filters):
@@ -506,7 +501,7 @@ def get_row_groups():
 			"parent_row_group_filter_field":"row_group"
 		},
 		{
-			"fieldname":"concat(a.item_code,'-',a.item_name)",
+			"fieldname":"a.item_name",
 			"label":"Product"
 		},
 		{
