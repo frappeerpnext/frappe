@@ -23,7 +23,7 @@ def get_data(filters):
 	data=[]
 	parent = """
 				SELECT
-					concat(supplier,' / ',supplier_name) name,
+					supplier_name name,
 					supplier,
 					SUM(total_qty) qty,
 					SUM(net_total) amount
