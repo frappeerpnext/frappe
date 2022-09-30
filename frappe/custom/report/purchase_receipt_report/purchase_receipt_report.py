@@ -28,7 +28,7 @@ def get_data(filters):
 					supplier,
 					SUM(total_qty) qty,
 					SUM(net_total) amount
-				FROM `tabPurchase Receipt`
+				FROM `tabPurchase Receipt` a
 					WHERE {}
 				GROUP BY
 					supplier,
@@ -49,7 +49,7 @@ def get_data(filters):
 							SUM(net_total) amount,
 							status,
 							company
-						FROM `tabPurchase Receipt`
+						FROM `tabPurchase Receipt` a
 						WHERE {0} and supplier = '{1}'
 						GROUP BY
 							name,
@@ -69,6 +69,7 @@ def get_data(filters):
 def get_filters(filters):
 	data= "posting_date between '{}' AND '{}'".format(filters.start_date,filters.end_date)
 	if filters.get("supplier"):data = data +	" and supplier in (" + get_list(filters,"supplier") + ")"
+	if filters.get("supplier_group"):data = data +	" and (SELECT supplier_group FROM `tabSupplier` b WHERE b.name = a.supplier) in (" + get_list(filters,"supplier_group") + ")"
 	if filters.get("status"):data = data +	" and status in (" + get_list(filters,"status") + ")"
 	if filters.get("company"):data = data +	" and company = '{}'".format(filters.company)
 	return data
