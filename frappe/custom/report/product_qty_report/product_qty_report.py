@@ -34,7 +34,7 @@ def get_report_data(filters):
 	sql = "With b as (SELECT DISTINCT parent FROM `tabBranch Items` WHERE branch='{}') SELECT ".format(filters.branch)
 	#static column
 	for f in get_report_fields(filters):
-		sql = sql + " {} as {}, ".format(f["sql_expression"],f["fieldname"])
+		sql = sql + " {} as '{}', ".format(f["sql_expression"],f["fieldname"])
 	sql = sql + "1 as dummy FROM `tabItem` a "
 	sql = sql + " Where (a.available_branches='' or a.name in (select parent from b) ) {0} limit {1}".format(get_conditions(filters),filters.top)
 
@@ -70,6 +70,9 @@ def get_conditions(filters):
 	 
 	if filters.get("item_group"):
 		conditions += " AND a.item_group in %(item_group)s"
+
+	if filters.get("supplier_group"):
+		conditions += " AND (SELECT supplier_group FROM `tabSupplier` b WHERE b.name = a.supplier) in %(supplier_group)s"
 
 	if filters.get("supplier"):
 		conditions += " AND a.supplier in %(supplier)s"

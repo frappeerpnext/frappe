@@ -266,6 +266,9 @@ def get_conditions(filters,group_filter=None):
 
 	if filters.get("supplier"):
 		conditions += " AND a.supplier in %(supplier)s"
+	
+	if filters.get("supplier_group"):
+		conditions += " AND (SELECT supplier_group FROM `tabSupplier` b WHERE b.name = a.supplier) in %(supplier_group)s"
 		
 	if filters.get("branch"):
 		conditions += " AND b.branch in %(branch)s"

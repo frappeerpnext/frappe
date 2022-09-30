@@ -8,6 +8,7 @@
  "engine": "InnoDB",
  "field_order": [
   "pos_setting_section",
+  "app_name",
   "company_name",
   "company_name_kh",
   "company_logo",
@@ -86,12 +87,18 @@
    "fieldname": "company_name_kh",
    "fieldtype": "Data",
    "label": "Company Name Kh"
+  },
+  {
+   "default": "ePOS Retail",
+   "fieldname": "app_name",
+   "fieldtype": "Data",
+   "label": "App Name"
   }
  ],
  "image_field": "company_logo",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-08-19 14:53:07.748175",
+ "modified": "2022-09-30 12:01:24.071976",
  "modified_by": "Administrator",
  "module": "Custom",
  "name": "POS Config",

@@ -15,6 +15,7 @@ def get_filters(filters):
 	if filters.get("not_set_supplier"): data = data + " and a.supplier_name is null"
 	if filters.get("item_group"):data = data +	" and (coalesce(a.parent_item_group,(SELECT parent_item_group FROM `tabItem Group` WHERE NAME = a.item_group)) in (" + get_list(filters,"item_group") + ")" + " or a.item_group in (" + get_list(filters,"item_group") + "))"
 	if filters.get("item_category"):data = data +	" and a.item_group in (" + get_list(filters,"item_category") + ")"
+	if filters.get("supplier_group"):data = data +	" and (SELECT supplier_group FROM `tabSupplier` b WHERE b.name = a.supplier) in (" + get_list(filters,"supplier_group") + ")"
 	return data
 
 def get_columns(filters):

@@ -68,24 +68,31 @@ frappe.query_reports["Sales Product Quantity Summary Report"] =  {
 				}
 			}
 		},
-		// {
-		// 	"fieldname": "customer_group",
-		// 	"label": __("Customer Group"),
-		// 	"fieldtype": "MultiSelectList",
-		// 	get_data: function(txt) {
+		{
+			"fieldname": "supplier_group",
+			"label": __("Supplier Group"),
+			"fieldtype": "MultiSelectList",
+			get_data: function(txt) {
 				
-		// 		return frappe.db.get_link_options('Customer Group', txt,{"is_group":0});
-		// 	}
-		// },
-		// {
-		// 	"fieldname": "supplier",
-		// 	"label": __("Supllier"),
-		// 	"fieldtype": "MultiSelectList",
-		// 	get_data: function(txt) {
-				
-		// 		return frappe.db.get_link_options('Supplier', txt);
-		// 	}
-		// },
+				return frappe.db.get_link_options('Supplier Group', txt,{"is_group":0});
+			}
+		},
+		{
+			"fieldname": "supplier",
+			"label": __("Supplier"),
+			"fieldtype": "MultiSelectList",
+			get_data: function(txt) {
+				group = frappe.query_report.get_filter_value("supplier_group");
+				if(group==""){
+					return frappe.db.get_link_options('Supplier', txt);
+				}
+				else {
+					return frappe.db.get_link_options('Supplier', txt,filters={
+						"supplier_group":["in",group]
+					});
+				}
+			}
+		},
 		{
 			"fieldname": "parent_row_group",
 			"label": __("Parent Group By"),
