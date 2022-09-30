@@ -294,7 +294,7 @@ def get_report_data(filters,parent_row_group=None,indent=0,group_filter=None):
 			
 			for rf in report_fields:
 				if not hide_columns or  rf["label"] not in hide_columns:
-					sql = sql +	"SUM(if(b.posting_date between '{}' AND '{}',{},0)) as {}_{},".format(f["start_date"],f["end_date"],rf["sql_expression"],f["fieldname"],rf["fieldname"])
+					sql = sql +	"SUM(if(b.posting_date between '{}' AND '{}',{},0)) as '{}_{}',".format(f["start_date"],f["end_date"],rf["sql_expression"],f["fieldname"],rf["fieldname"])
 			#end for
 	# total last column
 	is_group = indent
@@ -306,7 +306,7 @@ def get_report_data(filters,parent_row_group=None,indent=0,group_filter=None):
 			sql = sql[0:len(sql)-1]
 			 
 		if not hide_columns or  rf["label"] not in hide_columns:
-			sql = sql + " ,SUM({}) AS total_{} ".format(rf["sql_expression"],rf["fieldname"])
+			sql = sql + " ,SUM({}) AS 'total_{}' ".format(rf["sql_expression"],rf["fieldname"])
 
 	
 	sql = sql + """ ,(case when {2}=0 then "" else a.item_code end) item_code
