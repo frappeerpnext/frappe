@@ -1,13 +1,14 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "field:company_name",
+ "autoname": "field:pos_config_name",
  "creation": "2022-08-19 14:42:30.138814",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
   "pos_setting_section",
+  "pos_config_name",
   "app_name",
   "company_name",
   "company_name_kh",
@@ -27,8 +28,7 @@
    "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Company Name",
-   "reqd": 1,
-   "unique": 1
+   "reqd": 1
   },
   {
    "fieldname": "company_logo",
@@ -93,12 +93,18 @@
    "fieldname": "app_name",
    "fieldtype": "Data",
    "label": "App Name"
+  },
+  {
+   "fieldname": "pos_config_name",
+   "fieldtype": "Data",
+   "label": "POS Config Name",
+   "unique": 1
   }
  ],
  "image_field": "company_logo",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-09-30 12:01:24.071976",
+ "modified": "2022-09-30 22:02:41.718252",
  "modified_by": "Administrator",
  "module": "Custom",
  "name": "POS Config",

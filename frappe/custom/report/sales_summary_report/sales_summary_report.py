@@ -248,7 +248,7 @@ def get_conditions(filters,group_filter=None):
 	
 	conditions += " b.company =if('{0}'='None',b.company,'{0}')".format(filters.company)
 	if(group_filter!=None):
-		conditions += " and {} ='{}'".format(group_filter["field"],group_filter["value"])
+		conditions += " and {} ='{}'".format(group_filter["field"],group_filter["value"].replace("'","''").replace("%","%%"))
 	
 	conditions += " AND b.posting_date between %(start_date)s AND %(end_date)s"
 	 
