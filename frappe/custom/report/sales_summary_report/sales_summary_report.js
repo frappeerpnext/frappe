@@ -131,6 +131,7 @@ frappe.query_reports["Sales Summary Report"] = {
 					{"value":"Sub Total","description":"Sub Total"},
 					{"value":"Cost","description":"Cost"},
 					{"value":"Profit","description":"Profit"},
+					{"value":"Total Discount","description":"Total Discount"},
 				]
 			},
 			"default":"All"
