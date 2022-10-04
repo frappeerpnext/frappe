@@ -17,6 +17,7 @@
   "address",
   "column_break_5",
   "pos_background_image",
+  "pos_home_page_banner",
   "pos_customer_display_thank_you_background",
   "limit_days_view_report",
   "customer_display_slideshow_section",
@@ -99,12 +100,17 @@
    "fieldtype": "Data",
    "label": "POS Config Name",
    "unique": 1
+  },
+  {
+   "fieldname": "pos_home_page_banner",
+   "fieldtype": "Attach Image",
+   "label": "POS Home Page Banner"
   }
  ],
  "image_field": "company_logo",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-09-30 22:02:41.718252",
+ "modified": "2022-10-01 12:01:29.136129",
  "modified_by": "Administrator",
  "module": "Custom",
  "name": "POS Config",

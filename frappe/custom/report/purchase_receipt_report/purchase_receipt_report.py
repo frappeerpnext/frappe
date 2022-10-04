@@ -14,6 +14,7 @@ def get_columns(filters):
 	columns = []
 	columns.append({'fieldname':'name','label':"Purchase Receipt",'fieldtype':'Data','align':'left','width':300})
 	columns.append({'fieldname':'company','label':"Company",'fieldtype':'Data','align':'left','width':150})
+	columns.append({'fieldname':'warehouse','label':"Warehouse",'fieldtype':'Data','align':'left','width':150})
 	columns.append({'fieldname':'posting_date','label':"Date",'fieldtype':'Data','align':'center','width':100})
 	columns.append({'fieldname':'qty','label':"Total QTY",'fieldtype':'Data','align':'center','width':100})
 	columns.append({'fieldname':'amount','label':"Amount",'fieldtype':'Currency','align':'right','width':150})
@@ -48,7 +49,8 @@ def get_data(filters):
 							SUM(total_qty) qty,
 							SUM(net_total) amount,
 							status,
-							company
+							company,
+							set_warehouse
 						FROM `tabPurchase Receipt` a
 						WHERE {0} and supplier = '{1}'
 						GROUP BY
@@ -57,7 +59,8 @@ def get_data(filters):
 							supplier_name,
 							posting_date,
 							status,
-							company
+							company,
+							set_warehouse
 					""".format(get_filters(filters),dic_p["supplier"]))
 		child = frappe.db.sql(child_data,as_dict=1)
 		for dic_c in child:
@@ -71,7 +74,8 @@ def get_filters(filters):
 	if filters.get("supplier"):data = data +	" and supplier in (" + get_list(filters,"supplier") + ")"
 	if filters.get("supplier_group"):data = data +	" and (SELECT supplier_group FROM `tabSupplier` b WHERE b.name = a.supplier) in (" + get_list(filters,"supplier_group") + ")"
 	if filters.get("status"):data = data +	" and status in (" + get_list(filters,"status") + ")"
-	if filters.get("company"):data = data +	" and company = '{}'".format(filters.company)
+	if filters.get("company"):data = data +	" and company in (" + get_list(filters,"company") + ")"
+	if filters.get("warehouse"):data = data +	" and set_warehouse in (" + get_list(filters,"warehouse") + ")"
 	return data
 
 

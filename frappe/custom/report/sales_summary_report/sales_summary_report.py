@@ -433,6 +433,11 @@ def get_report_field():
 def get_row_groups():
 	return [
 		{
+			"fieldname":"a.parent",
+			"label":"Sale Invoice",
+			"parent_row_group_filter_field":"row_group"
+		},
+		{
 			"fieldname":"a.item_group",
 			"label":"Category",
 			"parent_row_group_filter_field":"row_group"

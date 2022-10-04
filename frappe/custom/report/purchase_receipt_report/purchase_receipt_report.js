@@ -5,10 +5,30 @@
 frappe.query_reports["Purchase Receipt Report"] = {
 	"filters": [
 		{
-			fieldname: "company",
-			label: "Company",
-			fieldtype: "Link",
-			options:"Company",
+			"fieldname": "company",
+			"label": __("Company"),
+			"fieldtype": "MultiSelectList",
+			get_data: function(txt) {
+				
+				return frappe.db.get_link_options('Company', txt);
+			}
+		},
+		{
+			"fieldname": "warehouse",
+			"label": __("Warehouse"),
+			"fieldtype": "MultiSelectList",
+			get_data: function(txt) {
+				group = frappe.query_report.get_filter_value("company");
+				if(group==""){
+					return frappe.db.get_link_options('Warehouse', txt,{"is_group":0});
+				}
+				else {
+					return frappe.db.get_link_options('Warehouse', txt,filters={
+						is_group:0,
+						"company":["in",group]
+					});
+				}
+			}
 		},
 		{
 			fieldname: "start_date",
