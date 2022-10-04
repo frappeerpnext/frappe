@@ -119,7 +119,7 @@ def get_columns(filters):
 
 	#add total to last column
 
-	fields = get_report_field()
+	fields = get_report_field(filters)
 	for f in fields:
 		if not hide_columns or  f["label"] not in hide_columns:
 			columns.append({
@@ -140,7 +140,7 @@ def get_dynamic_columns(filters):
 	#dynmic report file
 	fields = get_fields(filters)
 	#static report field
-	report_fields = get_report_field()
+	report_fields = get_report_field(filters)
 	columns=[]
 	for f in fields:
 		for rf in report_fields:
@@ -282,7 +282,7 @@ def get_report_data(filters,parent_row_group=None,indent=0,group_filter=None):
 	if(parent_row_group!=None):
 		row_group = [d["fieldname"] for d in get_row_groups() if d["label"]==parent_row_group][0]
 
-	report_fields = get_report_field()
+	report_fields = get_report_field(filters)
 	
 	sql = "select {} as row_group, {} as indent ".format(row_group, indent)
 	if filters.column_group != "None":
@@ -297,8 +297,10 @@ def get_report_data(filters,parent_row_group=None,indent=0,group_filter=None):
 					sql = sql +	"SUM(if(b.posting_date between '{}' AND '{}',{},0)) as '{}_{}',".format(f["start_date"],f["end_date"],rf["sql_expression"],f["fieldname"],rf["fieldname"])
 			#end for
 	# total last column
-	is_group = indent
+	item_code = ""
 	if filters.parent_row_group == None and filters.row_group == "Product" : is_group=1
+	if filters.row_group == "Product" or filters.parent_row_group == "Product":
+		item_code = ",a.item_code"
 	for rf in report_fields:
 		#check sql variable if last character is , then remove it
 		sql = strip(sql)
@@ -309,15 +311,15 @@ def get_report_data(filters,parent_row_group=None,indent=0,group_filter=None):
 			sql = sql + " ,SUM({}) AS 'total_{}' ".format(rf["sql_expression"],rf["fieldname"])
 
 	
-	sql = sql + """ ,(case when {2}=0 then "" else a.item_code end) item_code
+	sql = sql + """ {2}
 		FROM `tabSales Invoice Item` AS a
 			INNER JOIN `tabSales Invoice` b on b.name = a.parent
 		WHERE
 			b.docstatus in (1) AND
 			{0}
 		GROUP BY 
-		{1},(case when {2}=0 then "" else a.item_code end)
-	""".format(get_conditions(filters,group_filter), row_group,is_group)
+		{1} {2}
+	""".format(get_conditions(filters,group_filter), row_group,item_code)
 	data = frappe.db.sql(sql,filters, as_dict=1)
 	return data
  
@@ -343,7 +345,7 @@ def get_report_summary(data,filters):
 	if filters.parent_row_group==None:
 		report_summary =[{"label":"Total " + filters.row_group ,"value":len(data)}]
 	
-	fields = get_report_field()
+	fields = get_report_field(filters)
 
 	for f in fields:
 		if not hide_columns or  f["label"] not in hide_columns:
@@ -362,7 +364,7 @@ def get_report_chart(filters,data):
 	dataset = []
 	colors = []
 
-	report_fields = get_report_field()
+	report_fields = get_report_field(filters)
 
 	if filters.column_group != "None":
 		fields = get_fields(filters)
@@ -415,16 +417,27 @@ def get_report_chart(filters,data):
 	return chart
  
 
-def get_report_field():
-	return [
-		{"label":"Transaction","short_label":"Tran.", "fieldname":"transaction","fieldtype":"Float", "indicator":"Grey","precision":2, "align":"center","chart_color":"#f030fd","sql_expression":"a.total_transaction"},
-		{"label":"Quantity","short_label":"Qty", "fieldname":"qty","fieldtype":"Float","indicator":"Grey","precision":2, "align":"center","chart_color":"#FF8A65","sql_expression":"a.qty"},
-		{"label":"Sub Total", "short_label":"Sub To.", "fieldname":"sub_total","fieldtype":"Currency","indicator":"Grey","precision":None, "align":"right","chart_color":"#dd5574","sql_expression":"a.base_rate*a.qty"},
-		{"label":"Total Discount", "short_label":"Disc.", "fieldname":"discount_amount","fieldtype":"Currency","indicator":"Grey","precision":None, "align":"right","chart_color":"#dd5574","sql_expression":"a.base_rate*a.qty-a.net_amount"},
-		{"label":"Cost","short_label":"Cost", "fieldname":"cost","fieldtype":"Currency","indicator":"Blue","precision":None, "align":"right","chart_color":"#1976D2","sql_expression":"a.qty*a.incoming_rate*a.conversion_factor"},
-		{"label":"Amount", "short_label":"Amt", "fieldname":"amount","fieldtype":"Currency","indicator":"Red","precision":None, "align":"right","chart_color":"#2E7D32","sql_expression":"a.net_amount"},
-		{"label":"Profit", "short_label":"Prof.", "fieldname":"profit","fieldtype":"Currency","indicator":"Green","precision":None, "align":"right","chart_color":"#FF3D00","sql_expression":"a.net_amount - (a.qty*a.incoming_rate*a.conversion_factor)"}
-	]
+def get_report_field(filters):
+	if filters.parent_row_group == "Sale Invoice" or filters.row_group == "Sale Invoice":
+		return [
+			{"label":"Quantity","short_label":"Qty", "fieldname":"qty","fieldtype":"Float","indicator":"Grey","precision":2, "align":"center","chart_color":"#FF8A65","sql_expression":"a.qty"},
+			{"label":"Sub Total", "short_label":"Sub To.", "fieldname":"sub_total","fieldtype":"Currency","indicator":"Grey","precision":None, "align":"right","chart_color":"#dd5574","sql_expression":"a.base_rate*a.qty"},
+			{"label":"Total Discount", "short_label":"Disc.", "fieldname":"discount_amount","fieldtype":"Currency","indicator":"Grey","precision":None, "align":"right","chart_color":"#dd5574","sql_expression":"a.base_rate*a.qty-a.net_amount"},
+			{"label":"Cost","short_label":"Cost", "fieldname":"cost","fieldtype":"Currency","indicator":"Blue","precision":None, "align":"right","chart_color":"#1976D2","sql_expression":"a.qty*a.incoming_rate*a.conversion_factor"},
+			{"label":"Amount", "short_label":"Amt", "fieldname":"amount","fieldtype":"Currency","indicator":"Red","precision":None, "align":"right","chart_color":"#2E7D32","sql_expression":"a.net_amount"},
+			{"label":"Profit", "short_label":"Prof.", "fieldname":"profit","fieldtype":"Currency","indicator":"Green","precision":None, "align":"right","chart_color":"#FF3D00","sql_expression":"a.net_amount - (a.qty*a.incoming_rate*a.conversion_factor)"}
+		]
+	else:
+		return [
+			{"label":"Transaction","short_label":"Tran.", "fieldname":"transaction","fieldtype":"Float", "indicator":"Grey","precision":2, "align":"center","chart_color":"#f030fd","sql_expression":"a.total_transaction"},
+			{"label":"Quantity","short_label":"Qty", "fieldname":"qty","fieldtype":"Float","indicator":"Grey","precision":2, "align":"center","chart_color":"#FF8A65","sql_expression":"a.qty"},
+			{"label":"Sub Total", "short_label":"Sub To.", "fieldname":"sub_total","fieldtype":"Currency","indicator":"Grey","precision":None, "align":"right","chart_color":"#dd5574","sql_expression":"a.base_rate*a.qty"},
+			{"label":"Total Discount", "short_label":"Disc.", "fieldname":"discount_amount","fieldtype":"Currency","indicator":"Grey","precision":None, "align":"right","chart_color":"#dd5574","sql_expression":"a.base_rate*a.qty-a.net_amount"},
+			{"label":"Cost","short_label":"Cost", "fieldname":"cost","fieldtype":"Currency","indicator":"Blue","precision":None, "align":"right","chart_color":"#1976D2","sql_expression":"a.qty*a.incoming_rate*a.conversion_factor"},
+			{"label":"Amount", "short_label":"Amt", "fieldname":"amount","fieldtype":"Currency","indicator":"Red","precision":None, "align":"right","chart_color":"#2E7D32","sql_expression":"a.net_amount"},
+			{"label":"Profit", "short_label":"Prof.", "fieldname":"profit","fieldtype":"Currency","indicator":"Green","precision":None, "align":"right","chart_color":"#FF3D00","sql_expression":"a.net_amount - (a.qty*a.incoming_rate*a.conversion_factor)"}
+		]
+	
 	
 
 	 
