@@ -15,6 +15,7 @@ def get_columns(filters):
 	columns.append({'fieldname':'name','label':"Purchase Receipt",'fieldtype':'Data','align':'left','width':300})
 	columns.append({'fieldname':'company','label':"Company",'fieldtype':'Data','align':'left','width':150})
 	columns.append({'fieldname':'set_warehouse','label':"Warehouse",'fieldtype':'Data','align':'left','width':150})
+	columns.append({'fieldname':'supplier_delivery_note','label':"Note",'fieldtype':'Data','align':'left','width':150})
 	columns.append({'fieldname':'posting_date','label':"Date",'fieldtype':'Data','align':'center','width':100})
 	columns.append({'fieldname':'qty','label':"Total QTY",'fieldtype':'Data','align':'center','width':100})
 	columns.append({'fieldname':'amount','label':"Amount",'fieldtype':'Currency','align':'right','width':150})
@@ -50,7 +51,8 @@ def get_data(filters):
 							SUM(net_total) amount,
 							status,
 							company,
-							set_warehouse
+							set_warehouse,
+							supplier_delivery_note
 						FROM `tabPurchase Receipt` a
 						WHERE {0} and supplier = '{1}'
 						GROUP BY
@@ -60,7 +62,8 @@ def get_data(filters):
 							posting_date,
 							status,
 							company,
-							set_warehouse
+							set_warehouse,
+							supplier_delivery_note
 					""".format(get_filters(filters),dic_p["supplier"]))
 		child = frappe.db.sql(child_data,as_dict=1)
 		for dic_c in child:
