@@ -14,7 +14,7 @@ def get_columns(filters):
 	columns = []
 	columns.append({'fieldname':'name','label':"Purchase Receipt",'fieldtype':'Data','align':'left','width':300})
 	columns.append({'fieldname':'company','label':"Company",'fieldtype':'Data','align':'left','width':150})
-	columns.append({'fieldname':'warehouse','label':"Warehouse",'fieldtype':'Data','align':'left','width':150})
+	columns.append({'fieldname':'set_warehouse','label':"Warehouse",'fieldtype':'Data','align':'left','width':150})
 	columns.append({'fieldname':'posting_date','label':"Date",'fieldtype':'Data','align':'center','width':100})
 	columns.append({'fieldname':'qty','label':"Total QTY",'fieldtype':'Data','align':'center','width':100})
 	columns.append({'fieldname':'amount','label':"Amount",'fieldtype':'Currency','align':'right','width':150})
