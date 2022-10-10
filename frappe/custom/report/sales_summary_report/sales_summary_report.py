@@ -130,7 +130,8 @@ def get_columns(filters):
 					'align':f['align']
 					}
 				)
-	 
+	if (filters.row_group == "Sale Invoice" or filters.parent_row_group == "Sale Invoice") and filters.get("include_cancelled") == True:
+		columns.append({"label":"Status","fieldname":"docstatus","fieldtype":"Data","align":"center",'width':100})
 	return columns
 
 
@@ -298,9 +299,15 @@ def get_report_data(filters,parent_row_group=None,indent=0,group_filter=None):
 			#end for
 	# total last column
 	item_code = ""
-	if filters.parent_row_group == None and filters.row_group == "Product" : is_group=1
+	groupdocstatus = ""
+	normal_filter = "b.docstatus in (1) AND"
+	docstatus=""
 	if filters.row_group == "Product" or filters.parent_row_group == "Product":
 		item_code = ",a.item_code"
+	if (filters.row_group == "Sale Invoice" or filters.parent_row_group == "Sale Invoice") and filters.get("include_cancelled") == True:
+		groupdocstatus = ",b.docstatus"
+		normal_filter="b.docstatus in (1,2) AND"
+		docstatus=",if(b.docstatus='1','Paid','Cancelled') docstatus"
 	for rf in report_fields:
 		#check sql variable if last character is , then remove it
 		sql = strip(sql)
@@ -311,15 +318,15 @@ def get_report_data(filters,parent_row_group=None,indent=0,group_filter=None):
 			sql = sql + " ,SUM({}) AS 'total_{}' ".format(rf["sql_expression"],rf["fieldname"])
 
 	
-	sql = sql + """ {2}
+	sql = sql + """ {2} {5}
 		FROM `tabSales Invoice Item` AS a
 			INNER JOIN `tabSales Invoice` b on b.name = a.parent
 		WHERE
-			b.docstatus in (1) AND
+			{4}
 			{0}
 		GROUP BY 
-		{1} {2}
-	""".format(get_conditions(filters,group_filter), row_group,item_code)
+		{1} {2} {3}
+	""".format(get_conditions(filters,group_filter), row_group,item_code,groupdocstatus,normal_filter,docstatus)
 	data = frappe.db.sql(sql,filters, as_dict=1)
 	return data
  

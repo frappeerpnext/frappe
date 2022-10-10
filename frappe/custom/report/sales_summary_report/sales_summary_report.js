@@ -141,8 +141,13 @@ frappe.query_reports["Sales Summary Report"] = {
 			"label": __("Chart Type"),
 			"fieldtype": "Select",
 			"options": "None\nbar\nline",
-			"d,efault":"bar"
-		}
+			"default":"bar"
+		},
+		{
+			fieldname: "include_cancelled",
+			label: "Include Cancelled",
+			fieldtype: "Check"
+		},
 	],
 	"formatter": function(value, row, column, data, default_formatter) {
 	
@@ -156,7 +161,16 @@ frappe.query_reports["Sales Summary Report"] = {
 
 			value = $value.wrap("<p></p>").parent().html();
 		}
-
+		if(value == 'Cancelled'){
+			value = $(`<span>${value}</span>`);
+			var $value = $(value).css("color", "#E20000");
+			value = $value.wrap("<p></p>").parent().html();
+		}
+		if(value == 'Paid'){
+			value = $(`<span>${value}</span>`);
+			var $value = $(value).css("color", "#06BD00");
+			value = $value.wrap("<p></p>").parent().html();
+		}
 		return value;
 	},
 };

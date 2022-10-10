@@ -20,8 +20,9 @@ def get_filters(filters):
 
 def get_columns(filters):
 	columns = []
-	columns.append({'fieldname':'item_code','label':"Item Code",'fieldtype':'Data','align':'left','width':200})
+	columns.append({'fieldname':'item_code','label':"Item Code",'fieldtype':'Data','align':'left','width':200,'height':100})
 	columns.append({'fieldname':'item_name','label':"Item Name",'fieldtype':'Data','align':'left','width':350})
+	columns.append({'fieldname':'image','label':"Image",'fieldtype':'Data','align':'center','width':350})
 	columns.append({'fieldname':'supplier_name','label':"Supplier",'fieldtype':'Data','align':'left','width':200})
 	columns.append({'fieldname':'stock_uom','label':"Unit",'fieldtype':'Data','align':'center','width':100})
 	columns.append({'fieldname':'boh','label':"BOH",'fieldtype':'Data','align':'right','width':100})
@@ -81,6 +82,7 @@ def get_data(filters):
 							a.item_code,
 							a.item_name,
 							a.stock_uom,
+							concat('<img src=','''',a.image,'''',' Style="Height:100px" />') image,
 							coalesce(SUM(a.qty * a.conversion_factor),0) sale_qty
 						FROM `tabSales Invoice Item` a
 							INNER JOIN `tabSales Invoice` b ON b.name = a.parent									
@@ -90,7 +92,8 @@ def get_data(filters):
 							a.supplier_name,
 							a.item_code,
 							a.item_name,
-							a.stock_uom)
+							a.stock_uom,
+							a.image)
 
 						SELECT 
 							a.*,
