@@ -116,9 +116,7 @@ body.full-width .container{
     padding: 10px!important;
 }
 
-.list-row .level-right, .list-row-head .level-right{
-    flex:none!important;
-}
+
 
 .grid-column-br .datatable .dt-row{
     height: 50px!important;
