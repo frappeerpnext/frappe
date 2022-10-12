@@ -87,5 +87,3 @@ def get_synced_record(name):
 	frappe.db.commit()
 
 
-
- 

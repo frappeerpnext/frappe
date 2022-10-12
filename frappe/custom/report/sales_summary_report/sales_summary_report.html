@@ -1,0 +1,10 @@
+<h2 class="text-center">{%= __("Statement of Account") %}</h2>
+<h1>{%= data %}</h1>
+
+{% for(var i=0, l=data.length; i<l; i++) { %}
+<h1>{%= data[i].total_qty %}</h1>
+<h1>{%= data[i].row_group %}</h1>
+<h1>{%= data[i].total_amount %}</h1>
+<h1>{%= data[i].total_sub_total %}</h1>
+{% } %}
+
