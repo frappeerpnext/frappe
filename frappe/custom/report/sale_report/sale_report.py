@@ -16,7 +16,11 @@ from frappe.utils.data import strip
 
 def execute(filters=None):
 	
- 
+	if filters.filter_based_on =="Fiscal Year":
+		filters.start_date = '{}-01-01'.format(filters.from_fiscal_year)
+		filters.end_date = '{}-12-31'.format(filters.from_fiscal_year)
+	
+
 	validate(filters)
 	#run this to update parent_item_group in table sales invoice item
 	update_parent_item_group()
@@ -246,19 +250,15 @@ def get_fields(filters):
 
 def get_conditions(filters,group_filter=None):
 	conditions = ""
-	if filters.filter_based_on == "Fiscal Year":
-		start_date = filters.from_fiscal_year
-		end_date = filters.to_fiscal_year
-	else:
-		start_date = filters.start_date
-		end_date = filters.end_date
+
+	start_date = filters.start_date
+	end_date = filters.end_date
+
 	conditions += " b.company =if('{0}'='None',b.company,'{0}')".format(filters.company)
 	if(group_filter!=None):
 		conditions += " and {} ='{}'".format(group_filter["field"],group_filter["value"].replace("'","''").replace("%","%%"))
-	if filters.filter_based_on == "Fiscal Year":
-		conditions += " AND year(b.posting_date) between '{}' AND '{}'".format(start_date,end_date)
-	else:
-		conditions += " AND b.posting_date between '{}' AND '{}'".format(start_date,end_date)
+
+	conditions += " AND b.posting_date between '{}' AND '{}'".format(start_date,end_date)
 
 	if filters.get("item_group"):
 		conditions += " AND a.parent_item_group in %(item_group)s"
@@ -356,7 +356,8 @@ def get_report_summary(data,filters):
 	hide_columns = filters.get("hide_columns")
 	report_summary=[]
 	if filters.parent_row_group==None:
-		report_summary =[{"label":"Total " + filters.row_group ,"value":len(data)}]
+		if not filters.is_ticket:
+			report_summary =[{"label":"Total " + filters.row_group ,"value":len(data)}]
 	
 	fields = get_report_field(filters)
 
