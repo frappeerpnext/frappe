@@ -1,5 +1,6 @@
 {
  "actions": [],
+ "allow_import": 1,
  "autoname": "autoincrement",
  "creation": "2022-08-30 00:55:36.228397",
  "doctype": "DocType",
@@ -18,7 +19,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-08-30 00:55:36.228397",
+ "modified": "2022-10-12 20:24:56.376369",
  "modified_by": "Administrator",
  "module": "Custom",
  "name": "Dates",
