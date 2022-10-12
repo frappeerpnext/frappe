@@ -278,8 +278,8 @@ def get_conditions(filters,group_filter=None):
 	if filters.get("market_segment"):
 		conditions += " AND b.market_segment in %(market_segment)s"
 
-	if filters.get("lead_source"):
-		conditions += " AND b.lead_source in %(lead_source)s"
+	if filters.get("business_source"):
+		conditions += " AND b.business_source in %(business_source)s"
 	
 	if filters.get("supplier_group"):
 		conditions += " AND (SELECT supplier_group FROM `tabSupplier` b WHERE b.name = a.supplier) in %(supplier_group)s"
@@ -332,7 +332,7 @@ def get_report_data(filters,parent_row_group=None,indent=0,group_filter=None):
 			{0}
 		GROUP BY 
 		{1} {2} {3}
-	""".format(get_conditions(filters,group_filter), row_group,item_code,groupdocstatus,normal_filter)
+	""".format(get_conditions(filters,group_filter), row_group,item_code,groupdocstatus,normal_filter)	
 	data = frappe.db.sql(sql,filters, as_dict=1)
 	return data
  
@@ -469,8 +469,18 @@ def get_row_groups():
 			"parent_row_group_filter_field":"row_group"
 		},
 		{
-			"fieldname":"coalesce(b.lead_source,'Not Set')",
+			"fieldname":"coalesce(b.business_source,'Not Set')",
 			"label":"Business Source",
+			"parent_row_group_filter_field":"row_group"
+		},
+		{
+			"fieldname":"coalesce(b.marketing_segment_type,'Not Set')",
+			"label":"Marketing Segment Type",
+			"parent_row_group_filter_field":"row_group"
+		},
+		{
+			"fieldname":"coalesce(b.business_source_type,'Not Set')",
+			"label":"Business Source Type",
 			"parent_row_group_filter_field":"row_group"
 		},
 		{

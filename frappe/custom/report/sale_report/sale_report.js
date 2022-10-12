@@ -31,6 +31,7 @@ frappe.query_reports["Sale Report"] = {
 			"fieldname":"start_date",
 			"label": __("Start Date"),
 			"fieldtype": "Date",
+			default:frappe.datetime.get_today(),
 			"hidden": 1,
 			"reqd": 1
 		},
@@ -38,6 +39,7 @@ frappe.query_reports["Sale Report"] = {
 			"fieldname":"end_date",
 			"label": __("End Date"),
 			"fieldtype": "Date",
+			default:frappe.datetime.get_today(),
 			"hidden": 1,
 			"reqd": 1
 		},
@@ -160,8 +162,8 @@ frappe.query_reports["Sale Report"] = {
 			}
 		},
 		{
-			fieldname: "lead_source",
-			label: "Lead Source",
+			fieldname: "business_source",
+			label: "Business Source",
 			"fieldtype": "MultiSelectList",
 			get_data: function(txt) {
 				return frappe.db.get_link_options('Lead Source', txt);
@@ -171,14 +173,14 @@ frappe.query_reports["Sale Report"] = {
 			"fieldname": "parent_row_group",
 			"label": __("Parent Group By"),
 			"fieldtype": "Select",
-			"options": "\nCategory\nProduct Group\nBrand\nCompany\nBranch\nSale Type\nCustomer\nCustomer Group\nMembership\nTerritory\nSupplier\nSupplier Group\nWarehouse\nDate\n\Month\nYear\nSale Invoice\nMarket Segment\nBusiness Source",
+			"options": "\nCategory\nProduct Group\nBrand\nCompany\nBranch\nSale Type\nCustomer\nCustomer Group\nMembership\nTerritory\nSupplier\nSupplier Group\nWarehouse\nDate\n\Month\nYear\nSale Invoice\nMarket Segment\nMarketing Segment Type\nBusiness Source\nBusiness Source Type",
 			
 		},
 		{
 			"fieldname": "row_group",
 			"label": __("Row Group By"),
 			"fieldtype": "Select",
-			"options": "Product\nCategory\nProduct Group\nBrand\nCompany\nBranch\nSale Type\nCustomer\nCustomer Group\nMembership\nTerritory\nSupplier\nSupplier Group\nWarehouse\nDate\n\Month\nYear\nSale Invoice\nMarket Segment\nBusiness Source",
+			"options": "Product\nCategory\nProduct Group\nBrand\nCompany\nBranch\nSale Type\nCustomer\nCustomer Group\nMembership\nTerritory\nSupplier\nSupplier Group\nWarehouse\nDate\n\Month\nYear\nSale Invoice\nMarket Segment\nMarketing Segment Type\nBusiness Source\nBusiness Source Type",
 			"default":"Category"
 		},
 		{
