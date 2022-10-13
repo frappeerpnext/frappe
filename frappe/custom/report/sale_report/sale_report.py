@@ -315,7 +315,7 @@ def get_report_data(filters,parent_row_group=None,indent=0,group_filter=None):
 	item_code = ""
 	groupdocstatus = ""
 	normal_filter = "b.docstatus in (1) AND"
-	if filters.row_group == "Product" or filters.parent_row_group == "Product":
+	if (indent > 0) and ( filters.row_group == "Product" or filters.parent_row_group == "Product"):
 		item_code = ",a.item_code"
 	for rf in report_fields:
 		#check sql variable if last character is , then remove it

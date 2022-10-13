@@ -203,6 +203,22 @@ frappe.query_reports["Sale Report"] = {
 			fieldtype: "Check"
 		},
 	],
+	"formatter": function(value, row, column, data, default_formatter) {
+	
+		value = default_formatter(value, row, column, data);
+
+		if (data && data.is_group==1) {
+			value = $(`<span>${value}</span>`);
+
+			var $value = $(value).css("font-weight", "bold");
+			
+
+			value = $value.wrap("<p></p>").parent().html();
+		}
+		
+		return value;
+	},
+	
 };
 
  
