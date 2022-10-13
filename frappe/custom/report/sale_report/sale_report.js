@@ -11,6 +11,12 @@ frappe.query_reports["Sale Report"] = {
 			default:frappe.defaults.get_user_default("Company"),
 		},
 		{
+			fieldname: "department",
+			label: "Department",
+			fieldtype: "Link",
+			options:"Department"
+		},
+		{
 			"fieldname":"filter_based_on",
 			"label": __("Filter Based On"),
 			"fieldtype": "Select",
