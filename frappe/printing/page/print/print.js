@@ -75,26 +75,26 @@ frappe.ui.form.PrintView = class {
 			{ icon: 'full-page' }
 		);
 
-		this.page.add_button(
-			__('PDF'),
-			() => {
-				window.open("http://webmonitor.inccloudserver.com:3344/ReportServer/Pages/ReportViewer.aspx?%2fLyYeanReport%2fQuoatation&rs:Command=Render&rs:Format=pdf");
-				//this.render_pdf()
-			},
-			{ icon: 'small-file' }
-		);
+		// this.page.add_button(
+		// 	__('PDF'),
+		// 	() => {
+		// 		window.open("http://webmonitor.inccloudserver.com:3344/ReportServer/Pages/ReportViewer.aspx?%2fLyYeanReport%2fQuoatation&rs:Command=Render&rs:Format=pdf");
+		// 		//this.render_pdf()
+		// 	},
+		// 	{ icon: 'small-file' }
+		// );
 
 	 
-		this.page.add_button(
-			__('Excel'),
-			() => {
+		// this.page.add_button(
+		// 	__('Excel'),
+		// 	() => {
 			
 				 
-				  window.open("http://webmonitor.inccloudserver.com:3344/ReportServer/Pages/ReportViewer.aspx?%2fLyYeanReport%2fQuoatation&rs:Command=Render&rs:Format=excel");
+		// 		  window.open("http://webmonitor.inccloudserver.com:3344/ReportServer/Pages/ReportViewer.aspx?%2fLyYeanReport%2fQuoatation&rs:Command=Render&rs:Format=excel");
 				 
-			},
-			{ icon: 'small-file' }
-		);
+		// 	},
+		// 	{ icon: 'small-file' }
+		// );
 
 		this.page.add_button(
 			__('Refresh'),
@@ -407,6 +407,11 @@ frappe.ui.form.PrintView = class {
 	}
 
 	get_language_options() {
+		return [
+			{"label":"English","value":"en"},
+			{"label":"ភាសាខ្មែរ","value":"km"},
+			{"label":"한국의","value":"ko"},
+		];
 		return frappe.get_languages();
 	}
 
