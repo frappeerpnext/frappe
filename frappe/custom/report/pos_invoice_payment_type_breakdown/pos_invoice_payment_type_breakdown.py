@@ -43,7 +43,7 @@ def get_report_data(filters):
 				),paid_amount AS (
 					SELECT 
 						a.mode_of_payment, 
-					SUM(a.amount) AS `payment_amount` 
+					SUM(a.amount+write_off_amount) AS `payment_amount` 
 					FROM 
 						`tabSales Invoice Payment` a 
 						inner join `tabSales Invoice` b on b.name = a.parent 
