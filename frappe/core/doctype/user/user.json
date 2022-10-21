@@ -40,6 +40,8 @@
   "allow_delete_bill",
   "allow_delete_order_item",
   "allow_item_discount",
+  "allow_view_booking",
+  "allow_issue_ticket",
   "column_break_31",
   "allow_reset_receipt_number_in_all_station",
   "allow_reset_receipt_number_in_current_station",
@@ -526,7 +528,6 @@
    "description": "Restrict user from this IP address only. Multiple IP addresses can be added by separating with commas. Also accepts partial IP addresses like (111.111.111)",
    "fieldname": "restrict_ip",
    "fieldtype": "Data",
-   "hidden": 1,
    "label": "Restrict IP",
    "permlevel": 1
   },
@@ -536,7 +537,6 @@
    "description": "If enabled,  user can login from any IP Address using Two Factor Auth, this can also be set for all users in System Settings",
    "fieldname": "bypass_restrict_ip_check_if_2fa_enabled",
    "fieldtype": "Check",
-   "hidden": 1,
    "label": "Bypass Restricted IP Address Check If Two Factor Auth Enabled"
   },
   {
@@ -824,6 +824,18 @@
   {
    "fieldname": "column_break_31",
    "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "allow_view_booking",
+   "fieldtype": "Check",
+   "label": "Allow View Booking"
+  },
+  {
+   "default": "0",
+   "fieldname": "allow_issue_ticket",
+   "fieldtype": "Check",
+   "label": "Allow Issue Ticket"
   }
  ],
  "icon": "fa fa-user",
@@ -886,7 +898,7 @@
    "link_fieldname": "user"
   }
  ],
- "modified": "2022-10-13 14:16:56.743510",
+ "modified": "2022-10-18 18:53:54.587470",
  "modified_by": "Administrator",
  "module": "Core",
  "name": "User",

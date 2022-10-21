@@ -12,3 +12,4 @@ Social
 Automation
 Event Streaming
 Report
+Standard Print Format

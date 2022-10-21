@@ -1,18 +1,18 @@
 frappe.ui.form.on("Note", {
 	refresh: function(frm) {
-		if (frm.doc.__islocal) {
-			frm.events.set_editable(frm, true);
-		} else {
-			if (!frm.doc.content) {
-				frm.doc.content = "<span></span>";
-			}
+		// if (frm.doc.__islocal) {
+		// 	frm.events.set_editable(frm, true);
+		// } else {
+		// 	if (!frm.doc.content) {
+		// 		frm.doc.content = "<span></span>";
+		// 	}
 
-			// toggle edit
-			frm.add_custom_button("Edit", function() {
-				frm.events.set_editable(frm, !frm.is_note_editable);
-			});
-			frm.events.set_editable(frm, false);
-		}
+		// 	// toggle edit
+		// 	frm.add_custom_button("Edit", function() {
+		// 		frm.events.set_editable(frm, !frm.is_note_editable);
+		// 	});
+		// 	frm.events.set_editable(frm, false);
+		// }
 	},
 	set_editable: function(frm, editable) {
 		// hide all fields other than content

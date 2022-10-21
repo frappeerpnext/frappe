@@ -18,6 +18,11 @@ def notify_sync(doc, event):
 	#settings = frappe.get_doc('System Settings')
 	#if not settings.disable_data_for_sync_notify:
 	notify_docs = ["Item","Item Group","Item Price","Customer","Customer Group" ,"User","POS Profile","Company","System Settings","Currency Exchange","Warehouse" ,"Membership Type","Tag","POS Config","POS Prices Rule",'Price List',"Comment"]
+
+	if frappe.db.exists("Module Def", {"module_name":"ePOS Restaurant"}):
+		notify_docs.append("POS Menu")
+		
+
 	"""called via hooks"""
 	if doc.doctype =="Comment" :
 		if doc.content:

@@ -442,7 +442,7 @@ def validate_ip_address(user):
 		bypass_restrict_ip_check = user_info.bypass_restrict_ip_check_if_2fa_enabled
 
 	for ip in ip_list:
-		if frappe.local.request_ip.startswith(ip) or bypass_restrict_ip_check:
+		if not frappe.local.request_ip.startswith(ip) or bypass_restrict_ip_check:
 			return
 
 	frappe.throw(_("Access not allowed from this IP Address"), frappe.AuthenticationError)

@@ -44,6 +44,9 @@ def execute(filters=None):
 
 def validate(filters):
 
+	if not filters.branch:
+		filters.branch = frappe.db.get_list("Branch",pluck='name')
+
 	if filters.start_date and filters.end_date:
 		if filters.start_date > filters.end_date:
 

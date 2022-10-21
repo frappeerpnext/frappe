@@ -40,6 +40,7 @@
    "depends_on": "public",
    "fieldname": "notify_on_login",
    "fieldtype": "Check",
+   "hidden": 1,
    "label": "Notify users with a popup when they log in"
   },
   {
@@ -49,18 +50,19 @@
    "description": "If enabled, users will be notified every time they login. If not enabled, users will only be notified once.",
    "fieldname": "notify_on_every_login",
    "fieldtype": "Check",
+   "hidden": 1,
    "label": "Notify Users On Every Login"
   },
   {
    "depends_on": "eval:doc.notify_on_login && doc.public",
    "fieldname": "expire_notification_on",
    "fieldtype": "Date",
+   "hidden": 1,
    "label": "Expire Notification On",
    "search_index": 1
   },
   {
    "bold": 1,
-   "description": "Help: To link to another record in the system, use \"/app/note/[Note Name]\" as the Link URL. (don't use \"http://\")",
    "fieldname": "content",
    "fieldtype": "Text Editor",
    "in_global_search": 1,
@@ -70,6 +72,7 @@
    "collapsible": 1,
    "fieldname": "seen_by_section",
    "fieldtype": "Section Break",
+   "hidden": 1,
    "label": "Seen By"
   },
   {
@@ -82,7 +85,7 @@
  "icon": "fa fa-file-text",
  "idx": 1,
  "links": [],
- "modified": "2021-09-18 10:57:51.352643",
+ "modified": "2022-10-20 08:47:53.558945",
  "modified_by": "Administrator",
  "module": "Desk",
  "name": "Note",
@@ -102,5 +105,6 @@
  "quick_entry": 1,
  "sort_field": "modified",
  "sort_order": "ASC",
+ "states": [],
  "track_changes": 1
 }
