@@ -21,7 +21,12 @@
   "pos_customer_display_thank_you_background",
   "limit_days_view_report",
   "customer_display_slideshow_section",
-  "customer_display_slideshow"
+  "customer_display_slideshow",
+  "aba_intergratoin_section",
+  "aba_api_url",
+  "aba_merchant_id",
+  "column_break_18",
+  "aba_api_key"
  ],
  "fields": [
   {
@@ -105,12 +110,36 @@
    "fieldname": "pos_home_page_banner",
    "fieldtype": "Attach Image",
    "label": "POS Home Page Banner"
+  },
+  {
+   "fieldname": "aba_intergratoin_section",
+   "fieldtype": "Section Break",
+   "label": "ABA Intergratoin"
+  },
+  {
+   "fieldname": "column_break_18",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "aba_api_url",
+   "fieldtype": "Data",
+   "label": "API Url"
+  },
+  {
+   "fieldname": "aba_merchant_id",
+   "fieldtype": "Data",
+   "label": "Merchant ID"
+  },
+  {
+   "fieldname": "aba_api_key",
+   "fieldtype": "Data",
+   "label": "API Key"
   }
  ],
  "image_field": "company_logo",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-10-10 11:05:12.078558",
+ "modified": "2022-10-25 08:49:18.003960",
  "modified_by": "Administrator",
  "module": "Custom",
  "name": "POS Config",
