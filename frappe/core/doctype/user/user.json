@@ -843,62 +843,12 @@
  "image_field": "user_image",
  "links": [
   {
-   "group": "Profile",
-   "link_doctype": "Contact",
-   "link_fieldname": "user"
-  },
-  {
-   "group": "Profile",
-   "link_doctype": "Blogger",
-   "link_fieldname": "user"
-  },
-  {
-   "group": "Logs",
-   "link_doctype": "Access Log",
-   "link_fieldname": "user"
-  },
-  {
    "group": "Logs",
    "link_doctype": "Activity Log",
    "link_fieldname": "user"
-  },
-  {
-   "group": "Logs",
-   "link_doctype": "Energy Point Log",
-   "link_fieldname": "user"
-  },
-  {
-   "group": "Logs",
-   "link_doctype": "Route History",
-   "link_fieldname": "user"
-  },
-  {
-   "group": "Settings",
-   "link_doctype": "User Permission",
-   "link_fieldname": "user"
-  },
-  {
-   "group": "Settings",
-   "link_doctype": "Document Follow",
-   "link_fieldname": "user"
-  },
-  {
-   "group": "Activity",
-   "link_doctype": "Communication",
-   "link_fieldname": "user"
-  },
-  {
-   "group": "Activity",
-   "link_doctype": "ToDo",
-   "link_fieldname": "allocated_to"
-  },
-  {
-   "group": "Integrations",
-   "link_doctype": "Token Cache",
-   "link_fieldname": "user"
   }
  ],
- "modified": "2022-10-18 18:53:54.587470",
+ "modified": "2022-10-25 12:10:08.808696",
  "modified_by": "Administrator",
  "module": "Core",
  "name": "User",
