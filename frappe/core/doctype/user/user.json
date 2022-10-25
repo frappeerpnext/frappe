@@ -179,7 +179,9 @@
    "fieldname": "send_welcome_email",
    "fieldtype": "Check",
    "hidden": 1,
-   "label": "Send Welcome Email"
+   "label": "Send Welcome Email",
+   "print_hide": 1,
+   "report_hide": 1
   },
   {
    "default": "0",
@@ -214,7 +216,8 @@
   {
    "fieldname": "time_zone",
    "fieldtype": "Select",
-   "label": "Time Zone"
+   "label": "Time Zone",
+   "print_hide": 1
   },
   {
    "description": "Get your globally recognized avatar from Gravatar.com",
@@ -239,13 +242,16 @@
    "fieldtype": "Link",
    "label": "Role Profile",
    "options": "Role Profile",
-   "permlevel": 1
+   "permlevel": 1,
+   "print_hide": 1,
+   "report_hide": 1
   },
   {
    "fieldname": "roles_html",
    "fieldtype": "HTML",
    "hidden": 1,
    "label": "Roles HTML",
+   "print_hide": 1,
    "read_only": 1
   },
   {
@@ -414,7 +420,9 @@
    "default": "1",
    "fieldname": "allowed_in_mentions",
    "fieldtype": "Check",
-   "label": "Allowed In Mentions"
+   "label": "Allowed In Mentions",
+   "print_hide": 1,
+   "report_hide": 1
   },
   {
    "fieldname": "email_signature",
@@ -427,7 +435,9 @@
    "fieldtype": "Table",
    "label": "User Emails",
    "options": "User Email",
-   "permlevel": 1
+   "permlevel": 1,
+   "print_hide": 1,
+   "report_hide": 1
   },
   {
    "collapsible": 1,
@@ -442,7 +452,9 @@
    "fieldname": "modules_html",
    "fieldtype": "HTML",
    "label": "Modules HTML",
-   "permlevel": 1
+   "permlevel": 1,
+   "print_hide": 1,
+   "report_hide": 1
   },
   {
    "fieldname": "block_modules",
@@ -450,13 +462,17 @@
    "hidden": 1,
    "label": "Block Modules",
    "options": "Block Module",
-   "permlevel": 1
+   "permlevel": 1,
+   "print_hide": 1,
+   "report_hide": 1
   },
   {
    "fieldname": "home_settings",
    "fieldtype": "Code",
    "hidden": 1,
-   "label": "Home Settings"
+   "label": "Home Settings",
+   "print_hide": 1,
+   "report_hide": 1
   },
   {
    "description": "These values will be automatically updated in transactions and also will be useful to restrict permissions for this user on transactions containing these values.",
@@ -579,7 +595,9 @@
    "fieldtype": "Text",
    "hidden": 1,
    "label": "Last Known Versions",
-   "read_only": 1
+   "print_hide": 1,
+   "read_only": 1,
+   "report_hide": 1
   },
   {
    "collapsible": 1,
@@ -588,13 +606,17 @@
    "fieldtype": "Section Break",
    "hidden": 1,
    "label": "Third Party Authentication",
-   "permlevel": 1
+   "permlevel": 1,
+   "print_hide": 1,
+   "report_hide": 1
   },
   {
    "fieldname": "social_logins",
    "fieldtype": "Table",
    "label": "Social Logins",
-   "options": "User Social Login"
+   "options": "User Social Login",
+   "print_hide": 1,
+   "report_hide": 1
   },
   {
    "collapsible": 1,
@@ -651,7 +673,9 @@
    "fieldname": "module_profile",
    "fieldtype": "Link",
    "label": "Module Profile",
-   "options": "Module Profile"
+   "options": "Module Profile",
+   "print_hide": 1,
+   "report_hide": 1
   },
   {
    "description": "Stores the datetime when the last reset password key was generated.",
@@ -848,7 +872,7 @@
    "link_fieldname": "user"
   }
  ],
- "modified": "2022-10-25 12:15:00.625486",
+ "modified": "2022-10-25 13:11:27.232394",
  "modified_by": "Administrator",
  "module": "Core",
  "name": "User",
@@ -879,7 +903,6 @@
    "select": 1
   }
  ],
- "quick_entry": 1,
  "route": "user",
  "search_fields": "full_name",
  "show_name_in_global_search": 1,
