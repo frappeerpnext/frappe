@@ -82,7 +82,13 @@ frappe.ui.form.on('User', {
 	},
 	refresh: function(frm) {
 		let doc = frm.doc;
-
+		
+		 
+		if(frappe.user.has_role("System Manager") || frappe.session.user=="Administrator" ){
+			frm.set_df_property('pos_setting_section', 'hidden', 0);
+		}else {
+			frm.set_df_property('pos_setting_section', 'hidden', 1);
+		}
 		if (frm.is_new()) {
 			frm.set_value("time_zone", frappe.sys_defaults.time_zone);
 		}
@@ -222,6 +228,8 @@ frappe.ui.form.on('User', {
 			}
 			frm.dirty();
 		}
+
+		
 
 	},
 	validate: function(frm) {
