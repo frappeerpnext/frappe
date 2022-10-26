@@ -27,7 +27,6 @@
   "module_profile",
   "pos_setting_section",
   "allow_login_to_pos",
-  "pos_password",
   "pos_synchronize_token",
   "allow_start_cashier_shift",
   "allow_close_cashier_shift",
@@ -72,6 +71,8 @@
   "last_reset_password_key_generated_on",
   "last_password_reset_date",
   "redirect_url",
+  "column_break_66",
+  "pos_password",
   "document_follow_notifications_section",
   "document_follow_notify",
   "document_follow_frequency",
@@ -728,7 +729,8 @@
   {
    "fieldname": "pos_setting_section",
    "fieldtype": "Section Break",
-   "label": "POS Setting"
+   "label": "POS Setting",
+   "permlevel": 1
   },
   {
    "default": "0",
@@ -861,6 +863,10 @@
    "fieldname": "allow_issue_ticket",
    "fieldtype": "Check",
    "label": "Allow Issue Ticket"
+  },
+  {
+   "fieldname": "column_break_66",
+   "fieldtype": "Column Break"
   }
  ],
  "icon": "fa fa-user",
@@ -873,7 +879,7 @@
    "link_fieldname": "user"
   }
  ],
- "modified": "2022-10-26 15:18:37.012982",
+ "modified": "2022-10-26 15:59:43.976071",
  "modified_by": "Administrator",
  "module": "Core",
  "name": "User",
