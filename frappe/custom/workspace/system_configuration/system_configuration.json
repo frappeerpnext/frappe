@@ -1,0 +1,44 @@
+{
+ "charts": [],
+ "content": "[{\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">System Configuration</span>\",\"col\":12}},{\"type\":\"spacer\",\"data\":{\"col\":12}},{\"type\":\"card\",\"data\":{\"card_name\":\"User and Permission\",\"col\":4}}]",
+ "creation": "2022-10-26 17:07:27.881624",
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 0,
+ "icon": "setting-gear",
+ "idx": 0,
+ "label": "System Configuration",
+ "links": [
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "User and Permission",
+   "link_count": 1,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Users",
+   "link_count": 0,
+   "link_to": "User",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  }
+ ],
+ "modified": "2022-10-26 17:08:31.797445",
+ "modified_by": "Administrator",
+ "module": "Custom",
+ "name": "System Configuration",
+ "owner": "Administrator",
+ "parent_page": "",
+ "public": 1,
+ "quick_lists": [],
+ "roles": [],
+ "sequence_id": 10.0,
+ "shortcuts": [],
+ "title": "System Configuration"
+}
