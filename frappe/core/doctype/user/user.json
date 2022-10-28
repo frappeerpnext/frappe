@@ -133,6 +133,7 @@
   {
    "fieldname": "email",
    "fieldtype": "Data",
+   "in_list_view": 1,
    "label": "Email",
    "no_copy": 1,
    "oldfieldname": "email",
@@ -143,6 +144,7 @@
   {
    "fieldname": "first_name",
    "fieldtype": "Data",
+   "in_list_view": 1,
    "label": "First Name",
    "oldfieldname": "first_name",
    "oldfieldtype": "Data",
@@ -518,7 +520,6 @@
    "fieldname": "user_type",
    "fieldtype": "Link",
    "hidden": 1,
-   "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "User Type",
    "oldfieldname": "user_type",
@@ -879,7 +880,7 @@
    "link_fieldname": "user"
   }
  ],
- "modified": "2022-10-26 16:32:19.891711",
+ "modified": "2022-10-26 17:48:19.305961",
  "modified_by": "Administrator",
  "module": "Core",
  "name": "User",
