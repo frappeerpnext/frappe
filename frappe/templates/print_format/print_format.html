@@ -17,6 +17,7 @@
 	{%- endif -%}
 </head>
 <body>
+	
 	{{ header or '' }}
 	{% for section in layout.sections %}
 	<div class="section {{ resolve_class({'page-break': section.page_break}) }}">

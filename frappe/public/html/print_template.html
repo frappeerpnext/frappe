@@ -10,10 +10,12 @@
 	<link href="{{ base_url }}{{ frappe.assets.bundled_asset('print.bundle.css', frappe.utils.is_rtl(lang)) }}" rel="stylesheet">
 	<style>
 		{{ print_css }}
+		
 	</style>
 </head>
 <body>
 	<div class="print-format-gutter">
+		
 		{% if print_settings.repeat_header_footer %}
 			<div id="footer-html" class="visible-pdf">
 				{% if print_settings.letter_head && print_settings.letter_head.footer %}
@@ -37,8 +39,18 @@
 				<div class="letter-head">{{ print_settings.letter_head.header }}</div>
 			</div>
 			{% endif %}
+		
 			{{ content }}
 		</div>
 	</div>
+	<script>
+		var filters =  document.getElementsByTagName("h6");
+		console.log(filters);
+		for (var i = 0; i < filters.length; i++) {
+		 
+			filters[i].remove();
+		}
+		 
+	</script>
 </body>
 </html>
