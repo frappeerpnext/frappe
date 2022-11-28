@@ -26,7 +26,10 @@
   "aba_api_url",
   "aba_merchant_id",
   "column_break_18",
-  "aba_api_key"
+  "aba_api_key",
+  "payment_gateway_return_url",
+  "check_transaction_url",
+  "transaction_list_url"
  ],
  "fields": [
   {
@@ -134,12 +137,27 @@
    "fieldname": "aba_api_key",
    "fieldtype": "Data",
    "label": "API Key"
+  },
+  {
+   "fieldname": "payment_gateway_return_url",
+   "fieldtype": "Data",
+   "label": "Payment Gateway Return Url (Base 64)"
+  },
+  {
+   "fieldname": "check_transaction_url",
+   "fieldtype": "Data",
+   "label": "Check Transaction Url"
+  },
+  {
+   "fieldname": "transaction_list_url",
+   "fieldtype": "Data",
+   "label": "Transaction List Url"
   }
  ],
  "image_field": "company_logo",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-10-25 08:49:18.003960",
+ "modified": "2022-11-23 15:27:09.176150",
  "modified_by": "Administrator",
  "module": "Custom",
  "name": "POS Config",
