@@ -48,6 +48,7 @@
   "allow_sale_return_transaction",
   "allow_view_close_receipt",
   "allow_view_shift_report",
+  "allow_pre_print_receipt",
   "sb1",
   "roles_html",
   "roles",
@@ -868,6 +869,12 @@
   {
    "fieldname": "column_break_66",
    "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "allow_pre_print_receipt",
+   "fieldtype": "Check",
+   "label": "Allow Pre Print Receipt"
   }
  ],
  "icon": "fa fa-user",
@@ -880,7 +887,7 @@
    "link_fieldname": "user"
   }
  ],
- "modified": "2022-10-26 17:48:19.305961",
+ "modified": "2022-12-07 16:32:43.531209",
  "modified_by": "Administrator",
  "module": "Core",
  "name": "User",
