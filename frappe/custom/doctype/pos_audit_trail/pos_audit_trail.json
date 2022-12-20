@@ -11,6 +11,7 @@
   "company",
   "pos_profile",
   "posting_date",
+  "pos_creation",
   "pos_user",
   "pos_opening_entry_id",
   "pos_opening_entry_number",
@@ -112,11 +113,16 @@
    "fieldtype": "Data",
    "in_list_view": 1,
    "label": "station_name"
+  },
+  {
+   "fieldname": "pos_creation",
+   "fieldtype": "Datetime",
+   "label": "POS Creation"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-08-03 09:43:54.234848",
+ "modified": "2022-12-19 09:33:00.503962",
  "modified_by": "Administrator",
  "module": "Custom",
  "name": "POS Audit Trail",
