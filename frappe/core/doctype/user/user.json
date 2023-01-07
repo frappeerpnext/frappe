@@ -815,13 +815,13 @@
    "label": "Allow item discount"
   },
   {
-   "default": "1",
+   "default": "0",
    "fieldname": "allow_reset_receipt_number_in_all_station",
    "fieldtype": "Check",
    "label": "Allow reset receipt number in all station"
   },
   {
-   "default": "1",
+   "default": "0",
    "fieldname": "allow_reset_receipt_number_in_current_station",
    "fieldtype": "Check",
    "label": "Allow reset receipt number in current station"
@@ -887,7 +887,7 @@
    "link_fieldname": "user"
   }
  ],
- "modified": "2022-12-07 16:32:43.531209",
+ "modified": "2022-12-27 14:16:33.570801",
  "modified_by": "Administrator",
  "module": "Core",
  "name": "User",

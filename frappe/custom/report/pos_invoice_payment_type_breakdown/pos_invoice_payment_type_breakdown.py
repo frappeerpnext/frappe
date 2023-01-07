@@ -16,50 +16,49 @@ def get_columns(filters):
 	return columns
 
 def get_report_data(filters):
+	branch = ""
+	if filters.branch : branch = " and b.branch in (" + get_list(filters,"branch") + ")"
 	check_amount = """SELECT 
-						count(a.mode_of_payment) as mode_of_payment,
-						SUM(if(a.mode_of_payment='Cash',1,0)) AS cash
+						1 has_cash
 						FROM 
 							`tabSales Invoice Payment` a 
 							inner join `tabSales Invoice` b on b.name = a.parent 
 						WHERE
-							b.posting_date between '{0}' and '{1}' and 
-							b.company = '{2}' and b.docstatus = 1 and b.branch = case when '{3}' = 'None' then b.branch else '{3}' end
-						GROUP BY a.parent""".format(filters.start_date,filters.end_date,filters.company,filters.branch)
+							b.posting_date between '{0}' and '{1}' and a.mode_of_payment='Cash' and
+							b.company = '{2}' and b.docstatus = 1 {3}
+						GROUP BY a.mode_of_payment""".format(filters.start_date,filters.end_date,filters.company,branch)
 	ch_data = frappe.db.sql(check_amount,as_dict=1)
 	union=""
-	if(len(ch_data)>0) : 
-		if(ch_data[0]["mode_of_payment"] > 0 and ch_data[0]["cash"] == 0 )  : union = """UNION ALL SELECT 'Cash' mode_of_payment,0 payment_amount"""
+	if(len(ch_data)<=0) : union = """UNION ALL SELECT 'Cash' mode_of_payment,0 payment_amount"""
 	sql = """
 				WITH change_amount AS (
 					SELECT 
 					'Cash' AS mode_of_payment, 
 					SUM(change_amount) AS change_amount
-				FROM `tabSales Invoice`  
+				FROM `tabPOS Invoice`  b
 				where
-				docstatus = 1 AND 
-				posting_date between '{0}' and '{1}' and 
-				company = '{2}' and branch = case when '{4}' = 'None' then branch else '{4}' end
+				b.docstatus = 1 AND 
+				b.posting_date between '{0}' and '{1}' and 
+				company = '{2}' {4}
 				),paid_amount AS (
 					SELECT 
 						a.mode_of_payment, 
 					SUM(a.amount+write_off_amount) AS `payment_amount` 
 					FROM 
 						`tabSales Invoice Payment` a 
-						inner join `tabSales Invoice` b on b.name = a.parent 
+						inner join `tabPOS Invoice` b on b.name = a.parent 
 					WHERE
 						b.posting_date between '{0}' and '{1}' and 
 						b.company = '{2}' and 
-						b.docstatus = 1 and b.branch = case when '{4}' = 'None' then b.branch else '{4}' end
+						b.docstatus = 1 {4}
 					GROUP BY mode_of_payment
 				), opening_id as(SELECT 
 					pos_opening_entry_id
-					FROM `tabSales Invoice` a
-					INNER JOIN `tabPOS Invoice` b ON b.consolidated_invoice = a.name
+					FROM `tabPOS Invoice` b
 					where
-						a.docstatus = 1 AND 
-						a.posting_date between '{0}' and '{1}' and 
-						a.company = '{2}' AND a.branch = case when '{4}' = 'None' then a.branch else '{4}' end
+						b.docstatus = 1 AND 
+						b.posting_date between '{0}' and '{1}' and 
+						b.company = '{2}' {4}
 					group by 
 						pos_opening_entry_id)
 					,closing_amount AS(
@@ -98,6 +97,10 @@ def get_report_data(filters):
 				left JOIN change_amount b ON b.mode_of_payment = a.mode_of_payment
 				left join closing_amount c on c.mode_of_payment = a.mode_of_payment
 				LEFT JOIN cash_percent d ON d.mode_of_payment = a.mode_of_payment
-				""".format(filters.start_date,filters.end_date,filters.company,union,filters.branch)
+				""".format(filters.start_date,filters.end_date,filters.company,union,branch)
 	data = frappe.db.sql(sql,as_dict=1)
+	return data
+
+def get_list(filters,name):
+	data = ','.join("'{0}'".format(x) for x in filters.get(name))
 	return data
