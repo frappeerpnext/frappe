@@ -110,6 +110,8 @@ def get_columns(filters):
 	columns.append({'fieldname':'row_group','label':filters.row_group,'fieldtype':'Data','align':'left','width':250})
 	if filters.row_group == "Product":
 			columns.append({"label":"Item Code","fieldname":"item_code","fieldtype":"Data","align":"left",'width':130})
+	elif filters.row_group == "Sale Invoice":
+			columns.append({"label":"Seller","fieldname":"sales_partner","fieldtype":"Data","align":"left",'width':130})
 	hide_columns = filters.get("hide_columns")
 	 
 	if filters.column_group !="None" and filters.row_group not in ["Date","Month","Year"]:
@@ -297,10 +299,11 @@ def get_report_data(filters,parent_row_group=None,indent=0,group_filter=None):
 					sql = sql +	"SUM(if(b.posting_date between '{}' AND '{}',{},0)) as '{}_{}',".format(f["start_date"],f["end_date"],rf["sql_expression"],f["fieldname"],rf["fieldname"])
 			#end for
 	# total last column
-	item_code = ""
-	if filters.parent_row_group == None and filters.row_group == "Product" : is_group=1
+	extra_group = ""
 	if filters.row_group == "Product" or filters.parent_row_group == "Product":
-		item_code = ",a.item_code"
+		extra_group = ",a.item_code"
+	elif filters.row_group == "Sale Invoice" or filters.parent_row_group == "Sale Invoice":
+		extra_group = ",b.sales_partner"
 	for rf in report_fields:
 		#check sql variable if last character is , then remove it
 		sql = strip(sql)
@@ -319,7 +322,7 @@ def get_report_data(filters,parent_row_group=None,indent=0,group_filter=None):
 			{0}
 		GROUP BY 
 		{1} {2}
-	""".format(get_conditions(filters,group_filter), row_group,item_code)
+	""".format(get_conditions(filters,group_filter), row_group,extra_group)
 	data = frappe.db.sql(sql,filters, as_dict=1)
 	return data
  
@@ -418,14 +421,16 @@ def get_report_chart(filters,data):
  
 
 def get_report_field(filters):
-	if filters.parent_row_group == "Sale Invoice" or filters.row_group == "Sale Invoice":
+	if filters.parent_row_group == "Sale Invoice" or filters.row_group == "Sale Invoice" or filters.parent_row_group == "Sale Partner" or filters.row_group == "Sale Partner" :
 		return [
 			{"label":"Quantity","short_label":"Qty", "fieldname":"qty","fieldtype":"Float","indicator":"Grey","precision":2, "align":"center","chart_color":"#FF8A65","sql_expression":"a.qty"},
 			{"label":"Sub Total", "short_label":"Sub To.", "fieldname":"sub_total","fieldtype":"Currency","indicator":"Grey","precision":None, "align":"right","chart_color":"#dd5574","sql_expression":"a.rate*a.qty+a.discount_amount*a.qty"},
 			{"label":"Total Discount", "short_label":"Disc.", "fieldname":"discount_amount","fieldtype":"Currency","indicator":"Grey","precision":None, "align":"right","chart_color":"#dd5574","sql_expression":"coalesce(a.discount_amount,0)*a.qty"},
 			{"label":"Cost","short_label":"Cost", "fieldname":"cost","fieldtype":"Currency","indicator":"Blue","precision":None, "align":"right","chart_color":"#1976D2","sql_expression":"a.qty*a.incoming_rate*a.conversion_factor"},
 			{"label":"Amount", "short_label":"Amt", "fieldname":"amount","fieldtype":"Currency","indicator":"Red","precision":None, "align":"right","chart_color":"#2E7D32","sql_expression":"a.net_amount"},
-			{"label":"Profit", "short_label":"Prof.", "fieldname":"profit","fieldtype":"Currency","indicator":"Green","precision":None, "align":"right","chart_color":"#FF3D00","sql_expression":"a.net_amount - (a.qty*a.incoming_rate*a.conversion_factor)"}
+			{"label":"Profit", "short_label":"Prof.", "fieldname":"profit","fieldtype":"Currency","indicator":"Green","precision":None, "align":"right","chart_color":"#FF3D00","sql_expression":"a.net_amount - (a.qty*a.incoming_rate*a.conversion_factor)"},
+			{"label":"Commission", "short_label":"Comm.", "fieldname":"total_commission","fieldtype":"Currency","indicator":"Green","precision":None, "align":"right","chart_color":"#FF3D00","sql_expression":"b.total_commission/b.total_qty"},
+			{"label":"Profit After Commission", "short_label":"PAF.", "fieldname":"profit_after_commission","fieldtype":"Currency","indicator":"Green","precision":None, "align":"right","chart_color":"#FF3D00","sql_expression":"a.net_amount - (a.qty*a.incoming_rate*a.conversion_factor) - b.total_commission/b.total_qty"}
 		]
 	else:
 		return [
@@ -448,6 +453,11 @@ def get_row_groups():
 		{
 			"fieldname":"a.parent",
 			"label":"Sale Invoice",
+			"parent_row_group_filter_field":"row_group"
+		},
+		{
+			"fieldname":"b.sales_partner",
+			"label":"Sale Partner",
 			"parent_row_group_filter_field":"row_group"
 		},
 		{
