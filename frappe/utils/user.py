@@ -74,7 +74,7 @@ class UserPermissions:
 	def build_doctype_map(self):
 		"""build map of special doctype properties"""
 		self.doctype_map = {}
-ss
+
 		active_domains = frappe.get_active_domains()
 		all_doctypes = frappe.get_all(
 			"DocType",
