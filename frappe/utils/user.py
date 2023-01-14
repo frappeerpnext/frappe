@@ -69,11 +69,12 @@ class UserPermissions:
 		if not self.roles:
 			self.roles = get_roles(self.name)
 		return self.roles
+		
 
 	def build_doctype_map(self):
 		"""build map of special doctype properties"""
 		self.doctype_map = {}
-
+ss
 		active_domains = frappe.get_active_domains()
 		all_doctypes = frappe.get_all(
 			"DocType",
@@ -87,6 +88,8 @@ class UserPermissions:
 				"restrict_to_domain",
 			],
 		)
+
+
 
 		for dt in all_doctypes:
 			if not dt.restrict_to_domain or (dt.restrict_to_domain in active_domains):

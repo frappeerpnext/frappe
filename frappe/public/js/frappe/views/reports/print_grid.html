@@ -35,10 +35,15 @@
 				<span> {{ row._index + 1 }} </span>
 			</td>
 			{% for col in columns %}
-				{% if col.name && col._id !== "_check" %}
-
 					{% var value = col.fieldname ? row[col.fieldname] : row[col.id]; %}
-
+					{%if col.name == "Image"%}
+						{% if ( !value ) { %}
+							<td width="150px"><img style="height: 100px;" src="/private/files/noimage.jpg"/></td>
+						{% } else { %}
+							<td width="150px"><img style="height: 100px;" src="{%= value %}"/></td>
+						{% } %}
+					{% endif %}
+				{% if col.name && col._id !== "_check" && col.name !== "Image" %}
 					<td {% if row.bold == 1 %} style="font-weight: bold" {% endif %}>
 						<span {% if col._index == 0 %} style="padding-left: {%= cint(row.indent) * 2 %}em" {% endif %}>
 							{% format_data = row.is_total_row && ["Currency", "Float"].includes(col.fieldtype) ? data[0] : row %}
