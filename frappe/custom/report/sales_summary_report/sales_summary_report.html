@@ -1,0 +1,200 @@
+<h2 class="text-center report-title">{%= __("POS Sale Report Summary") %}</h2>
+<h5 class="text-left">
+	{% 
+        if (filters.company) { %}
+        <span class="text-right text-muted">
+            Company:
+        </span>
+             {%= filters.company %}
+        {% }
+    %}
+
+
+    <span class="text-right text-muted">
+        ,Date:
+    </span>
+    {%= frappe.datetime.str_to_user(filters.start_date)  %} To {%= frappe.datetime.str_to_user(filters.end_date) %}
+
+    {%  
+        if (filters.branch.length>0) { %}
+            <span class="text-right text-muted">
+                ,Branch:
+            </span>
+             
+            {% for ( var i = 0; i < filters.branch.length; i++ ) { %}
+                <b>
+                    {%= filters.branch[i]%}       
+                </b>
+                {%
+                    if (filters.branch.length != i+1) { %}
+                        ,
+                    {% }
+                %}
+                
+            {% } %}
+	    {% }
+        
+    %}
+    
+    {%  
+        if (filters.price_list.length>0) { %}
+            <span class="text-right text-muted">
+                ,Sale Type:
+            </span>
+             
+            {% for ( var i = 0; i < filters.price_list.length; i++ ) { %}
+                <b>
+                    {%= filters.price_list[i]%}       
+                </b>
+                {%
+                    if (filters.price_list.length != i+1) { %}
+                        ,
+                    {% }
+                %}
+                
+            {% } %}
+	    {% }
+        
+    %}
+   
+    {%  
+        if (filters.item_group.length>0) { %}
+            <span class="text-right text-muted">
+                ,Item Group:
+            </span>
+            
+            {% for ( var i = 0; i < filters.item_group.length; i++ ) { %}
+                <b>
+                    {%= filters.item_group[i]%}       
+                </b>    
+            
+                {%
+                    
+                    if (filters.item_group.length != i+1) { %}
+                        ,
+                    {% }
+                %}
+                
+            {% } %}
+	    {% }
+        
+    %}
+    {%  
+        if (filters.item_category.length>0) { %}
+            <span class="text-right text-muted">
+                ,Item Category:
+            </span>
+            
+            {% for ( var i = 0; i < filters.item_category.length; i++ ) { %}
+                <b>
+                    {%= filters.item_category[i]%}       
+                </b>    
+            
+                {%
+                    
+                    if (filters.item_category.length != i+1) { %}
+                        ,
+                    {% }
+                %}
+                
+            {% } %}
+	    {% }
+        
+    %}
+    {%  
+        if (filters.customer_group.length>0) { %}
+            <span class="text-right text-muted">
+                ,Customer Group:
+            </span>
+            
+            {% for ( var i = 0; i < filters.customer_group.length; i++ ) { %}
+                <b>
+                    {%= filters.customer_group[i]%}       
+                </b>    
+            
+                {%
+                    if (filters.customer_group.length != i+1) { %}
+                        ,
+                    {% }
+                %}
+                
+            {% } %}
+	    {% }
+        
+    %}
+</h5>
+<hr>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th class="text-center" style="width: 30px;">Nº</th>
+            {% for(var i=0, l=report.columns.length; i<l; i++) { %}
+                <th class="text-{%= report.columns[i].align %}">{%= __(report.columns[i].label) %}</th>
+            {% } %}
+            
+
+            
+        </tr>
+    </thead>
+    <tbody>
+        
+            {% for(var i=0, l=data.length; i<l; i++) { %}
+                {% var style = ``%}
+                {% if(i==l-1) { %}
+                    {% style = `style="font-weight:800"`%}
+                {% } %}
+                <tr {%= style %}>
+                        
+                        {% if(i+1==l) { %}
+                            {% colspan = 2%}
+                        {% }%}
+                        <td class="text-center">
+                            {% if(i+1 != l) { %}
+                                {%= i + 1 %}
+                            {% }%}
+                            
+                        </td>
+                        {% for(var c=0, cl=report.columns.length; c<cl; c++) { %}
+                            
+                                <td class="text-{%= report.columns[c]['align'] %}">
+                                    {% if(report.columns[c]["fieldname"] ==  "row_group") { %}
+                                    
+                                        <!-- Put Total Label -->
+                                        {% if(data[i][report.columns[c]["fieldname"]]) { %}
+                                            {%= __(data[i][report.columns[c]["fieldname"]])%}
+                                        {% } else { %}
+                                            {%= __("Total")%}
+                                        {% } %}
+                                    {% } else { %}
+                                        {% if(report.columns[c]["fieldtype"] ==  "Currency") { %}
+                                            {%= __(format_currency(data[i][report.columns[c]["fieldname"]]) ) %}
+                                        {% } else { %}
+                                            {%= __(format_number(data[i][report.columns[c]["fieldname"]])) %}
+                                        {% } %}
+                                    {% } %}
+                                </td>
+                        {% } %}
+                </tr>
+            {% } %}
+    </tbody>
+</table>
+<div>
+    {%= frappe.boot.letter_heads[frappe.defaults.get_default("letter_head")].footer %}
+</div>
+<p class="text-right text-muted">
+    Printed by {%= frappe.user.name%} On {%= frappe.datetime.str_to_user(frappe.datetime.get_datetime_as_string()) %}
+</p>
+
+<style media="print">
+    .print-format {
+        padding: 2mm;
+        font-size: 8.0pt !important;
+    }
+    .print-format .table-bordered td, .print-format .table-bordered th{
+        border: 1px solid #c3c3c3!important;
+    }
+    .report-title{
+        font-weight: 600!important;
+    }
+    
+</style>

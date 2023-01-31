@@ -296,7 +296,6 @@ frappe.ui.form.on('User', {
 	}
 });
 
-
 frappe.ui.form.on('User Email', {
 	email_account(frm, cdt, cdn) {
 		let child_row = locals[cdt][cdn];

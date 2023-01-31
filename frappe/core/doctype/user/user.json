@@ -49,6 +49,7 @@
   "allow_view_close_receipt",
   "allow_view_shift_report",
   "allow_pre_print_receipt",
+  "allow_add_foc_to_sale_item",
   "sb1",
   "roles_html",
   "roles",
@@ -875,6 +876,12 @@
    "fieldname": "allow_pre_print_receipt",
    "fieldtype": "Check",
    "label": "Allow Pre Print Receipt"
+  },
+  {
+   "default": "0",
+   "fieldname": "allow_add_foc_to_sale_item",
+   "fieldtype": "Check",
+   "label": "Allow Add FOC To Sale Item"
   }
  ],
  "icon": "fa fa-user",
@@ -887,7 +894,7 @@
    "link_fieldname": "user"
   }
  ],
- "modified": "2022-12-27 14:16:33.570801",
+ "modified": "2023-01-28 09:45:47.669261",
  "modified_by": "Administrator",
  "module": "Core",
  "name": "User",

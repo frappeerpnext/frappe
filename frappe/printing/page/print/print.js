@@ -101,13 +101,13 @@ frappe.ui.form.PrintView = class {
 			() => this.refresh_print_format(),
 			{ icon: 'refresh' }
 		);
-
 		this.page.add_action_icon("file", () => {
 			this.go_to_form_view();
 		}, '', __("Form"));
 	}
 
 	setup_sidebar() {
+		
 		this.sidebar = this.page.sidebar.addClass('print-preview-sidebar');
 
 		this.print_sel = this.add_sidebar_item(
@@ -137,7 +137,7 @@ frappe.ui.form.PrintView = class {
 				},
 			},
 		).$input;
-
+		
 		this.letterhead_selector_df = this.add_sidebar_item(
 			{
 				fieldtype: 'Autocomplete',
