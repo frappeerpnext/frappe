@@ -99,6 +99,14 @@ frappe.query_reports["Sales Summary Report"] = {
 			}
 		},
 		{
+			"fieldname": "warehouse",
+			"label": __("Warehouse"),
+			"fieldtype": "MultiSelectList",
+			get_data: function(txt) {
+				return frappe.db.get_link_options('Warehouse', txt,{"is_group":0});
+			}
+		},
+		{
 			"fieldname": "parent_row_group",
 			"label": __("Parent Group By"),
 			"fieldtype": "Select",
@@ -144,10 +152,17 @@ frappe.query_reports["Sales Summary Report"] = {
 			"default":"bar"
 		},
 		{
+			"fieldname": "status",
+			"label": __("Status"),
+			"fieldtype": "Select",
+			"options": "\nDraft\nReturn\nCredit Note Issued\nConsolidated\nSubmitted\nPaid\nUnpaid\nUnpaid and Discounted\nOverdue and Discounted\nOverdue\nCancelled",
+		},
+		{
 			fieldname: "include_cancelled",
 			label: "Include Cancelled",
 			fieldtype: "Check"
 		},
+	
 	],
 	"formatter": function(value, row, column, data, default_formatter) {
 	
