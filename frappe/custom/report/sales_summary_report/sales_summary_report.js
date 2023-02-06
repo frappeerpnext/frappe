@@ -154,8 +154,23 @@ frappe.query_reports["Sales Summary Report"] = {
 		{
 			"fieldname": "status",
 			"label": __("Status"),
-			"fieldtype": "Select",
-			"options": "\nDraft\nReturn\nCredit Note Issued\nConsolidated\nSubmitted\nPaid\nUnpaid\nUnpaid and Discounted\nOverdue and Discounted\nOverdue\nCancelled",
+			"fieldtype": "MultiSelectList",
+			get_data: function(txt) {
+				return [
+					{"value":"Draft","description":"Draft"},
+					{"value":"Return","description":"Return"},
+					{"value":"Credit Note Issued","description":"Credit Note Issued"},
+					{"value":"Consolidated","description":"Consolidated"},
+					{"value":"Submitted","description":"Submitted"},
+					{"value":"Paid","description":"Profit"},
+					{"value":"Unpaid","description":"Unpaid"},
+					{"value":"Unpaid and Discounted","description":"Unpaid and Discounted"},
+					{"value":"Overdue and Discounted","description":"Overdue and Discounted"},
+					{"value":"Overdue","description":"Overdue"},
+					{"value":"Cancelled","description":"Cancelled"},
+					{"value":"Internal Transfer","description":"Internal Transfer"},
+				]
+			},
 		},
 		{
 			fieldname: "include_cancelled",
