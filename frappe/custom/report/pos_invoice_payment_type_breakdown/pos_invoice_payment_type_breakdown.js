@@ -25,10 +25,8 @@ frappe.query_reports["POS Invoice Payment Type Breakdown"] = {
 		{
 			fieldname: "branch",
 			label: "Branch",
-			"fieldtype": "MultiSelectList",
-			get_data: function(txt) {
-				return frappe.db.get_link_options('Branch', txt);
-			}
+			fieldtype: "Link",
+			options:"Branch",
 		},
 		{
 			fieldname: "start_date",

@@ -16,91 +16,73 @@ def get_columns(filters):
 	return columns
 
 def get_report_data(filters):
-	branch = ""
-	if filters.branch : branch = " and b.branch in (" + get_list(filters,"branch") + ")"
-	check_amount = """SELECT 
-						1 has_cash
-						FROM 
-							`tabSales Invoice Payment` a 
-							inner join `tabSales Invoice` b on b.name = a.parent 
-						WHERE
-							b.posting_date between '{0}' and '{1}' and a.mode_of_payment='Cash' and
-							b.company = '{2}' and b.docstatus = 1 {3}
-						GROUP BY a.mode_of_payment""".format(filters.start_date,filters.end_date,filters.company,branch)
-	ch_data = frappe.db.sql(check_amount,as_dict=1)
-	union=""
-	if(len(ch_data)<=0) : union = """UNION ALL SELECT 'Cash' mode_of_payment,0 payment_amount"""
 	sql = """
-				WITH change_amount AS (
-					SELECT 
-					'Cash' AS mode_of_payment, 
-					SUM(change_amount) AS change_amount
-				FROM `tabPOS Invoice`  b
-				where
-				b.docstatus = 1 AND 
-				b.posting_date between '{0}' and '{1}' and 
-				company = '{2}' {4}
-				),paid_amount AS (
-					SELECT 
-						a.mode_of_payment, 
-					SUM(a.amount+write_off_amount) AS `payment_amount` 
-					FROM 
-						`tabSales Invoice Payment` a 
-						inner join `tabPOS Invoice` b on b.name = a.parent 
-					WHERE
-						b.posting_date between '{0}' and '{1}' and 
-						b.company = '{2}' and 
-						b.docstatus = 1 {4}
-					GROUP BY mode_of_payment
-				), opening_id as(SELECT 
-					pos_opening_entry_id
-					FROM `tabPOS Invoice` b
-					where
-						b.docstatus = 1 AND 
-						b.posting_date between '{0}' and '{1}' and 
-						b.company = '{2}' {4}
-					group by 
-						pos_opening_entry_id)
-					,closing_amount AS(
-					SELECT 
-						b.mode_of_payment,
-						SUM(b.closing_amount-b.opening_amount) closing_amount
-					FROM  `tabPOS Closing Entry` a
-					INNER JOIN `tabPOS Closing Entry Detail` b ON b.parent = a.name
-					WHERE a.pos_opening_entry_id IN(SELECT * FROM opening_id)
-					GROUP BY 
-						b.mode_of_payment)
-				,total_amount AS(
-					select
-					sum(a.payment_amount - coalesce(change_amount,0)) amount
-					FROM paid_amount a
-					left JOIN change_amount b ON b.mode_of_payment = a.mode_of_payment
-					WHERE a.mode_of_payment IN ('Cash','Cash KHR'))
-				,cash_percent AS(	
-					select
-					a.mode_of_payment,
-					if(a.mode_of_payment = 'Cash' OR a.mode_of_payment = 'Cash KHR',((a.payment_amount - coalesce(change_amount,0))/c.amount),1) percent
-					FROM paid_amount a
-					left JOIN change_amount b ON b.mode_of_payment = a.mode_of_payment
-					LEFT JOIN total_amount c ON 1=1)
+				WITH pos_opening_entry_id AS( 
 				SELECT 
-				a.mode_of_payment, 
-				a.payment_amount - IFNULL(b.change_amount,0) AS 'payment_amount',
-				(if(a.mode_of_payment = 'Cash KHR',(select closing_amount FROM closing_amount WHERE mode_of_payment = 'Cash'),c.closing_amount) * d.percent) closing_amount,
-				(if(a.mode_of_payment = 'Cash KHR',(select coalesce(closing_amount,0) FROM closing_amount WHERE mode_of_payment = 'Cash'),coalesce(c.closing_amount,0)) * coalesce(d.percent,0)) + coalesce(b.change_amount,0) - coalesce(a.payment_amount,0) different_amount
-				FROM( select
-				a.mode_of_payment, 
-				a.payment_amount 
-				FROM  paid_amount a
-				{3}
-				)a 
-				left JOIN change_amount b ON b.mode_of_payment = a.mode_of_payment
-				left join closing_amount c on c.mode_of_payment = a.mode_of_payment
-				LEFT JOIN cash_percent d ON d.mode_of_payment = a.mode_of_payment
-				""".format(filters.start_date,filters.end_date,filters.company,union,branch)
-	data = frappe.db.sql(sql,as_dict=1)
-	return data
+				pos_opening_entry_id 
+				FROM `tabPOS Closing Entry` 
+				WHERE posting_date between '{0}' and '{1}' and 
+				company = '{2}')
 
-def get_list(filters,name):
-	data = ','.join("'{0}'".format(x) for x in filters.get(name))
+				, change_amount AS(
+				SELECT 
+				'Cash' mode_of_payment,
+				sum(change_amount) change_amount
+				FROM `tabPOS Invoice` 
+				WHERE pos_opening_entry_id IN (SELECT * FROM pos_opening_entry_id) AND docstatus=1
+				and branch = case when '{3}' = 'None' then branch else '{3}' end AND consolidated_invoice IS not null)
+
+				, set_cash AS(SELECT 'Cash' AS mode_of_payment,0 AS total_amount)
+
+				, paid_amount AS(
+				SELECT 
+				mode_of_payment,
+				sum(amount) total_amount
+				FROM `tabSales Invoice Payment` a
+				INNER JOIN `tabPOS Invoice` b ON b.name = a.parent
+				WHERE b.pos_opening_entry_id IN (SELECT * FROM pos_opening_entry_id) AND b.docstatus=1
+				and branch = case when '{3}' = 'None' then branch else '{3}' end AND b.consolidated_invoice IS not null
+				GROUP BY a.mode_of_payment)
+				
+				, payment_entry AS(
+				SELECT 
+				c.mode_of_payment,
+				SUM(allocated_amount) total_amount
+				FROM `tabSales Invoice` a
+				INNER JOIN `tabPayment Entry Reference` b ON b.reference_name = a.name
+				INNER JOIN `tabPayment Entry` c ON c.name = b.parent
+				WHERE a.posting_date BETWEEN '{0}' and '{1}' and a.company = '{2}'
+				and a.branch = case when '{3}' = 'None' then a.branch else '{3}' end
+				GROUP BY c.mode_of_payment
+				)
+
+				,sale_invoice as(
+				SELECT 
+				a.mode_of_payment,
+				SUM(amount) total_amount
+				FROM `tabSales Invoice Payment` a
+				INNER JOIN `tabSales Invoice` b ON b.name = a.parent
+				WHERE b.posting_date BETWEEN '{0}' and '{1}' and b.company = '{2}' AND id IS null
+				and b.branch = case when '{3}' = 'None' then b.branch else '{3}' end
+				AND parenttype='Sales Invoice' AND b.status='Paid' AND b.docstatus=1 AND b.is_consolidated=0
+				)
+
+				, payment AS(
+				SELECT mode_of_payment,SUM(total_amount) total_amount FROM(
+				select * from sale_invoice
+				union all
+				SELECT * FROM payment_entry
+				UNION all
+				SELECT * FROM set_cash
+				UNION all
+				SELECT * FROM paid_amount) a
+				GROUP BY mode_of_payment)
+
+				SELECT 
+				a.mode_of_payment,
+				total_amount - coalesce(change_amount,0) payment_amount
+				FROM payment a
+				LEFT JOIN change_amount b ON b.mode_of_payment = a.mode_of_payment
+				""".format(filters.start_date,filters.end_date,filters.company,filters.branch)
+	data = frappe.db.sql(sql,as_dict=1)
 	return data
