@@ -34,6 +34,8 @@
   "sec_backup_limit",
   "backup_limit",
   "encrypt_backup",
+  "pos_backup_column",
+  "pos_backup_api_url",
   "background_workers",
   "enable_scheduler",
   "dormant_days",
@@ -85,7 +87,13 @@
   "max_auto_email_report_per_user",
   "system_updates_section",
   "disable_system_update_notification",
-  "disable_change_log_notification"
+  "disable_change_log_notification",
+  "ftp_setting_section",
+  "ftp_url",
+  "column_break_86",
+  "ftp_user",
+  "column_break_88",
+  "ftp_password"
  ],
  "fields": [
   {
@@ -585,13 +593,52 @@
    "fieldname": "disable_data_for_sync_notify",
    "fieldtype": "Check",
    "label": "Disable Data For Sync Notify"
+  },
+  {
+   "fieldname": "pos_backup_column",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "http://192.168.10.29:5224/api/sync/posbackup",
+   "fieldname": "pos_backup_api_url",
+   "fieldtype": "Data",
+   "label": "POS Backup API URL"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "ftp_setting_section",
+   "fieldtype": "Section Break",
+   "label": "FTP Setting"
+  },
+  {
+   "fieldname": "ftp_url",
+   "fieldtype": "Data",
+   "label": "Url"
+  },
+  {
+   "fieldname": "ftp_user",
+   "fieldtype": "Data",
+   "label": "User"
+  },
+  {
+   "fieldname": "ftp_password",
+   "fieldtype": "Data",
+   "label": "Password"
+  },
+  {
+   "fieldname": "column_break_86",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_88",
+   "fieldtype": "Column Break"
   }
  ],
  "icon": "fa fa-cog",
  "image_field": "system_logo",
  "issingle": 1,
  "links": [],
- "modified": "2022-08-13 11:14:11.676284",
+ "modified": "2023-02-09 10:41:50.822300",
  "modified_by": "Administrator",
  "module": "Core",
  "name": "System Settings",
