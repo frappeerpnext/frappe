@@ -3,7 +3,6 @@
 
 import GridRow from "./grid_row";
 import GridPagination from './grid_pagination';
-
 frappe.ui.form.get_open_grid_form = function () {
 	return $(".grid-row-open").data("grid_row");
 }
@@ -535,7 +534,7 @@ export default class Grid {
 
 		for (const field in this.filter) {
 			all_data = all_data.filter(data => {
-				let {df, value} = this.filter[field];
+				let { df, value } = this.filter[field];
 				return this.get_data_based_on_fieldtype(df, data, value.toLowerCase());
 			});
 		}
@@ -967,11 +966,26 @@ export default class Grid {
 										var fieldname = fieldnames[ci];
 										var df = frappe.meta.get_docfield(me.df.options, fieldname);
 										if (df) {
-											d[fieldnames[ci]] = value_formatter_map[df.fieldtype]
-												? value_formatter_map[df.fieldtype](value)
-												: value;
+
+											if (me.frm.doc.doctype == 'Sales Invoice' && fieldnames[ci] == 'income_account') {
+												//var a =  frappe.db.get_value("Item Default",row[1],'income_account',()=>{},'Item');
+												frappe.db.get_value("Item Default", { parent: row[1] }, "income_account", (res) => {
+													console.log(d.income_account)
+													row[11] = res.income_account
+													d['income_account'] = row[11]
+													console.log(d['income_account'])
+												}, 'Item');
+												
+											} else {
+												d[fieldnames[ci]] = value_formatter_map[df.fieldtype]
+													? value_formatter_map[df.fieldtype](value)
+													: value;
+											}
+
 										}
 									});
+
+
 								}
 							}
 						});
@@ -1032,7 +1046,7 @@ export default class Grid {
 		});
 	}
 
-	add_custom_button(label, click, position='bottom') {
+	add_custom_button(label, click, position = 'bottom') {
 		// add / unhide a custom button
 		const $wrapper = position === 'top' ? this.grid_custom_buttons : this.grid_buttons;
 		let $btn = this.custom_buttons[label];
