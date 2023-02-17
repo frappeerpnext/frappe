@@ -970,10 +970,7 @@ export default class Grid {
 											if (me.frm.doc.doctype == 'Sales Invoice' && fieldnames[ci] == 'income_account') {
 												//var a =  frappe.db.get_value("Item Default",row[1],'income_account',()=>{},'Item');
 												frappe.db.get_value("Item Default", { parent: row[1] }, "income_account", (res) => {
-													console.log(d.income_account)
-													row[11] = res.income_account
-													d['income_account'] = row[11]
-													console.log(d['income_account'])
+													d['income_account'] = res.income_account
 												}, 'Item');
 												
 											} else {
