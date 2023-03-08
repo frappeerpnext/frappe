@@ -54,6 +54,7 @@ def upload_to_ftp():
     folder = '/home/erpuser/pro-bench/sites/' + site_name + '/private/backups'
     setting = frappe.get_doc('System Settings')
     session = ftplib.FTP_TLS(setting.ftp_url,setting.ftp_user,setting.ftp_password)
+    session.encoding = 'latin-1'
     if site_name in session.nlst():
         session.cwd(site_name)
     else : 
