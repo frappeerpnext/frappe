@@ -89,10 +89,10 @@
   "disable_system_update_notification",
   "disable_change_log_notification",
   "ftp_setting_section",
+  "ftp_backup_path",
   "ftp_url",
-  "column_break_86",
+  "br",
   "ftp_user",
-  "column_break_88",
   "ftp_password"
  ],
  "fields": [
@@ -626,19 +626,20 @@
    "label": "Password"
   },
   {
-   "fieldname": "column_break_86",
+   "fieldname": "br",
    "fieldtype": "Column Break"
   },
   {
-   "fieldname": "column_break_88",
-   "fieldtype": "Column Break"
+   "fieldname": "ftp_backup_path",
+   "fieldtype": "Data",
+   "label": "Backup Path"
   }
  ],
  "icon": "fa fa-cog",
  "image_field": "system_logo",
  "issingle": 1,
  "links": [],
- "modified": "2023-02-09 10:41:50.822300",
+ "modified": "2023-03-08 10:33:50.585825",
  "modified_by": "Administrator",
  "module": "Core",
  "name": "System Settings",

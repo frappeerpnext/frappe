@@ -15,9 +15,9 @@ def execute_backup_command():
 
 @frappe.whitelist()
 def run_backup_command():
-    site_name = cstr(frappe.local.site)
-    folder = '/home/erpuser/pro-bench/sites/' + site_name + '/private/backups'
     setting = frappe.get_doc('System Settings')
+    site_name = cstr(frappe.local.site)
+    folder = setting.ftp_backup_path
     for filename in os.listdir(folder):
         file_path = os.path.join(folder, filename)
         try:
@@ -50,9 +50,9 @@ async def run_bench_command(command, kwargs=None):
 
 @frappe.whitelist()
 def upload_to_ftp():
-    site_name = cstr(frappe.local.site)
-    folder = '/home/erpuser/pro-bench/sites/' + site_name + '/private/backups'
     setting = frappe.get_doc('System Settings')
+    site_name = cstr(frappe.local.site)
+    folder = setting.ftp_backup_path
     session = ftplib.FTP_TLS(setting.ftp_url,setting.ftp_user,setting.ftp_password)
     session.encoding = 'latin-1'
     if site_name in session.nlst():
