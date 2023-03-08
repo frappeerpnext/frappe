@@ -89,7 +89,7 @@ def get_data(filters):
 		data.append(dic_p)
 		child_data = ("""
 						SELECT 
-							b.item_group_type pos_profile,
+							coalesce(b.item_group_type,'Not Set') pos_profile,
 							SUM(coalesce(a.net_amount,0)) amount,
 							SUM(coalesce(a.net_amount,0))/1.1 exclude_vat,
 							SUM(coalesce(a.net_amount,0))/1.1/1.006 exclude_plt,
