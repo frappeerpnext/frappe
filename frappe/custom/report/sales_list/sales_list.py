@@ -31,12 +31,12 @@ def get_data(filters):
 					SUM(coalesce(a.net_amount,0))/1.1/1.006 exclude_plt,
 					SUM(coalesce(a.net_amount,0))/1.1/1.006*0.006 plt,
 					SUM(coalesce(a.net_amount,0))/1.1 * 0.1 vat,
-					SUM(coalesce(a.discount_amount,0)) discount,
-					SUM(coalesce(a.net_amount,0))-SUM(coalesce(a.discount_amount,0)) net
+					SUM(coalesce(if(a.is_foc,0,(if(c.posting_date<'2022-12-20',a.base_rate,a.base_price_list_rate))*a.qty-a.net_amount),0)) discount,
+					SUM(coalesce(a.net_amount,0))-SUM(coalesce(if(a.is_foc,0,(if(c.posting_date<'2022-12-20',a.base_rate,a.base_price_list_rate))*a.qty-a.net_amount),0)) net
 				FROM `tabSales Invoice Item` a
 					INNER JOIN `tabItem Group` b ON b.name = a.item_group
 					INNER JOIN `tabSales Invoice` c ON c.name = a.parent
-				WHERE c.posting_date = '{0}' and coalesce(c.department,'') <> 'Souvenir - AWA' and  (coalesce(c.department,'')='Sales & Marketing - AWA' or coalesce(a.is_ticket,0)=1)
+				WHERE c.posting_date = '{0}' and c.docstatus = 1 and coalesce(c.department,'') <> 'Souvenir - AWA' and  (coalesce(c.department,'')='Sales & Marketing - AWA' or coalesce(a.is_ticket,0)=1)
 			""".format(filters.date)
 	ticket_data = frappe.db.sql(parent,as_dict=1)
 	if ticket_data[0].pos_profile == "Ticket" and  ticket_data[0].amount:
@@ -53,12 +53,12 @@ def get_data(filters):
 							SUM(coalesce(a.net_amount,0))/1.1/1.006 exclude_plt,
 							SUM(coalesce(a.net_amount,0))/1.1/1.006*0.006 plt,
 							SUM(coalesce(a.net_amount,0))/1.1 * 0.1 vat,
-							SUM(coalesce(a.discount_amount,0)) discount,
-							SUM(coalesce(a.net_amount,0))-SUM(coalesce(a.discount_amount,0)) net
+							SUM(coalesce(if(a.is_foc,0,(if(c.posting_date<'2022-12-20',a.base_rate,a.base_price_list_rate))*a.qty-a.net_amount),0)) discount,
+							SUM(coalesce(a.net_amount,0))-SUM(coalesce(if(a.is_foc,0,(if(c.posting_date<'2022-12-20',a.base_rate,a.base_price_list_rate))*a.qty-a.net_amount),0)) net
 						FROM `tabSales Invoice Item` a
 							INNER JOIN `tabItem Group` b ON b.name = a.item_group
 							INNER JOIN `tabSales Invoice` c ON c.name = a.parent
-						WHERE c.posting_date = '{0}' and coalesce(c.department,'') <> 'Souvenir - AWA' and (coalesce(c.department,'')='Sales & Marketing - AWA' or coalesce(a.is_ticket,0)=1)
+						WHERE c.posting_date = '{0}' and c.docstatus = 1 and coalesce(c.department,'') <> 'Souvenir - AWA' and (coalesce(c.department,'')='Sales & Marketing - AWA' or coalesce(a.is_ticket,0)=1)
 							group by coalesce(c.department,'')
 					""".format(filters.date))
 		child = frappe.db.sql(child_data,as_dict=1)
@@ -74,12 +74,12 @@ def get_data(filters):
 					SUM(coalesce(a.net_amount,0))/1.1/1.006 exclude_plt,
 					SUM(coalesce(a.net_amount,0))/1.1/1.006*0.006 plt,
 					SUM(coalesce(a.net_amount,0))/1.1 * 0.1 vat,
-					SUM(coalesce(a.discount_amount,0)) discount,
-					SUM(coalesce(a.net_amount,0))-SUM(coalesce(a.discount_amount,0)) net
+					SUM(coalesce(if(a.is_foc,0,(if(c.posting_date<'2022-12-20',a.base_rate,a.base_price_list_rate))*a.qty-a.net_amount),0)) discount,
+					SUM(coalesce(a.net_amount,0))-SUM(coalesce(if(a.is_foc,0,(if(c.posting_date<'2022-12-20',a.base_rate,a.base_price_list_rate))*a.qty-a.net_amount),0)) net
 				FROM `tabSales Invoice Item` a
 					INNER JOIN `tabItem Group` b ON b.name = a.item_group
 					INNER JOIN `tabSales Invoice` c ON c.name = a.parent
-				WHERE c.posting_date = '{0}' and coalesce(c.department,'') not in ('Sales & Marketing - AWA','Souvenir - AWA') and coalesce(a.is_ticket,0)=0
+				WHERE c.posting_date = '{0}' and c.docstatus = 1 and coalesce(c.department,'') not in ('Sales & Marketing - AWA','Souvenir - AWA') and coalesce(a.is_ticket,0)=0
 					GROUP BY coalesce(c.pos_profile,'Not Set')
 			""".format(filters.date)
 	parent_data = frappe.db.sql(parent,as_dict=1)
@@ -95,12 +95,12 @@ def get_data(filters):
 							SUM(coalesce(a.net_amount,0))/1.1/1.006 exclude_plt,
 							SUM(coalesce(a.net_amount,0))/1.1/1.006*0.006 plt,
 							SUM(coalesce(a.net_amount,0))/1.1 * 0.1 vat,
-							SUM(coalesce(a.discount_amount,0)) discount,
-							SUM(coalesce(a.net_amount,0))-SUM(coalesce(a.discount_amount,0)) net
+							SUM(coalesce(if(a.is_foc,0,(if(c.posting_date<'2022-12-20',a.base_rate,a.base_price_list_rate))*a.qty-a.net_amount),0)) discount,
+							SUM(coalesce(a.net_amount,0))-SUM(coalesce(if(a.is_foc,0,(if(c.posting_date<'2022-12-20',a.base_rate,a.base_price_list_rate))*a.qty-a.net_amount),0)) net
 						FROM `tabSales Invoice Item` a
 							INNER JOIN `tabItem Group` b ON b.name = a.item_group
 							INNER JOIN `tabSales Invoice` c ON c.name = a.parent
-						WHERE c.posting_date = '{0}' AND c.pos_profile = '{1}'
+						WHERE c.posting_date = '{0}' and c.docstatus = 1 AND c.pos_profile = '{1}'
 							GROUP BY b.item_group_type
 					""".format(filters.date,dic_p["pos_profile"]))
 		child = frappe.db.sql(child_data,as_dict=1)
