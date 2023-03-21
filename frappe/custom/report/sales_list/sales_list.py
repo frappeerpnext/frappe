@@ -16,6 +16,7 @@ def get_columns(filters):
 	columns.append({'label':'PLT 3%','fieldname':"plt",'fieldtype':'Currency','align':'right','width':150})
 	columns.append({'label':'VAT 10%','fieldname':"vat",'fieldtype':'Currency','align':'right','width':150})
 	columns.append({'label':'Discount','fieldname':"discount",'fieldtype':'Currency','align':'right','width':150})
+	columns.append({'label':'FOC','fieldname':"foc_amount",'fieldtype':'Currency','align':'right','width':150})
 	columns.append({'label':'Net Sales','fieldname':"net",'fieldtype':'Currency','align':'right','width':150})
 	columns.append({'label':'Remark','fieldname':"Amount",'fieldtype':'Currency','align':'right','width':150})
 	return columns
@@ -32,6 +33,7 @@ def get_data(filters):
 					SUM(coalesce(a.net_amount,0))/1.1/1.006*0.006 plt,
 					SUM(coalesce(a.net_amount,0))/1.1 * 0.1 vat,
 					SUM(coalesce(if(a.is_foc,0,(if(c.posting_date<'2022-12-20',a.base_rate,a.base_price_list_rate))*a.qty-a.net_amount),0)) discount,
+					Sum(coalesce(if(a.is_foc=1, (if(c.posting_date<'2022-12-20',a.base_rate,a.base_price_list_rate))*a.qty-a.net_amount,0))) foc_amount,
 					SUM(coalesce(a.net_amount,0))-SUM(coalesce(if(a.is_foc,0,(if(c.posting_date<'2022-12-20',a.base_rate,a.base_price_list_rate))*a.qty-a.net_amount),0)) net
 				FROM `tabSales Invoice Item` a
 					INNER JOIN `tabItem Group` b ON b.name = a.item_group
@@ -54,6 +56,7 @@ def get_data(filters):
 							SUM(coalesce(a.net_amount,0))/1.1/1.006*0.006 plt,
 							SUM(coalesce(a.net_amount,0))/1.1 * 0.1 vat,
 							SUM(coalesce(if(a.is_foc,0,(if(c.posting_date<'2022-12-20',a.base_rate,a.base_price_list_rate))*a.qty-a.net_amount),0)) discount,
+       						Sum(coalesce(if(a.is_foc=1, (if(c.posting_date<'2022-12-20',a.base_rate,a.base_price_list_rate))*a.qty-a.net_amount,0))) foc_amount,
 							SUM(coalesce(a.net_amount,0))-SUM(coalesce(if(a.is_foc,0,(if(c.posting_date<'2022-12-20',a.base_rate,a.base_price_list_rate))*a.qty-a.net_amount),0)) net
 						FROM `tabSales Invoice Item` a
 							INNER JOIN `tabItem Group` b ON b.name = a.item_group
@@ -75,7 +78,8 @@ def get_data(filters):
 					SUM(coalesce(a.net_amount,0))/1.1/1.006*0.006 plt,
 					SUM(coalesce(a.net_amount,0))/1.1 * 0.1 vat,
 					SUM(coalesce(if(a.is_foc,0,(if(c.posting_date<'2022-12-20',a.base_rate,a.base_price_list_rate))*a.qty-a.net_amount),0)) discount,
-					SUM(coalesce(a.net_amount,0))-SUM(coalesce(if(a.is_foc,0,(if(c.posting_date<'2022-12-20',a.base_rate,a.base_price_list_rate))*a.qty-a.net_amount),0)) net
+					Sum(coalesce(if(a.is_foc=1, (if(c.posting_date<'2022-12-20',a.base_rate,a.base_price_list_rate))*a.qty-a.net_amount,0))) foc_amount,
+     				SUM(coalesce(a.net_amount,0))-SUM(coalesce(if(a.is_foc,0,(if(c.posting_date<'2022-12-20',a.base_rate,a.base_price_list_rate))*a.qty-a.net_amount),0)) net
 				FROM `tabSales Invoice Item` a
 					INNER JOIN `tabItem Group` b ON b.name = a.item_group
 					INNER JOIN `tabSales Invoice` c ON c.name = a.parent
@@ -96,7 +100,8 @@ def get_data(filters):
 							SUM(coalesce(a.net_amount,0))/1.1/1.006*0.006 plt,
 							SUM(coalesce(a.net_amount,0))/1.1 * 0.1 vat,
 							SUM(coalesce(if(a.is_foc,0,(if(c.posting_date<'2022-12-20',a.base_rate,a.base_price_list_rate))*a.qty-a.net_amount),0)) discount,
-							SUM(coalesce(a.net_amount,0))-SUM(coalesce(if(a.is_foc,0,(if(c.posting_date<'2022-12-20',a.base_rate,a.base_price_list_rate))*a.qty-a.net_amount),0)) net
+							Sum(coalesce(if(a.is_foc=1, (if(c.posting_date<'2022-12-20',a.base_rate,a.base_price_list_rate))*a.qty-a.net_amount,0))) foc_amount,
+       						SUM(coalesce(a.net_amount,0))-SUM(coalesce(if(a.is_foc,0,(if(c.posting_date<'2022-12-20',a.base_rate,a.base_price_list_rate))*a.qty-a.net_amount),0)) net
 						FROM `tabSales Invoice Item` a
 							INNER JOIN `tabItem Group` b ON b.name = a.item_group
 							INNER JOIN `tabSales Invoice` c ON c.name = a.parent
@@ -116,6 +121,7 @@ def get_data(filters):
 		"plt": sum(c.plt for c in data if c.is_group == 1),
 		"vat": sum(c.vat for c in data if c.is_group == 1),
 		"discount": sum(c.discount for c in data if c.is_group == 1),
+		"foc_amount": sum(c.foc_amount for c in data if c.is_group == 1),
 		"net": sum(c.net for c in data if c.is_group == 1),
 		"is_group": 1})
 	return data
