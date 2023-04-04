@@ -7,7 +7,8 @@ import shlex, subprocess
 from frappe.model.document import Document
 from frappe.utils import cstr
 import asyncio
-
+from datetime import datetime
+from frappe import conf
 @frappe.whitelist()
 def execute_backup_command():
     frappe.enqueue(run_backup_command,queue="long")
@@ -18,6 +19,8 @@ def run_backup_command():
     setting = frappe.get_doc('System Settings')
     site_name = cstr(frappe.local.site)
     folder = setting.ftp_backup_path
+    if folder is None or folder == '' :
+        folder = frappe.utils.get_site_path(conf.get("backup_path", "private/backups"))
     for filename in os.listdir(folder):
         file_path = os.path.join(folder, filename)
         try:
@@ -31,6 +34,8 @@ def run_backup_command():
     asyncio.run(run_bench_command("bench --site " + site_name + " backup --with-files"))
     
     frappe.enqueue(upload_to_ftp,queue="long")
+
+    return "Backup In Queue"
 
 async def run_bench_command(command, kwargs=None):
     site = {"site": frappe.local.site}
@@ -53,10 +58,20 @@ def upload_to_ftp():
     setting = frappe.get_doc('System Settings')
     site_name = cstr(frappe.local.site)
     folder = setting.ftp_backup_path
+    if folder is None or folder == '' :
+        folder = frappe.utils.get_site_path(conf.get("backup_path", "private/backups"))
     session = ftplib.FTP_TLS(setting.ftp_url,setting.ftp_user,setting.ftp_password)
     session.encoding = 'latin-1'
     if site_name in session.nlst():
         session.cwd(site_name)
+        for file in session.nlst():
+            new_str = file.split('_', 1)[0]
+            creation = f"{new_str[:4]}-{new_str[4:6]}-{new_str[6:]}"
+            if(len(creation) >= 10 ):
+                d1 = datetime.strptime(creation, "%Y-%m-%d")
+                d2 = datetime.today()
+                if (d2-d1).days >= setting.delete_after:
+                    session.delete(file)
     else : 
         session.mkd(site_name)
         session.cwd(site_name)

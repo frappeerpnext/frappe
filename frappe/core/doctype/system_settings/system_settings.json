@@ -30,6 +30,8 @@
   "column_break_7",
   "float_precision",
   "currency_precision",
+  "currency_precision_in_report",
+  "float_precision_in_report",
   "first_day_of_the_week",
   "sec_backup_limit",
   "backup_limit",
@@ -90,9 +92,10 @@
   "disable_change_log_notification",
   "ftp_setting_section",
   "ftp_backup_path",
-  "ftp_url",
-  "br",
   "ftp_user",
+  "delete_after",
+  "column_break_88",
+  "ftp_url",
   "ftp_password"
  ],
  "fields": [
@@ -626,20 +629,37 @@
    "label": "Password"
   },
   {
-   "fieldname": "br",
-   "fieldtype": "Column Break"
-  },
-  {
    "fieldname": "ftp_backup_path",
    "fieldtype": "Data",
    "label": "Backup Path"
+  },
+  {
+   "fieldname": "delete_after",
+   "fieldtype": "Int",
+   "label": "Delete After"
+  },
+  {
+   "fieldname": "column_break_88",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "currency_precision_in_report",
+   "fieldtype": "Select",
+   "label": "Currency Precision in Report",
+   "options": "1\n2\n3\n4\n5\n6\n7\n8\n9"
+  },
+  {
+   "fieldname": "float_precision_in_report",
+   "fieldtype": "Select",
+   "label": "Float Precision in Report",
+   "options": "1\n2\n3\n4\n5\n6\n7\n8\n9"
   }
  ],
  "icon": "fa fa-cog",
  "image_field": "system_logo",
  "issingle": 1,
  "links": [],
- "modified": "2023-03-08 10:33:50.585825",
+ "modified": "2023-04-04 09:16:17.826188",
  "modified_by": "Administrator",
  "module": "Core",
  "name": "System Settings",
