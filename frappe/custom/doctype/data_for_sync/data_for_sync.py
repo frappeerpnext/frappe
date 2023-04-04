@@ -35,11 +35,7 @@ def notify_sync(doc, event):
 
 @frappe.whitelist()
 def notify_sync_job(doctype,name, event):
-	
-	
-
-	
-	branches = frappe.db.get_list('Branch', pluck='name')
+	branches = frappe.db.get_list('Branch',filters={'disable_from_sync': 0}, pluck='name')
 	if event in ["on_change","on_update","after_insert"]:
 		event = "on_update"
 
