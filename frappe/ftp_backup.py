@@ -55,30 +55,42 @@ async def run_bench_command(command, kwargs=None):
 
 @frappe.whitelist()
 def upload_to_ftp():
+    folder_name = datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
     setting = frappe.get_doc('System Settings')
     site_name = cstr(frappe.local.site)
-    folder = setting.ftp_backup_path
-    if folder is None or folder == '' :
-        folder = frappe.utils.get_site_path(conf.get("backup_path", "private/backups"))
+    backup_folder = setting.ftp_backup_path
+    if backup_folder is None or backup_folder == '' :
+        backup_folder = frappe.utils.get_site_path(conf.get("backup_path", "private/backups"))
     session = ftplib.FTP_TLS(setting.ftp_url,setting.ftp_user,setting.ftp_password)
     session.encoding = 'latin-1'
     if site_name in session.nlst():
         session.cwd(site_name)
-        for file in session.nlst():
-            new_str = file.split('_', 1)[0]
-            creation = f"{new_str[:4]}-{new_str[4:6]}-{new_str[6:]}"
-            if(len(creation) >= 10 ):
-                d1 = datetime.strptime(creation, "%Y-%m-%d")
-                d2 = datetime.today()
-                if (d2-d1).days >= setting.delete_after:
-                    session.delete(file)
+        for folder in session.nlst():
+            if folder != "." and folder != "..":
+                created_date = folder.split('_', 1)[0]
+                if(len(created_date) >= 10 ):
+                    d1 = datetime.strptime(created_date, "%Y-%m-%d")
+                    d2 = datetime.today()
+                    if (d2-d1).days >= setting.delete_after:
+                        session.cwd(folder)
+                        for file in session.nlst():
+                            if file != "." and file != "..":
+                                session.delete(file)
+                        session.cwd("../")
+                        session.rmd(folder)
+        session.mkd(folder_name)
+        session.cwd(folder_name)
     else : 
         session.mkd(site_name)
         session.cwd(site_name)
-    for filename in os.listdir(folder):
-        file_path = os.path.join(folder, filename)
+        session.mkd(folder_name)
+        session.cwd(folder_name)
+    for filename in os.listdir(backup_folder):
+        file_path = os.path.join(backup_folder, filename)
         file = open(file_path,'rb')
         session.storbinary('STOR ' + filename, file)
         file.close()
     session.quit()
     return "Backup Completed"
+
+
