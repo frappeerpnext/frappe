@@ -11,8 +11,6 @@ def get_columns(filters):
 	columns = []
 	columns.append({'fieldname':'mode_of_payment','label':"Payment Type",'fieldtype':'Data','align':'center','width':150})
 	columns.append({'fieldname':'payment_amount','label':"Payment Amount",'fieldtype':'Currency','align':'right','width':150})
-	# columns.append({'fieldname':'closing_amount','label':"Actual Amount",'fieldtype':'Currency','align':'right','width':150})
-	# columns.append({'fieldname':'different_amount','label':"Different",'fieldtype':'Currency','align':'right','width':150})
 	return columns
 
 def get_report_data(filters):

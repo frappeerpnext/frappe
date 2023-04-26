@@ -100,7 +100,7 @@ export default class Grid {
 						<a href="#" class="grid-upload btn btn-xs btn-secondary hidden">
 							${__("Upload")}
 						</a>
-					</div>
+				</div>
 				</div>
 			</div>
 		`;

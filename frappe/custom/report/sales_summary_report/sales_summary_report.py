@@ -518,7 +518,7 @@ def get_row_groups():
 			"parent_row_group_filter_field":"row_group"
 		},
 		{
-			"fieldname":"date_format(b.posting_date,'%%m/%%Y')",
+			"fieldname":"date_format(b.posting_date,'%%Y/%%m')",
 			"label":"Month",
 			"parent_row_group_filter_field":"row_group"
 		},

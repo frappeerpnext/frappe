@@ -643,12 +643,14 @@
    "fieldtype": "Column Break"
   },
   {
+   "default": "2",
    "fieldname": "currency_precision_in_report",
    "fieldtype": "Select",
    "label": "Currency Precision in Report",
    "options": "1\n2\n3\n4\n5\n6\n7\n8\n9"
   },
   {
+   "default": "2",
    "fieldname": "float_precision_in_report",
    "fieldtype": "Select",
    "label": "Float Precision in Report",
@@ -659,7 +661,7 @@
  "image_field": "system_logo",
  "issingle": 1,
  "links": [],
- "modified": "2023-04-04 09:16:17.826188",
+ "modified": "2023-04-04 10:02:50.303968",
  "modified_by": "Administrator",
  "module": "Core",
  "name": "System Settings",

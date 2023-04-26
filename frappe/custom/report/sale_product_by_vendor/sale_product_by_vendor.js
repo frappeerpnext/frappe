@@ -71,15 +71,8 @@ frappe.query_reports["Sale Product By Vendor"] = {
 			"label": __("Supplier"),
 			"fieldtype": "MultiSelectList",
 			get_data: function(txt) {
-				group = frappe.query_report.get_filter_value("supplier_group");
-				if(group==""){
-					return frappe.db.get_link_options('Supplier', txt);
-				}
-				else {
-					return frappe.db.get_link_options('Supplier', txt,filters={
-						"supplier_group":["in",group]
-					});
-				}
+				
+				return frappe.db.get_link_options('Supplier',txt);
 			}
 		},
 		{
