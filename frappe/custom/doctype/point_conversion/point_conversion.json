@@ -21,12 +21,12 @@
  "fields": [
   {
    "fieldname": "from_amount",
-   "fieldtype": "Data",
+   "fieldtype": "Currency",
    "label": "From Amount"
   },
   {
    "fieldname": "to_point",
-   "fieldtype": "Data",
+   "fieldtype": "Float",
    "label": "To Point"
   },
   {
@@ -35,12 +35,12 @@
   },
   {
    "fieldname": "from_point",
-   "fieldtype": "Data",
+   "fieldtype": "Float",
    "label": "From Point"
   },
   {
    "fieldname": "to_amount",
-   "fieldtype": "Data",
+   "fieldtype": "Currency",
    "label": "To Amount"
   },
   {
@@ -49,7 +49,7 @@
   },
   {
    "fieldname": "date",
-   "fieldtype": "Data",
+   "fieldtype": "Datetime",
    "label": "Date"
   },
   {
@@ -79,12 +79,12 @@
   },
   {
    "fieldname": "from_amount",
-   "fieldtype": "Data",
+   "fieldtype": "Currency",
    "label": "From Amount"
   },
   {
    "fieldname": "to_point",
-   "fieldtype": "Data",
+   "fieldtype": "Float",
    "label": "To Point"
   },
   {
@@ -93,12 +93,12 @@
   },
   {
    "fieldname": "from_point",
-   "fieldtype": "Data",
+   "fieldtype": "Float",
    "label": "From Point"
   },
   {
    "fieldname": "to_amount",
-   "fieldtype": "Data",
+   "fieldtype": "Currency",
    "label": "To Amount"
   },
   {
@@ -107,7 +107,7 @@
   },
   {
    "fieldname": "date",
-   "fieldtype": "Data",
+   "fieldtype": "Datetime",
    "label": "Date"
   },
   {
@@ -130,7 +130,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-05-26 18:02:42.011864",
+ "modified": "2023-05-26 18:08:57.273041",
  "modified_by": "Administrator",
  "module": "Custom",
  "name": "Point Conversion",
