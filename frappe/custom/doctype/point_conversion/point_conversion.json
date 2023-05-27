@@ -20,35 +20,6 @@
  ],
  "fields": [
   {
-   "fieldname": "column_break_3",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "column_break_6",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "date",
-   "fieldtype": "Datetime",
-   "label": "Date"
-  },
-  {
-   "fieldname": "allow_payment_type_section",
-   "fieldtype": "Section Break",
-   "label": "Allow Payment Type"
-  },
-  {
-   "fieldname": "payment_type",
-   "fieldtype": "Table",
-   "label": "Payment Type",
-   "options": "Point Allow Payment Type"
-  },
-  {
-   "fieldname": "allow_payment_type_data",
-   "fieldtype": "Data",
-   "label": "Allow Payment Type Data"
-  },
-  {
    "fieldname": "amended_from",
    "fieldtype": "Link",
    "label": "Amended From",
