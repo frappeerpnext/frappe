@@ -17,8 +17,9 @@ def notify_sync(doc, event):
 	
 	#settings = frappe.get_doc('System Settings')
 	#if not settings.disable_data_for_sync_notify:
-	notify_docs = ["Item","Item Group","Item Price","Customer","Customer Group" ,"User","POS Profile","Company","System Settings","Currency Exchange","Warehouse" ,"Membership Type","Tag","POS Config","POS Prices Rule",'Price List',"Comment","POS Menu"]
- 
+	notify_docs = ["Item","Item Group","Item Price","Customer","Customer Group" ,"User","POS Profile",
+				   "Company","System Settings","Currency Exchange","Warehouse" ,"Membership Type","Tag",
+				   "POS Config","POS Prices Rule",'Price List',"Comment","POS Menu","Point Conversion"]
 	"""called via hooks"""
 	if doc.doctype =="Comment" :
 		if doc.content:
@@ -51,7 +52,7 @@ def notify_sync_job(doctype,name, event):
 			""",
 			(b,doctype,name,event)
 		)
-
+		
 		obj = frappe.get_doc({
 			"doctype":"Data for Sync",
 			"branch" : b,
@@ -60,7 +61,6 @@ def notify_sync_job(doctype,name, event):
 			"transaction_type":event
 		})
 		obj.insert()
-		
 
 @frappe.whitelist()
 def delete_synced_record(name):
