@@ -6,11 +6,11 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "from_amount",
-  "to_point",
+  "from_amount_earn",
+  "to_point_earn",
   "column_break_3",
-  "from_point",
-  "to_amount",
+  "from_amount_sale",
+  "to_point_sale",
   "column_break_6",
   "date",
   "allow_payment_type_section",
@@ -20,28 +20,8 @@
  ],
  "fields": [
   {
-   "fieldname": "from_amount",
-   "fieldtype": "Currency",
-   "label": "From Amount"
-  },
-  {
-   "fieldname": "to_point",
-   "fieldtype": "Float",
-   "label": "To Point"
-  },
-  {
    "fieldname": "column_break_3",
    "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "from_point",
-   "fieldtype": "Float",
-   "label": "From Point"
-  },
-  {
-   "fieldname": "to_amount",
-   "fieldtype": "Currency",
-   "label": "To Amount"
   },
   {
    "fieldname": "column_break_6",
@@ -78,28 +58,8 @@
    "read_only": 1
   },
   {
-   "fieldname": "from_amount",
-   "fieldtype": "Currency",
-   "label": "From Amount"
-  },
-  {
-   "fieldname": "to_point",
-   "fieldtype": "Float",
-   "label": "To Point"
-  },
-  {
    "fieldname": "column_break_3",
    "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "from_point",
-   "fieldtype": "Float",
-   "label": "From Point"
-  },
-  {
-   "fieldname": "to_amount",
-   "fieldtype": "Currency",
-   "label": "To Amount"
   },
   {
    "fieldname": "column_break_6",
@@ -125,12 +85,32 @@
    "fieldname": "allow_payment_type_data",
    "fieldtype": "Data",
    "label": "Allow Payment Type Data"
+  },
+  {
+   "fieldname": "from_amount_earn",
+   "fieldtype": "Currency",
+   "label": "From Amount (Earning)"
+  },
+  {
+   "fieldname": "to_point_earn",
+   "fieldtype": "Float",
+   "label": "To Point (Earning)"
+  },
+  {
+   "fieldname": "from_amount_sale",
+   "fieldtype": "Currency",
+   "label": "From Amount (Sale)"
+  },
+  {
+   "fieldname": "to_point_sale",
+   "fieldtype": "Float",
+   "label": "To Point (Sale)"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-05-26 18:08:57.273041",
+ "modified": "2023-05-27 16:15:32.994411",
  "modified_by": "Administrator",
  "module": "Custom",
  "name": "Point Conversion",
