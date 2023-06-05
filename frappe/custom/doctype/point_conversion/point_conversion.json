@@ -54,7 +54,7 @@
   },
   {
    "fieldname": "allow_payment_type_data",
-   "fieldtype": "Data",
+   "fieldtype": "Long Text",
    "label": "Allow Payment Type Data"
   },
   {
@@ -81,7 +81,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-05-27 16:15:32.994411",
+ "modified": "2023-06-03 19:35:40.371619",
  "modified_by": "Administrator",
  "module": "Custom",
  "name": "Point Conversion",
