@@ -78,7 +78,6 @@ def get_data(filters):
 		LEFT JOIN start_stock e ON e.item_code = a.item_code
 		{1}
 	""".format(get_date(filters),get_filter(filters))
-	frappe.msgprint(sql)
 	data = frappe.db.sql(sql,as_dict=1)
 	return data
 
