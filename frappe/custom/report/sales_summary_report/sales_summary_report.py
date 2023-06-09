@@ -317,7 +317,7 @@ def get_report_data(filters,parent_row_group=None,indent=0,group_filter=None):
 			sql = sql[0:len(sql)-1]
 			 
 		if not hide_columns or  rf["label"] not in hide_columns:
-			sql = sql + " ,SUM({}) AS 'total_{}' ".format(rf["sql_expression"],rf["fieldname"])
+			sql = sql + " ,SUM({}+0.000001) AS 'total_{}' ".format(rf["sql_expression"],rf["fieldname"])
 
 	
 	sql = sql + """ {2}
