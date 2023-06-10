@@ -72,7 +72,7 @@ def get_data(filters):
 		coalesce(c.purchase_qty,0) purchase_qty,
 		COALESCE(d.reconciliation_qty,0) reconciliation_qty,
 		COALESCE(get_last_row_qty(a.item_code,{3}),0) start_qty,
-		COALESCE(get_last_row_qty(a.item_code,{3}),0) - b.sale_qty + coalesce(c.purchase_qty,0) + COALESCE(d.reconciliation_qty,0) end_qty
+		coalesce(COALESCE(get_last_row_qty(a.item_code,{3}),0) - coalesce(b.sale_qty,0) + coalesce(c.purchase_qty,0) + COALESCE(d.reconciliation_qty,0),0) end_qty
 		FROM sle a
 		LEFT JOIN sale b ON b.item_code = a.item_code
 		LEFT JOIN purchase c ON c.item_code = a.item_code
