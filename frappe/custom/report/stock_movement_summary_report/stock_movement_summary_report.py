@@ -65,7 +65,7 @@ def get_data(filters):
 		min(CONCAT(posting_date,' ',posting_time)) posting_date,
 		qty_after_transaction + ABS(actual_qty) start_qty
 		FROM `tabStock Ledger Entry` a
-		WHERE {0} and a.is_cancelled=0
+		WHERE {0} and a.is_cancelled=0 and voucher_type != 'Stock Reconciliation'
 		GROUP BY item_code)
 		SELECT 
 		a.item_code,
