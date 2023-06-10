@@ -59,14 +59,6 @@ def get_data(filters):
 		INNER JOIN `tabStock Reconciliation Item` b ON b.parent = a.name
 		WHERE {0} and a.docstatus=1 AND b.docstatus=1
 		GROUP BY b.item_code)
-		,start_stock AS (
-		SELECT 
-		item_code,
-		min(CONCAT(posting_date,' ',posting_time)) posting_date,
-		qty_after_transaction + ABS(actual_qty) start_qty
-		FROM `tabStock Ledger Entry` a
-		WHERE {0} and a.is_cancelled=0 and voucher_type != 'Stock Reconciliation'
-		GROUP BY item_code)
 		SELECT 
 		a.item_code,
 		a.item_name,
@@ -75,13 +67,12 @@ def get_data(filters):
 		coalesce(b.sale_qty,0) sale_qty,
 		coalesce(c.purchase_qty,0) purchase_qty,
 		COALESCE(d.reconciliation_qty,0) reconciliation_qty,
-		COALESCE(e.start_qty,0) start_qty,
-		COALESCE(e.start_qty,0) - coalesce(b.sale_qty,0) + coalesce(c.purchase_qty,0) + COALESCE(d.reconciliation_qty,0) end_qty
+		COALESCE(get_last_row_qty(a.item_code,'2023-06-10'),0) start_qty,
+		COALESCE(get_last_row_qty(a.item_code,'2023-06-10'),0) - b.sale_qty + coalesce(c.purchase_qty,0) + COALESCE(d.reconciliation_qty,0) end_qty
 		FROM sle a
 		LEFT JOIN sale b ON b.item_code = a.item_code
 		LEFT JOIN purchase c ON c.item_code = a.item_code
 		LEFT JOIN reconciliation d ON d.item_code = a.item_code
-		LEFT JOIN start_stock e ON e.item_code = a.item_code
 		{1}
 	""".format(get_date(filters),get_filter(filters),get_item_filter(filters))
 	data = frappe.db.sql(sql,as_dict=1)
