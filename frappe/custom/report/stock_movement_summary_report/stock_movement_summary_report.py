@@ -7,7 +7,11 @@ def execute(filters=None):
 	return get_columns(filters), get_data(filters)
 
 def get_date(filters):
-	con = "a.posting_date BETWEEN '{0}' AND '{1}'".format(filters.start_date,filters.end_date,filters.company)
+	con = "a.posting_date BETWEEN '{0}' AND '{1}'".format(filters.start_date,filters.end_date)
+	return con
+
+def start_date(filters):
+	con = "'{0}'".format(filters.start_date)
 	return con
 
 def get_item_filter(filters):
@@ -67,14 +71,14 @@ def get_data(filters):
 		coalesce(b.sale_qty,0) sale_qty,
 		coalesce(c.purchase_qty,0) purchase_qty,
 		COALESCE(d.reconciliation_qty,0) reconciliation_qty,
-		COALESCE(get_last_row_qty(a.item_code,'2023-06-10'),0) start_qty,
-		COALESCE(get_last_row_qty(a.item_code,'2023-06-10'),0) - b.sale_qty + coalesce(c.purchase_qty,0) + COALESCE(d.reconciliation_qty,0) end_qty
+		COALESCE(get_last_row_qty(a.item_code,{3}),0) start_qty,
+		COALESCE(get_last_row_qty(a.item_code,{3}),0) - b.sale_qty + coalesce(c.purchase_qty,0) + COALESCE(d.reconciliation_qty,0) end_qty
 		FROM sle a
 		LEFT JOIN sale b ON b.item_code = a.item_code
 		LEFT JOIN purchase c ON c.item_code = a.item_code
 		LEFT JOIN reconciliation d ON d.item_code = a.item_code
 		{1}
-	""".format(get_date(filters),get_filter(filters),get_item_filter(filters))
+	""".format(get_date(filters),get_filter(filters),get_item_filter(filters),start_date(filters))
 	data = frappe.db.sql(sql,as_dict=1)
 	return data
 
