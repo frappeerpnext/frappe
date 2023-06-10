@@ -10,6 +10,12 @@ def get_date(filters):
 	con = "a.posting_date BETWEEN '{0}' AND '{1}'".format(filters.start_date,filters.end_date,filters.company)
 	return con
 
+def get_item_filter(filters):
+	con = ""
+	if filters.get("item_group"):con = con + " and coalesce(b.item_group,'Not Set') in (" + get_list(filters,"item_group") + ")"
+	if filters.get("supplier"):con = con + " and coalesce(b.supplier,'Not Set') in (" + get_list(filters,"supplier") + ")"
+	return con
+
 def get_filter(filters):
 	con = "where 1=1"
 	if filters.get("brand"):con = con + " and coalesce(a.brand,'Not Set') in (" + get_list(filters,"brand") + ")"
@@ -25,7 +31,7 @@ def get_data(filters):
 		b.stock_uom
 		FROM `tabStock Ledger Entry` a
 		INNER JOIN `tabItem` b ON b.name = a.item_code
-		WHERE {0} and is_cancelled=0
+		WHERE {0} {2} and is_cancelled=0
 		GROUP BY 
 		a.item_code,
 		item_name)
@@ -77,7 +83,7 @@ def get_data(filters):
 		LEFT JOIN reconciliation d ON d.item_code = a.item_code
 		LEFT JOIN start_stock e ON e.item_code = a.item_code
 		{1}
-	""".format(get_date(filters),get_filter(filters))
+	""".format(get_date(filters),get_filter(filters),get_item_filter(filters))
 	data = frappe.db.sql(sql,as_dict=1)
 	return data
 

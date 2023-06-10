@@ -17,6 +17,22 @@ frappe.query_reports["Stock Movement Summary Report"] = {
 			default:frappe.datetime.nowdate()
 		},
 		{
+			fieldname: "item_group",
+			label: "Item Group",
+			fieldtype: "MultiSelectList",
+			get_data: function(txt) {
+				return frappe.db.get_link_options('Item Group', txt);
+			}
+		},
+		{
+			fieldname: "supplier",
+			label: "Supplier",
+			fieldtype: "MultiSelectList",
+			get_data: function(txt) {
+				return frappe.db.get_link_options('Supplier', txt);
+			}
+		},
+		{
 			fieldname: "brand",
 			label: "Brand",
 			fieldtype: "MultiSelectList",
