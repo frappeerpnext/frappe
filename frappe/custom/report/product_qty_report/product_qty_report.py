@@ -71,8 +71,8 @@ def get_conditions(filters):
 	if filters.get("item_group"):
 		conditions += " AND a.item_group in %(item_group)s"
 
-	if filters.get("supplier_group"):
-		conditions += " AND (SELECT supplier_group FROM `tabSupplier` b WHERE b.name = a.supplier) in %(supplier_group)s"
+	if filters.get("brand"):
+		conditions += " AND a.brand in %(brand)s"
 
 	if filters.get("supplier"):
 		conditions += " AND a.supplier in %(supplier)s"
@@ -89,9 +89,10 @@ def get_conditions(filters):
 def get_report_fields(filters):
 	fields = [
 		{"sql_expression":"a.item_group","fieldname":"item_group","label":"Item Group","fieldtype":"Data","align":"left","width":150},
-		{"sql_expression":"if(a.supplier = a.supplier_name,a.supplier,concat(a.supplier,'-',a.supplier_name))","fieldname":"supplier","label":"Supplier","fieldtype":"Data","align":"left","width":150},
+		{"sql_expression":"coalesce(if(a.supplier = a.supplier_name,a.supplier,concat(a.supplier,'-',a.supplier_name)),'Not Set')","fieldname":"supplier","label":"Supplier","fieldtype":"Data","align":"left","width":150},
 		{"sql_expression":"a.item_code","fieldname":"item_code","label":"Item Code","fieldtype":"Data","align":"left","width":100},
 		{"sql_expression":"a.item_name","fieldname":"item_name","label":"Item Name","fieldtype":"Data","align":"left","width":250},
+		{"sql_expression":"coalesce(a.brand,'Not Set')","fieldname":"brand","label":"Brand","fieldtype":"Data","align":"left","width":100},
 		{"sql_expression":"a.stock_uom","fieldname":"stock_uom","label":"Unit","fieldtype":"Data","align":"left","width":75},
 		{"sql_expression":"a.image","fieldname":"image","label":"Image","fieldtype":"Data","align":"left","width":75},
 	]

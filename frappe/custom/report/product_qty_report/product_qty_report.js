@@ -28,15 +28,6 @@ frappe.query_reports["Product Qty Report"] = {
 			}
 		},
 		{
-			"fieldname": "supplier_group",
-			"label": __("Supplier Group"),
-			"fieldtype": "MultiSelectList",
-			get_data: function(txt) {
-				
-				return frappe.db.get_link_options('Supplier Group', txt,{"is_group":0});
-			}
-		},
-		{
 			"fieldname": "supplier",
 			"label": __("Supplier"),
 			"fieldtype": "MultiSelectList",
@@ -50,6 +41,15 @@ frappe.query_reports["Product Qty Report"] = {
 						"supplier_group":["in",group]
 					});
 				}
+			}
+		},
+		{
+			"fieldname": "brand",
+			"label": __("Brand"),
+			"fieldtype": "MultiSelectList",
+			get_data: function(txt) {
+				
+				return frappe.db.get_link_options('Brand');
 			}
 		},
 		{
