@@ -215,7 +215,7 @@ def get_fields(filters):
 		""".format(filters.start_date, filters.end_date)
 	elif filters.column_group=="Half Yearly":
 		sql = """
-			select 
+			select
 				concat('col_',if(month(date) between 1 and 6,'jan_jun','jul_dec'),date_format(date,'%y')) as fieldname, 
 				concat(if(month(date) between 1 and 6,'Jan-Jun','Jul-Dec'),' ',date_format(date,'%y')) as label ,
 				min(date) as start_date,
@@ -228,7 +228,7 @@ def get_fields(filters):
 		""".format(filters.start_date, filters.end_date)
 	elif filters.column_group=="Yearly":
 		sql = """
-			select 
+			select
 				concat('col_',date_format(date,'%Y')) as fieldname, 
 				date_format(date,'%Y') as label ,
 				min(date) as start_date,
@@ -291,7 +291,6 @@ def get_report_data(filters,parent_row_group=None,indent=0,group_filter=None):
 		row_group = [d["fieldname"] for d in get_row_groups() if d["label"]==parent_row_group][0]
 
 	report_fields = get_report_field(filters)
-	
 	sql = "select {} as row_group, {} as indent ".format(row_group, indent)
 	if filters.column_group != "None":
 		fields = get_fields(filters)
@@ -306,7 +305,7 @@ def get_report_data(filters,parent_row_group=None,indent=0,group_filter=None):
 			#end for
 	# total last column
 	extra_group = ""
-	if filters.row_group == "Product" or filters.parent_row_group == "Product":
+	if  indent == 1 and (filters.row_group == "Product" or filters.parent_row_group == "Product"):
 		extra_group = ",a.item_code"
 	elif filters.row_group == "Sale Invoice" or filters.parent_row_group == "Sale Invoice":
 		extra_group = ",b.sales_partner"
@@ -344,6 +343,7 @@ def get_report_group_data(filters):
 
 		row_group = [d for d in get_row_groups() if d["label"]==filters.parent_row_group][0]
 		children = get_report_data(filters, None, 1, group_filter={"field":row_group["fieldname"],"value":p[row_group["parent_row_group_filter_field"]]})
+		
 		for c in children:
 			data.append(c)
 	return data
