@@ -12,17 +12,6 @@ frappe.query_reports["POS Invoice Payment Type Breakdown"] = {
 			default:frappe.defaults.get_user_default("Company"),
 		},
 		{
-			fieldname: "department",
-			label: "Department",
-			"fieldtype": "MultiSelectList",
-			get_data: function(txt) {
-				console.log(frappe.user.get_data('Department'))
-				return frappe.db.get_link_options('Department', txt, {"name": ['!=', 'All Departments']});
-				
-			},
-			 
-		},
-		{
 			fieldname: "branch",
 			label: "Branch",
 			fieldtype: "Link",

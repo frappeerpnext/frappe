@@ -28,7 +28,7 @@ def get_report_data(filters):
 				sum(change_amount) change_amount
 				FROM `tabPOS Invoice` 
 				WHERE pos_opening_entry_id IN (SELECT * FROM pos_opening_entry_id) AND docstatus=1
-				and branch = case when '{3}' = 'None' then branch else '{3}' end AND consolidated_invoice IS not null)
+				and coalesce(branch,'None') = case when '{3}' = 'None' then coalesce(branch,'None') else '{3}' end AND consolidated_invoice IS not null)
 
 				, set_cash AS(SELECT 'Cash' AS mode_of_payment,0 AS total_amount)
 
@@ -39,7 +39,7 @@ def get_report_data(filters):
 				FROM `tabSales Invoice Payment` a
 				INNER JOIN `tabPOS Invoice` b ON b.name = a.parent
 				WHERE b.pos_opening_entry_id IN (SELECT * FROM pos_opening_entry_id) AND b.docstatus=1
-				and branch = case when '{3}' = 'None' then branch else '{3}' end AND b.consolidated_invoice IS not null
+				and coalesce(branch,'None') = case when '{3}' = 'None' then coalesce(branch,'None') else '{3}' end AND b.consolidated_invoice IS not null
 				GROUP BY a.mode_of_payment)
 				
 				, payment_entry AS(
@@ -61,7 +61,7 @@ def get_report_data(filters):
 				FROM `tabSales Invoice Payment` a
 				INNER JOIN `tabSales Invoice` b ON b.name = a.parent
 				WHERE b.posting_date BETWEEN '{0}' and '{1}' and b.company = '{2}' AND id IS null
-				and b.branch = case when '{3}' = 'None' then b.branch else '{3}' end
+				and coalesce(b.branch,'None')= case when '{3}' = 'None' then coalesce(b.branch,'None') else '{3}' end
 				AND parenttype='Sales Invoice' AND b.status='Paid' AND b.docstatus=1 AND b.is_consolidated=0
 				)
 
