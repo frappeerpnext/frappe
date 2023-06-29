@@ -27,7 +27,7 @@
    "label": "Item Name"
   },
   {
-   "fetch_from": "item.description",
+   "fetch_from": "item.print_note",
    "fieldname": "description",
    "fieldtype": "Data",
    "label": "Description"
@@ -54,7 +54,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2023-06-29 10:59:36.472842",
+ "modified": "2023-06-29 14:43:22.667136",
  "modified_by": "Administrator",
  "module": "Custom",
  "name": "Print Item",
