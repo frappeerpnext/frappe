@@ -96,7 +96,8 @@
   "delete_after",
   "column_break_88",
   "ftp_url",
-  "ftp_password"
+  "ftp_password",
+  "backup_type"
  ],
  "fields": [
   {
@@ -655,13 +656,19 @@
    "fieldtype": "Select",
    "label": "Float Precision in Report",
    "options": "1\n2\n3\n4\n5\n6\n7\n8\n9"
+  },
+  {
+   "fieldname": "backup_type",
+   "fieldtype": "Select",
+   "label": "Backup Type",
+   "options": "Simple\nFull"
   }
  ],
  "icon": "fa fa-cog",
  "image_field": "system_logo",
  "issingle": 1,
  "links": [],
- "modified": "2023-04-04 10:02:50.303968",
+ "modified": "2023-07-05 13:49:20.995160",
  "modified_by": "Administrator",
  "module": "Core",
  "name": "System Settings",

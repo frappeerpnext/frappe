@@ -19,6 +19,7 @@ def run_backup_command():
     setting = frappe.get_doc('System Settings')
     site_name = cstr(frappe.local.site)
     folder = setting.ftp_backup_path
+    backup_type = setting.backup_type
     if folder is None or folder == '' :
         folder = frappe.utils.get_site_path(conf.get("backup_path", "private/backups"))
     for filename in os.listdir(folder):
@@ -30,8 +31,15 @@ def run_backup_command():
                 shutil.rmtree(file_path)
         except Exception as e:
             print('Failed to delete %s. Reason: %s' % (file_path, e))
-
-    asyncio.run(run_bench_command("bench --site " + site_name + " backup --with-files"))
+    command = ""
+    if backup_type == "Simple":
+        command = "bench --site " + site_name + " backup"
+    elif backup_type == "Full":
+        command = "bench --site " + site_name + " backup --with-files"
+    else:
+        command = "bench --site " + site_name + " backup"
+        
+    asyncio.run(run_bench_command(command))
     
     frappe.enqueue(upload_to_ftp,queue="long")
 
