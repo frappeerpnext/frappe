@@ -358,13 +358,14 @@ def get_report_summary(data,filters):
 	fields = get_report_field(filters)
 
 	for f in fields:
-		if (not hide_columns or  f["label"] not in hide_columns) and data is not None:
+		if not hide_columns or  f["label"] not in hide_columns:
 			value=sum(d["total_" + f["fieldname"]] for d in data if d["indent"]==0)
 			if f["fieldtype"] == "Currency":
 				value = frappe.utils.fmt_money(value)
 			elif f["fieldtype"] =="Float":
 				value = "{:.2f}".format(value)
-			report_summary.append({"label":"Total {}".format(f["label"]),"value":value,"indicator":f["indicator"]})	
+			if f["fieldname"] != "margin" and f["fieldname"] != "markup":
+				report_summary.append({"label":"Total {}".format(f["label"]),"value":value,"indicator":f["indicator"]})	
 	# check
 	return report_summary
 
