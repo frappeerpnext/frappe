@@ -305,7 +305,7 @@ def get_report_data(filters,parent_row_group=None,indent=0,group_filter=None):
 			#end for
 	# total last column
 	extra_group = ""
-	if  (filters.row_group == "Product" and indent == 1) or  (filters.parent_row_group is None and indent == 0):
+	if  (filters.row_group == "Product" and indent == 1) or  (filters.row_group == "Product" and filters.parent_row_group is None and indent == 0):
 		extra_group = ",a.item_code"
 	elif (filters.row_group == "Sale Invoice" or filters.parent_row_group == "Sale Invoice") and indent == 1:
 		extra_group = ",b.sales_partner"
