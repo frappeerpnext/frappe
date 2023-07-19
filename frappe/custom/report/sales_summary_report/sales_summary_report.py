@@ -107,7 +107,15 @@ def update_sale():
 def get_columns(filters):
 	
 	columns = []
-	columns.append({'fieldname':'row_group','label':filters.row_group,'fieldtype':'Data','align':'left','width':250})
+
+	if filters.row_group == 'Sale Invoice' or filters.parent_row_group == 'Sale Invoice':
+		# columns.append({'fieldname':'name','label':filters.parent_row_group,'fieldtype':'Link','options':'POS Invoice','align':'left','width':250})
+		columns.append({'fieldname':'row_group','label':filters.row_group,'fieldtype':'Link','options':'Sales Invoice','align':'left','width':250})
+	else:
+		columns.append({'fieldname':'row_group','label':filters.row_group,'fieldtype':'Data','align':'left','width':250})
+	
+	# columns.append({'fieldname':'row_group','label':filters.row_group,'fieldtype':'Data','align':'left','width':250})
+
 	if filters.row_group == "Product":
 			columns.append({"label":"Item Code","fieldname":"item_code","fieldtype":"Data","align":"left",'width':130})
 	elif filters.row_group == "Sale Invoice":
