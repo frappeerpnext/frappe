@@ -337,6 +337,7 @@ def get_report_data(filters,parent_row_group=None,indent=0,group_filter=None):
 		{1} {2}
 	""".format(get_conditions(filters,group_filter), row_group,extra_group)
 	data = frappe.db.sql(sql,filters, as_dict=1)
+	frappe.msgprint(sql)
 	return data
  
 def get_report_group_data(filters):
@@ -457,7 +458,7 @@ def get_report_field(filters):
 			{"label":"Amount", "short_label":"Amt", "fieldname":"amount","fieldtype":"Currency","indicator":"Red","precision":None, "align":"right","chart_color":"#2E7D32","sql_expression":"sum(a.net_amount)"},
 			{"label":"Profit", "short_label":"Prof.", "fieldname":"profit","fieldtype":"Currency","indicator":"Green","precision":None, "align":"right","chart_color":"#FF3D00","sql_expression":"sum(a.net_amount - (a.qty*if(coalesce(c.valuation_rate,0)>a.rate,(SELECT d.valuation_rate FROM `tabItem` d WHERE d.item_code = a.item_code),coalesce(c.valuation_rate,0))*a.conversion_factor))"},
 			{"label":"Margin", "short_label":"Marg.", "fieldname":"margin","fieldtype":"Percent","indicator":"Yellow","precision":None, "align":"right","chart_color":"#FF3D00","sql_expression":"coalesce(sum(a.net_amount - (a.qty*if(coalesce(c.valuation_rate,0)>a.rate,(SELECT d.valuation_rate FROM `tabItem` d WHERE d.item_code = a.item_code),coalesce(c.valuation_rate,0))*a.conversion_factor))/sum(a.net_amount),0)*100"},
-			{"label":"Markup", "short_label":"Mark.", "fieldname":"markup","fieldtype":"Percent","indicator":"Orage","precision":None, "align":"right","chart_color":"#FF3D00","sql_expression":"coalesce(sum(a.net_amount - (a.qty*if(coalesce(c.valuation_rate,0)>a.rate,(SELECT d.valuation_rate FROM `tabItem` d WHERE d.item_code = a.item_code),coalesce(c.valuation_rate,0))*a.conversion_factor))/sum((a.qty*if(coalesce(c.valuation_rate,0)>a.rate,(SELECT d.valuation_rate FROM `tabItem` d WHERE d.item_code = a.item_code),coalesce(c.valuation_rate,0))*a.conversion_factor))),0)*100"}
+			{"label":"Markup", "short_label":"Mark.", "fieldname":"markup","fieldtype":"Percent","indicator":"Orage","precision":None, "align":"right","chart_color":"#FF3D00","sql_expression":"coalesce(sum(a.net_amount - (a.qty*if(coalesce(c.valuation_rate,0)>a.rate,(SELECT d.valuation_rate FROM `tabItem` d WHERE d.item_code = a.item_code),coalesce(c.valuation_rate,0))*a.conversion_factor))/sum((a.qty*if(coalesce(c.valuation_rate,0)>a.rate,(SELECT d.valuation_rate FROM `tabItem` d WHERE d.item_code = a.item_code),coalesce(c.valuation_rate,0))*a.conversion_factor)),0)*100"}
 		]
 	else:
 		return [
