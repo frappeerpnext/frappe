@@ -109,15 +109,16 @@ def get_columns(filters):
 	columns = []
 
 	if filters.row_group == 'Sale Invoice' or filters.parent_row_group == 'Sale Invoice':
-		# columns.append({'fieldname':'name','label':filters.parent_row_group,'fieldtype':'Link','options':'POS Invoice','align':'left','width':250})
+	
 		columns.append({'fieldname':'row_group','label':filters.row_group,'fieldtype':'Link','options':'Sales Invoice','align':'left','width':250})
 	else:
 		columns.append({'fieldname':'row_group','label':filters.row_group,'fieldtype':'Data','align':'left','width':250})
 	
-	# columns.append({'fieldname':'row_group','label':filters.row_group,'fieldtype':'Data','align':'left','width':250})
+	columns.append({'fieldname':'row_group','label':filters.row_group,'fieldtype':'Data','align':'left','width':250})
 
 	if filters.row_group == "Product":
 			columns.append({"label":"Item Code","fieldname":"item_code","fieldtype":"Data","align":"left",'width':130})
+   
 	elif filters.row_group == "Sale Invoice":
 			columns.append({"label":"Seller","fieldname":"sales_partner","fieldtype":"Data","align":"left",'width':130})
 	hide_columns = filters.get("hide_columns")
@@ -163,7 +164,7 @@ def get_dynamic_columns(filters):
 					'align':rf["align"]}
 				)
 
-		
+	
 	return columns
 
 def get_fields(filters):
@@ -249,7 +250,7 @@ def get_fields(filters):
 		""".format(filters.start_date, filters.end_date)
 	
 	fields = frappe.db.sql(sql,as_dict=1)
-	 
+	
 	return fields
 
 def get_conditions(filters,group_filter=None):
@@ -451,7 +452,7 @@ def get_report_field(filters):
 	elif(filters.parent_row_group is None and filters.row_group == "Product"):
 		return [
 			{"label":"Quantity","short_label":"Qty", "fieldname":"qty","fieldtype":"Float","indicator":"Grey","precision":2, "align":"center","chart_color":"#FF8A65","sql_expression":"sum(a.qty*a.conversion_factor)"},
-			{"label":"Sub Total", "short_label":"Sub To.", "fieldname":"sub_total","fieldtype":"Currency","indicator":"Grey","precision":None, "align":"right","chart_color":"#dd5574","sql_expression":"sum((a.rate*a.qty+a.discount_amount)*a.qty)"},
+			{"label":"Sub Total", "short_label":"Sub To.", "fieldname":"sub_total","fieldtype":"Currency","indicator":"Grey","precision":None, "align":"right","chart_color":"#dd5574","sql_expression":"sum(a.rate*a.qty+a.discount_amount*a.qty)"},
 			{"label":"Total Discount", "short_label":"Disc.", "fieldname":"discount_amount","fieldtype":"Currency","indicator":"Grey","precision":None, "align":"right","chart_color":"#dd5574","sql_expression":"sum(coalesce(a.discount_amount,0)*a.qty)"},
 			{"label":"Cost","short_label":"Cost", "fieldname":"cost","fieldtype":"Currency","indicator":"Blue","precision":None, "align":"right","chart_color":"#1976D2","sql_expression":"sum(a.qty*if(coalesce(c.valuation_rate,0)>a.rate,(SELECT d.valuation_rate FROM `tabItem` d WHERE d.item_code = a.item_code),coalesce(c.valuation_rate,0))*a.conversion_factor)"},
 			{"label":"Amount", "short_label":"Amt", "fieldname":"amount","fieldtype":"Currency","indicator":"Red","precision":None, "align":"right","chart_color":"#2E7D32","sql_expression":"sum(a.net_amount)"},
@@ -462,7 +463,7 @@ def get_report_field(filters):
 	else:
 		return [
 			{"label":"Quantity","short_label":"Qty", "fieldname":"qty","fieldtype":"Float","indicator":"Grey","precision":2, "align":"center","chart_color":"#FF8A65","sql_expression":"sum(a.qty*a.conversion_factor)"},
-			{"label":"Sub Total", "short_label":"Sub To.", "fieldname":"sub_total","fieldtype":"Currency","indicator":"Grey","precision":None, "align":"right","chart_color":"#dd5574","sql_expression":"sum((a.rate*a.qty+a.discount_amount)*a.qty)"},
+			{"label":"Sub Total", "short_label":"Sub To.", "fieldname":"sub_total","fieldtype":"Currency","indicator":"Grey","precision":None, "align":"right","chart_color":"#dd5574","sql_expression":"sum(a.rate*a.qty+a.discount_amount*a.qty)"},
 			{"label":"Total Discount", "short_label":"Disc.", "fieldname":"discount_amount","fieldtype":"Currency","indicator":"Grey","precision":None, "align":"right","chart_color":"#dd5574","sql_expression":"sum(coalesce(a.discount_amount,0)*a.qty)"},
 			{"label":"Cost","short_label":"Cost", "fieldname":"cost","fieldtype":"Currency","indicator":"Blue","precision":None, "align":"right","chart_color":"#1976D2","sql_expression":"sum(a.qty*if(coalesce(c.valuation_rate,0)>a.rate,(SELECT d.valuation_rate FROM `tabItem` d WHERE d.item_code = a.item_code),coalesce(c.valuation_rate,0))*a.conversion_factor)"},
 			{"label":"Amount", "short_label":"Amt", "fieldname":"amount","fieldtype":"Currency","indicator":"Red","precision":None, "align":"right","chart_color":"#2E7D32","sql_expression":"sum(a.net_amount)"},
