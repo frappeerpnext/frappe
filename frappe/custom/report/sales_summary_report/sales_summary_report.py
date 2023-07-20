@@ -113,8 +113,6 @@ def get_columns(filters):
 		columns.append({'fieldname':'row_group','label':filters.row_group,'fieldtype':'Link','options':'Sales Invoice','align':'left','width':250})
 	else:
 		columns.append({'fieldname':'row_group','label':filters.row_group,'fieldtype':'Data','align':'left','width':250})
-	
-	columns.append({'fieldname':'row_group','label':filters.row_group,'fieldtype':'Data','align':'left','width':250})
 
 	if filters.row_group == "Product":
 			columns.append({"label":"Item Code","fieldname":"item_code","fieldtype":"Data","align":"left",'width':130})
@@ -440,6 +438,7 @@ def get_report_chart(filters,data):
 def get_report_field(filters):
 	if filters.parent_row_group == "Sale Invoice" or filters.row_group == "Sale Invoice" or filters.parent_row_group == "Sale Partner" or filters.row_group == "Sale Partner" :
 		return [
+			{"label":"Transaction","short_label":"Tran.", "fieldname":"transaction","fieldtype":"Float", "indicator":"Grey","precision":2, "align":"center","chart_color":"#f030fd","sql_expression":"a.total_transaction"},
 			{"label":"Quantity","short_label":"Qty", "fieldname":"qty","fieldtype":"Float","indicator":"Grey","precision":2, "align":"center","chart_color":"#FF8A65","sql_expression":"sum(a.qty*a.conversion_factor)"},
 			{"label":"Sub Total", "short_label":"Sub To.", "fieldname":"sub_total","fieldtype":"Currency","indicator":"Grey","precision":None, "align":"right","chart_color":"#dd5574","sql_expression":"sum(a.rate*a.qty+a.discount_amount*a.qty)"},
 			{"label":"Total Discount", "short_label":"Disc.", "fieldname":"discount_amount","fieldtype":"Currency","indicator":"Grey","precision":None, "align":"right","chart_color":"#dd5574","sql_expression":"sum(coalesce(a.discount_amount,0)*a.qty)"},
