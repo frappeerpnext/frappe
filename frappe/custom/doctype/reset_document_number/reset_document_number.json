@@ -1,0 +1,63 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2023-07-05 08:45:51.543659",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "prefix",
+  "counter",
+  "update_counter",
+  "main_prefix"
+ ],
+ "fields": [
+  {
+   "default": "SO-LA-WS-2023-",
+   "fieldname": "prefix",
+   "fieldtype": "Autocomplete",
+   "label": "Prefix"
+  },
+  {
+   "fieldname": "counter",
+   "fieldtype": "Int",
+   "label": "Counter"
+  },
+  {
+   "fieldname": "update_counter",
+   "fieldtype": "Button",
+   "label": "Update Counter",
+   "options": "update_series_start"
+  },
+  {
+   "default": "SO-LA-WS-2023-",
+   "fieldname": "main_prefix",
+   "fieldtype": "Data",
+   "label": "Main Prefix",
+   "permlevel": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2023-07-05 11:25:36.516746",
+ "modified_by": "Administrator",
+ "module": "Custom",
+ "name": "Reset Document Number",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
