@@ -13,7 +13,7 @@
  ],
  "fields": [
   {
-   "default": "SO-LA-WS-2023-",
+   "default": "2022-.########",
    "fieldname": "prefix",
    "fieldtype": "Autocomplete",
    "label": "Prefix"
@@ -30,7 +30,7 @@
    "options": "update_series_start"
   },
   {
-   "default": "SO-LA-WS-2023-",
+   "default": "2022-.",
    "fieldname": "main_prefix",
    "fieldtype": "Data",
    "label": "Main Prefix",
@@ -40,7 +40,7 @@
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2023-07-05 11:25:36.516746",
+ "modified": "2023-07-31 15:38:23.135444",
  "modified_by": "Administrator",
  "module": "Custom",
  "name": "Reset Document Number",
@@ -50,6 +50,15 @@
    "create": 1,
    "delete": 1,
    "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "permlevel": 1,
    "print": 1,
    "read": 1,
    "role": "System Manager",
