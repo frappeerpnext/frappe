@@ -770,9 +770,9 @@ class Document(BaseDocument):
 				else:
 					tmp = tmp[0]
 
-				modified = cstr(tmp.modified)
+				modified = cstr(tmp.modified).split('.', 1)[0]
 
-				if modified and modified != cstr(self._original_modified):
+				if modified and modified != cstr(self._original_modified).split('.', 1)[0]:	
 					conflict = True
 
 				self.check_docstatus_transition(tmp.docstatus)
@@ -780,9 +780,8 @@ class Document(BaseDocument):
 			if conflict:
 				frappe.msgprint(
 					_("Error: Document has been modified after you have opened it")
-					+ (f" ({modified}, {self.modified}). ")
-					+ _("Please refresh to get the latest document.")
-					+_(f"DocType Is {self.doctype}"),
+					+ (f" ({modified}, {self.modified.split('.', 1)[0]}). ")
+					+ _("Please refresh to get the latest document."),
 					raise_exception=frappe.TimestampMismatchError,
 				)
 		else:
