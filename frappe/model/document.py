@@ -781,7 +781,8 @@ class Document(BaseDocument):
 				frappe.msgprint(
 					_("Error: Document has been modified after you have opened it")
 					+ (f" ({modified}, {self.modified}). ")
-					+ _("Please refresh to get the latest document."),
+					+ _("Please refresh to get the latest document.")
+					+_(f"DocType Is {self.doctype}"),
 					raise_exception=frappe.TimestampMismatchError,
 				)
 		else:
