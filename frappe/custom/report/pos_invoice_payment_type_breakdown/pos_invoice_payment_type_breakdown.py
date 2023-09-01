@@ -49,7 +49,7 @@ def get_report_data(filters):
 				FROM `tabSales Invoice` a
 				INNER JOIN `tabPayment Entry Reference` b ON b.reference_name = a.name
 				INNER JOIN `tabPayment Entry` c ON c.name = b.parent
-				WHERE a.posting_date BETWEEN '{0}' and '{1}' and a.company = '{2}'
+				WHERE a.posting_date BETWEEN '{0}' and '{1}' and a.company = '{2}' and c.docstatus=1
 				and coalesce(a.branch,'None') = case when '{3}' = 'None' then coalesce(a.branch,'None') else '{3}' end
 				GROUP BY c.mode_of_payment
 				)
@@ -78,9 +78,10 @@ def get_report_data(filters):
 
 				SELECT 
 				a.mode_of_payment,
-				total_amount - coalesce(change_amount,0) payment_amount
+				cast(total_amount - coalesce(change_amount,0) as decimal(16,4)) payment_amount
 				FROM payment a
 				LEFT JOIN change_amount b ON b.mode_of_payment = a.mode_of_payment
+				where a.mode_of_payment is not null
 				""".format(filters.start_date,filters.end_date,filters.company,filters.branch)
 	data = frappe.db.sql(sql,as_dict=1)
 	return data
