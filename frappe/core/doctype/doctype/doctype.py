@@ -979,9 +979,10 @@ def validate_links_table_fieldnames(meta):
 	"""Validate fieldnames in Links table"""
 	if not meta.links or frappe.flags.in_patch or frappe.flags.in_fixtures:
 		return
-
 	fieldnames = tuple(field.fieldname for field in meta.fields)
+	
 	for index, link in enumerate(meta.links, 1):
+		
 		_test_connection_query(doctype=link.link_doctype, field=link.link_fieldname, idx=index)
 
 		if not link.is_child_table:

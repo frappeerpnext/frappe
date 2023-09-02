@@ -347,7 +347,7 @@ class ShortcutDialog extends WidgetDialog {
 				fieldname: "type",
 				label: "Type",
 				reqd: 1,
-				options: "DocType\nReport\nPage\nDashboard",
+				options: "DocType\nReport\nPage\nDashboard\nURL",
 				onchange: () => {
 					if (this.dialog.get_value("type") == "DocType") {
 						this.dialog.fields_dict.link_to.get_query = () => {
@@ -376,28 +376,48 @@ class ShortcutDialog extends WidgetDialog {
 				fieldtype: "Dynamic Link",
 				fieldname: "link_to",
 				label: "Link To",
-				reqd: 1,
 				options: "type",
 				onchange: () => {
-					if (this.dialog.get_value("type") == "DocType") {
-						let doctype = this.dialog.get_value("link_to");
-						if (doctype && frappe.boot.single_types.includes(doctype)) {
-							this.hide_filters();
-						} else if (doctype) {
-							this.setup_filter(doctype);
-							this.show_filters();
-						}
+					const doctype = this.dialog.get_value("link_to");
+					if (doctype && this.dialog.get_value("type") == "DocType") {
+						frappe.model.with_doctype(doctype, async () => {
+							let meta = frappe.get_meta(doctype);
 
-						const views = ["List", "Report Builder", "Dashboard", "New"];
-						if (frappe.boot.treeviews.includes(doctype)) views.push("Tree");
-						if (frappe.boot.calendars.includes(doctype)) views.push("Calendar");
+							if (doctype && frappe.boot.single_types.includes(doctype)) {
+								this.hide_filters();
+							} else if (doctype) {
+								this.setup_filter(doctype);
+								this.show_filters();
+							}
 
-						this.dialog.set_df_property("doc_view", "options", views.join("\n"));
+							const views = ["List", "Report Builder", "Dashboard", "New"];
+							if (meta.is_tree === 1) views.push("Tree");
+							if (frappe.boot.calendars.includes(doctype)) views.push("Calendar");
 
+							const response = await frappe.db.get_value(
+								"Kanban Board",
+								{ reference_doctype: doctype },
+								"name"
+							);
+							if (response?.message?.name) views.push("Kanban");
+
+							this.dialog.set_df_property("doc_view", "options", views.join("\n"));
+						});
 					} else {
 						this.hide_filters();
 					}
-				}
+				},
+				depends_on: (s) => s.type != "URL",
+				mandatory_depends_on: (s) => s.type != "URL",
+			},
+			{
+				fieldtype: "Data",
+				fieldname: "url",
+				label: "URL",
+				options: "URL",
+				default: "",
+				depends_on: (s) => s.type == "URL",
+				mandatory_depends_on: (s) => s.type == "URL",
 			},
 			{
 				fieldtype: "Select",
@@ -488,10 +508,22 @@ class ShortcutDialog extends WidgetDialog {
 		data.label = data.label
 			? data.label
 			: frappe.model.unscrub(data.link_to);
+		if (data.url) {
+			!validate_url(data.url) &&
+				frappe.throw({
+					message: __("<b>{0}</b> is not a valid URL", [data.url]),
+					title: __("Invalid URL"),
+					indicator: "red",
+				});
 
+			if (!data.label) {
+				data.label = "No Label (URL)";
+			}
+		}
 		return data;
 	}
 }
+
 
 class NumberCardDialog extends WidgetDialog {
 	constructor(opts) {
@@ -500,79 +532,104 @@ class NumberCardDialog extends WidgetDialog {
 
 	get_fields() {
 		let fields;
+		if (this.for_workspace) {
+			return [
+				{
+					fieldtype: "Link",
+					fieldname: "number_card_name",
+					label: __("Number Cards"),
+					options: "Number Card",
+					reqd: 1,
+					get_query: () => {
+						return {
+							query: "frappe.desk.doctype.number_card.number_card.get_cards_for_user",
+							filters: {
+								document_type: this.document_type,
+							},
+						};
+					},
+				},
+				{
+					fieldtype: "Data",
+					fieldname: "label",
+					label: __("Label"),
+				},
+			];
+		}
 		fields = [
 			{
-				fieldtype: 'Select',
-				label: __('Choose Existing Card or create New Card'),
-				fieldname: 'new_or_existing',
-				options: ['New Card', 'Existing Card']
+				fieldtype: "Select",
+				label: __("Choose Existing Card or create New Card"),
+				fieldname: "new_or_existing",
+				options: ["New Card", "Existing Card"],
 			},
 			{
-				fieldtype: 'Link',
-				fieldname: 'card',
-				label: __('Number Cards'),
-				options: 'Number Card',
+				fieldtype: "Link",
+				fieldname: "card",
+				label: __("Number Cards"),
+				options: "Number Card",
 				get_query: () => {
 					return {
-						'query': 'frappe.desk.doctype.number_card.number_card.get_cards_for_user',
+						query: "frappe.desk.doctype.number_card.number_card.get_cards_for_user",
 						filters: {
 							document_type: this.document_type,
-						}
+						},
 					};
 				},
-				depends_on: 'eval: doc.new_or_existing == "Existing Card"'
+				depends_on: 'eval: doc.new_or_existing == "Existing Card"',
 			},
 			{
-				fieldtype: 'Section Break',
-				fieldname: 'sb_1',
-				depends_on: 'eval: doc.new_or_existing == "New Card"'
+				fieldtype: "Section Break",
+				fieldname: "sb_1",
+				depends_on: 'eval: doc.new_or_existing == "New Card"',
 			},
 			{
-				label: __('Label'),
-				fieldname: 'label',
-				fieldtype: 'Data',
-				mandatory_depends_on: 'eval: doc.new_or_existing == "New Card"'
+				label: __("Label"),
+				fieldname: "label",
+				fieldtype: "Data",
+				mandatory_depends_on: 'eval: doc.new_or_existing == "New Card"',
 			},
 			{
-				label: __('Doctype'),
-				fieldname: 'document_type',
-				fieldtype: 'Link',
-				options: 'DocType',
+				label: __("Doctype"),
+				fieldname: "document_type",
+				fieldtype: "Link",
+				options: "DocType",
 				onchange: () => {
 					this.document_type = this.dialog.get_value("document_type");
 					this.set_aggregate_function_fields(this.dialog.get_values());
 					this.setup_filter(this.document_type);
 				},
-				hidden: 1
+				hidden: 1,
 			},
 			{
-				label: __('Color'),
-				fieldname: 'color',
-				fieldtype: 'Color'
+				label: __("Color"),
+				fieldname: "color",
+				fieldtype: "Color",
 			},
 			{
 				fieldtype: "Column Break",
 				fieldname: "cb_1",
 			},
 			{
-				label: __('Function'),
-				fieldname: 'function',
-				fieldtype: 'Select',
-				options: ['Count', 'Sum', 'Average', 'Minimum', 'Maximum'],
-				mandatory_depends_on: 'eval: doc.new_or_existing == "New Card"'
+				label: __("Function"),
+				fieldname: "function",
+				fieldtype: "Select",
+				options: ["Count", "Sum", "Average", "Minimum", "Maximum"],
+				mandatory_depends_on: 'eval: doc.new_or_existing == "New Card"',
 			},
 			{
-				label: __('Function Based On'),
-				fieldname: 'aggregate_function_based_on',
-				fieldtype: 'Select',
+				label: __("Function Based On"),
+				fieldname: "aggregate_function_based_on",
+				fieldtype: "Select",
 				depends_on: "eval: doc.function !== 'Count'",
-				mandatory_depends_on: 'eval: doc.function !== "Count" && doc.new_or_existing == "New Card"'
+				mandatory_depends_on:
+					'eval: doc.function !== "Count" && doc.new_or_existing == "New Card"',
 			},
 			{
 				fieldtype: "Section Break",
 				fieldname: "sb_1",
-				label: __('Add Filters'),
-				depends_on: 'eval: doc.new_or_existing == "New Card"'
+				label: __("Add Filters"),
+				depends_on: 'eval: doc.new_or_existing == "New Card"',
 			},
 			{
 				fieldtype: "HTML",
@@ -593,13 +650,13 @@ class NumberCardDialog extends WidgetDialog {
 	}
 
 	setup_dialog_events() {
-		if (!this.document_type) {
-			if (this.default_values && this.default_values['doctype']) {
-				this.document_type = this.default_values['doctype'];
-				this.setup_filter(this.default_values['doctype']);
+		if (!this.document_type && !this.for_workspace) {
+			if (this.default_values && this.default_values["doctype"]) {
+				this.document_type = this.default_values["doctype"];
+				this.setup_filter(this.default_values["doctype"]);
 				this.set_aggregate_function_fields();
 			} else {
-				this.show_field('document_type');
+				this.show_field("document_type");
 			}
 		}
 	}
@@ -607,28 +664,51 @@ class NumberCardDialog extends WidgetDialog {
 	set_aggregate_function_fields() {
 		let aggregate_function_fields = [];
 		if (this.document_type && frappe.get_meta(this.document_type)) {
-			frappe.get_meta(this.document_type).fields.map(df => {
+			frappe.get_meta(this.document_type).fields.map((df) => {
 				if (frappe.model.numeric_fieldtypes.includes(df.fieldtype)) {
-					if (df.fieldtype == 'Currency') {
-						if (!df.options || df.options !== 'Company:company:default_currency') {
+					if (df.fieldtype == "Currency") {
+						if (!df.options || df.options !== "Company:company:default_currency") {
 							return;
 						}
 					}
-					aggregate_function_fields.push({label: df.label, value: df.fieldname});
+					aggregate_function_fields.push({ label: df.label, value: df.fieldname });
 				}
 			});
 		}
-		this.dialog.set_df_property('aggregate_function_based_on', 'options', aggregate_function_fields);
+		this.dialog.set_df_property(
+			"aggregate_function_based_on",
+			"options",
+			aggregate_function_fields
+		);
 	}
 
 	process_data(data) {
-		if (data.new_or_existing == 'Existing Card') {
+		if (data.new_or_existing == "Existing Card") {
 			data.name = data.card;
 		}
 		data.stats_filter = this.filter_group && JSON.stringify(this.filter_group.get_filters());
 		data.document_type = this.document_type;
-
+		data.label = data.label ? data.label : data.number_card_name;
 		return data;
+	}
+}
+
+
+class CustomBlockDialog extends WidgetDialog {
+	constructor(opts) {
+		super(opts);
+	}
+
+	get_fields() {
+		return [
+			{
+				fieldtype: "Link",
+				fieldname: "custom_block_name",
+				label: "Custom Block Name",
+				options: "Custom HTML Block",
+				reqd: 1,
+			},
+		];
 	}
 }
 
@@ -636,10 +716,11 @@ export default function get_dialog_constructor(type) {
 	const widget_map = {
 		chart: ChartDialog,
 		shortcut: ShortcutDialog,
-		number_card: NumberCardDialog,
 		links: CardDialog,
 		onboarding: OnboardingDialog,
-		quick_list: QuickListDialog
+		quick_list: QuickListDialog,
+		number_card: NumberCardDialog,
+		custom_block: CustomBlockDialog,
 	};
 
 	return widget_map[type] || WidgetDialog;

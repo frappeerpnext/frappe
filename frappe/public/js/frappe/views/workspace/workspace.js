@@ -15,7 +15,6 @@ frappe.standard_pages['Workspaces'] = function() {
 		frappe.workspace.show();
 	});
 };
-
 frappe.views.Workspace = class Workspace {
 	constructor(wrapper) {
 		this.wrapper = $(wrapper);
@@ -327,6 +326,8 @@ frappe.views.Workspace = class Workspace {
 				this.editor.configuration.tools.card.config.page_data = this.page_data;
 				this.editor.configuration.tools.onboarding.config.page_data = this.page_data;
 				this.editor.configuration.tools.quick_list.config.page_data = this.page_data;
+				this.editor.configuration.tools.number_card.config.page_data = this.page_data;
+				this.editor.configuration.tools.custom_block.config.page_data = this.page_data;
 				this.editor.render({ blocks: this.content || [] });
 			});
 		} else {
@@ -1124,6 +1125,18 @@ frappe.views.Workspace = class Workspace {
 					page_data: this.page_data || []
 				}
 			},
+			number_card: {
+				class: this.blocks["number_card"],
+				config: {
+					page_data: this.page_data || [],
+				},
+			},
+			custom_block: {
+				class: this.blocks["custom_block"],
+				config: {
+					page_data: this.page_data || [],
+				},
+			},
 			spacer: this.blocks['spacer'],
 			HeaderSize: frappe.workspace_block.tunes['header_size'],
 		};
@@ -1160,7 +1173,6 @@ frappe.views.Workspace = class Workspace {
 					(item.data.card_name !== 'Custom Documents' &&
 					item.data.card_name !== 'Custom Reports')
 			);
-
 			if (page.content == JSON.stringify(blocks) && Object.keys(new_widgets).length === 0) {
 				this.setup_customization_buttons(page);
 				frappe.show_alert({ message: __("No changes made on the page"), indicator: "warning" });

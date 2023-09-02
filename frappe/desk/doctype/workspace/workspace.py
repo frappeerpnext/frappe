@@ -171,7 +171,6 @@ def new_page(new_page):
 @frappe.whitelist()
 def save_page(title, public, new_widgets, blocks):
 	public = frappe.parse_json(public)
-
 	filters = {"public": public, "label": title}
 
 	if not public:
