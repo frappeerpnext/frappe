@@ -32,6 +32,7 @@
   "allow_close_cashier_shift",
   "allow_open_cashdrawer",
   "allow_switch_pos_profile",
+  "allow_edit_tax",
   "column_break_24",
   "allow_change_item_price",
   "allow_change_price_list_rate",
@@ -214,7 +215,6 @@
   {
    "fieldname": "language",
    "fieldtype": "Link",
-   "hidden": 1,
    "label": "Language",
    "options": "Language"
   },
@@ -679,6 +679,7 @@
    "fieldtype": "Link",
    "label": "Module Profile",
    "options": "Module Profile",
+   "permlevel": 1,
    "print_hide": 1,
    "report_hide": 1
   },
@@ -882,6 +883,12 @@
    "fieldname": "allow_add_foc_to_sale_item",
    "fieldtype": "Check",
    "label": "Allow Add FOC To Sale Item"
+  },
+  {
+   "default": "0",
+   "fieldname": "allow_edit_tax",
+   "fieldtype": "Check",
+   "label": "Allow Edit Tax"
   }
  ],
  "icon": "fa fa-user",
@@ -894,7 +901,7 @@
    "link_fieldname": "user"
   }
  ],
- "modified": "2023-01-28 09:45:47.669261",
+ "modified": "2023-08-11 08:37:29.448109",
  "modified_by": "Administrator",
  "module": "Core",
  "name": "User",

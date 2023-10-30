@@ -41,7 +41,7 @@ export default class CustomBlockWidget extends Widget {
 
 				// css
 				let style = document.createElement("style");
-				style.textContent = me.custom_block_doc.style;
+				style.textContent = me.custom_block_doc.css;
 
 				// js
 				let script = document.createElement("script");
@@ -52,7 +52,6 @@ export default class CustomBlockWidget extends Widget {
 						${me.custom_block_doc.script}
 					})();
 				`;
-
 				this.attachShadow({ mode: "open" });
 				this.shadowRoot?.appendChild(div);
 				this.shadowRoot?.appendChild(style);

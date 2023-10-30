@@ -20,7 +20,7 @@ function render_custom_html_block(frm) {
 
 			// css
 			let style = document.createElement("style");
-			style.textContent = frm.doc.style;
+			style.textContent = frm.doc.css;
 
 			// javascript
 			let script = document.createElement("script");
@@ -31,7 +31,7 @@ function render_custom_html_block(frm) {
 					${frm.doc.script}
 				})();
 			`;
-
+				
 			this.attachShadow({ mode: "open" });
 			this.shadowRoot?.appendChild(div);
 			this.shadowRoot?.appendChild(style);
