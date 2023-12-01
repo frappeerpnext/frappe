@@ -1,3 +1,4 @@
-FROM ubuntu:14.04
+FROM ubuntu:22.04
 RUN apt-get install git && \
-git clone https://github.com/frappeerpnext/frappe
+sudo apt-get update -y  && \
+sudo apt-get upgrade -y
