@@ -1,29 +1,42 @@
 
 frappe.query_reports["Sales Summary Report"] = {
+	onload: function(report) {
+		report.page.add_inner_field("Preview Report", function () {
+			frappe.query_report.refresh();
+		});
+		report.page.add_inner_button ("Preview Report", function () {
+			frappe.query_report.refresh();
+		});
+		
+	},
 	"filters": [
 		{
 			fieldname: "company",
 			label: "Company",
 			fieldtype: "Link",
 			options:"Company",
+			on_change: function (query_report) {},
 			default:frappe.defaults.get_user_default("Company"),
 		},
 		{
 			fieldname: "start_date",
 			label: "Start Date",
 			fieldtype: "Date",
+			on_change: function (query_report) {},
 			default:frappe.datetime.get_today()
 		},
 		{
 			fieldname: "end_date",
 			label: "End Date",
 			fieldtype: "Date",
+			on_change: function (query_report) {},
 			default:frappe.datetime.get_today()
 		},
 		{
 			fieldname: "branch",
 			label: "Branch",
 			"fieldtype": "MultiSelectList",
+			on_change: function (query_report) {},
 			get_data: function(txt) {
 				return frappe.db.get_link_options('Branch', txt);
 			}
@@ -32,6 +45,7 @@ frappe.query_reports["Sales Summary Report"] = {
 			"fieldname": "price_list",
 			"label": __("Sale Type"),
 			"fieldtype": "MultiSelectList",
+			on_change: function (query_report) {},
 			get_data: function(txt) {
 				return frappe.db.get_link_options('Price List', txt,{"selling":1});
 			}
@@ -40,6 +54,7 @@ frappe.query_reports["Sales Summary Report"] = {
 			"fieldname": "item_group",
 			"label": __("Item Group"),
 			"fieldtype": "MultiSelectList",
+			on_change: function (query_report) {},
 			get_data: function(txt) {
 				
 				return frappe.db.get_link_options('Item Group', txt,{"is_group":1});
@@ -49,6 +64,7 @@ frappe.query_reports["Sales Summary Report"] = {
 			"fieldname": "item_category",
 			"label": __("Item Category"),
 			"fieldtype": "MultiSelectList",
+			on_change: function (query_report) {},
 			get_data: function(txt) {
 				group = frappe.query_report.get_filter_value("item_group");
 				if(group==""){
@@ -67,6 +83,7 @@ frappe.query_reports["Sales Summary Report"] = {
 		{
 			"fieldname": "customer_group",
 			"label": __("Customer Group"),
+			on_change: function (query_report) {},
 			"fieldtype": "MultiSelectList",
 			get_data: function(txt) {
 				
@@ -77,6 +94,7 @@ frappe.query_reports["Sales Summary Report"] = {
 			"fieldname": "supplier_group",
 			"label": __("Supplier Group"),
 			"fieldtype": "MultiSelectList",
+			on_change: function (query_report) {},
 			get_data: function(txt) {
 				
 				return frappe.db.get_link_options('Supplier Group', txt,{"is_group":0});
@@ -85,6 +103,7 @@ frappe.query_reports["Sales Summary Report"] = {
 		{
 			"fieldname": "supplier",
 			"label": __("Supplier"),
+			on_change: function (query_report) {},
 			"fieldtype": "MultiSelectList",
 			get_data: function(txt) {
 				group = frappe.query_report.get_filter_value("supplier_group");
@@ -110,11 +129,13 @@ frappe.query_reports["Sales Summary Report"] = {
 			"fieldname": "parent_row_group",
 			"label": __("Parent Group By"),
 			"fieldtype": "Select",
+			on_change: function (query_report) {},
 			"options": "\nCategory\nProduct Group\nBrand\nCompany\nBranch\nSale Type\nPOS Profile\nCustomer\nCustomer Group\nMembership\nTerritory\nSupplier\nSupplier Group\nWarehouse\nDate\n\Month\nYear\nSale Invoice\nSale Partner",
 			
 		},
 		{
 			"fieldname": "row_group",
+			on_change: function (query_report) {},
 			"label": __("Row Group By"),
 			"fieldtype": "Select",
 			"options": "Product\nCategory\nProduct Group\nBrand\nCompany\nBranch\nSale Type\nPOS Profile\nCustomer\nCustomer Group\nMembership\nTerritory\nSupplier\nSupplier Group\nWarehouse\nDate\n\Month\nYear\nSale Invoice\nSale Partner",
@@ -124,6 +145,7 @@ frappe.query_reports["Sales Summary Report"] = {
 			"fieldname": "column_group",
 			"label": __("Column Group By"),
 			"fieldtype": "Select",
+			on_change: function (query_report) {},
 			"options": "None\nDaily\nWeekly\nMonthly\nQuarterly\nHalf Yearly\nYearly",
 			"default":"None"
 		},
@@ -131,6 +153,7 @@ frappe.query_reports["Sales Summary Report"] = {
 			"fieldname": "hide_columns",
 			"label": __("Hide Columns"),
 			"fieldtype": "MultiSelectList",
+			on_change: function (query_report) {},
 			get_data: function(txt) {
 				return [
 					{"value":"Amount","description":"Amount"},
@@ -148,12 +171,14 @@ frappe.query_reports["Sales Summary Report"] = {
 			"fieldname": "chart_type",
 			"label": __("Chart Type"),
 			"fieldtype": "Select",
+			on_change: function (query_report) {},
 			"options": "None\nbar\nline",
 			"default":"bar"
 		},
 		{
 			"fieldname": "status",
 			"label": __("Status"),
+			on_change: function (query_report) {},
 			"fieldtype": "MultiSelectList",
 			get_data: function(txt) {
 				return [
@@ -175,6 +200,7 @@ frappe.query_reports["Sales Summary Report"] = {
 		{
 			fieldname: "include_cancelled",
 			label: "Include Cancelled",
+			on_change: function (query_report) {},
 			fieldtype: "Check"
 		},
 	
