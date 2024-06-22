@@ -51,6 +51,7 @@
   "allow_view_shift_report",
   "allow_pre_print_receipt",
   "allow_add_foc_to_sale_item",
+  "allow_change_sale_item_quantity",
   "sb1",
   "roles_html",
   "roles",
@@ -889,6 +890,12 @@
    "fieldname": "allow_edit_tax",
    "fieldtype": "Check",
    "label": "Allow Edit Tax"
+  },
+  {
+   "default": "0",
+   "fieldname": "allow_change_sale_item_quantity",
+   "fieldtype": "Check",
+   "label": "Allow Change Sale Item Quantity"
   }
  ],
  "icon": "fa fa-user",
@@ -901,7 +908,7 @@
    "link_fieldname": "user"
   }
  ],
- "modified": "2023-08-11 08:37:29.448109",
+ "modified": "2024-06-22 15:00:15.347219",
  "modified_by": "Administrator",
  "module": "Core",
  "name": "User",
